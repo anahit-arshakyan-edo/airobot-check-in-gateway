@@ -1,0 +1,6 @@
+.idea/
+*.iml
+*.iws
+target/
+*.avsc
+generated-docker-compose.yml

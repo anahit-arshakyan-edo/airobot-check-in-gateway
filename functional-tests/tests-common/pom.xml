@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>functional-tests</artifactId>
+        <groupId>com.edreamsodigeo.boardingpass.airobotcheckingateway</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>tests-common</artifactId>
+    <name>Functional test commons</name>
+
+    <profiles>
+        <profile>
+            <id>run-automated-test</id>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <filtering>true</filtering>
+                    </resource>
+                </resources>
+                <plugins>
+                    <plugin>
+                        <groupId>com.odigeo.technology.secrets-plugin</groupId>
+                        <artifactId>secrets-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>process-resources</phase>
+                                <goals>
+                                    <goal>getAndReplaceSecretsUsingUserPassCredentials</goal>
+                                </goals>
+                                <configuration>
+                                    <vaultUrl>${vault.url}</vaultUrl>
+                                    <module>${module.name}</module>
+                                    <configFile>${basedir}/src/main/resources/container/secrets.conf</configFile>
+                                    <buildFolder>${basedir}/target/</buildFolder>
+                                    <environment>${docker.image.env}</environment>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.odigeo.technology.jboss.management</groupId>
+                        <artifactId>docker-jboss-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>configure-standalone.xml</id>
+                                <phase>generate-test-resources</phase>
+                                <goals>
+                                    <goal>executeCliAndGetConfigurationFile</goal>
+                                </goals>
+                                <configuration>
+                                    <dockerImage>${docker.image.base.name}</dockerImage>
+                                    <jbossHome>/opt/eap</jbossHome>
+                                    <cliFilePath>${basedir}/target/classes/container/commands.cli</cliFilePath>
+                                    <datasourceDataFilePaths>
+                                        <datasourceDataFilePath>${basedir}/target/classes/container/DataSource.properties</datasourceDataFilePath>
+                                    </datasourceDataFilePaths>
+                                    <moduleName>${module.name}</moduleName>
+                                    <moduleVersion>${project.version}</moduleVersion>
+                                    <target>${basedir}/target/classes/container/</target>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+</project>

@@ -1,0 +1,17 @@
+version: '3'
+services:
+  airobot-check-in-gateway:
+    image: airobot-check-in-gateway
+    ports:
+      - "8080:8080"
+      - "8787:8787"
+    volumes:
+    - ~/containersLogs/airobot-check-in-gateway:/opt/eap/standalone/log
+    environment:
+      - ENV_ORACLE_HOST=local-oracle-airobot-check-in-gateway
+      - ENV_ORACLE_PORT=1521
+      - ENV_ORACLE_SERVICE_NAME=EDDKRQA
+networks:
+  default:
+    external:
+      name: local-qa-network
