@@ -251,4 +251,19 @@
             <artifactId>mockito-core</artifactId>
         </dependency>
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>run-code-checks</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.sonarsource.scanner.maven</groupId>
+                        <artifactId>sonar-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
 </project>
