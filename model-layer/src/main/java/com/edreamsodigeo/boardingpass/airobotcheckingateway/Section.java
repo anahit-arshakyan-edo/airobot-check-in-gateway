@@ -11,7 +11,7 @@ public class Section {
         this.arrival = arrival;
     }
 
-    public String getAirline() {
+    public String airline() {
         return airline;
     }
 
@@ -21,5 +21,25 @@ public class Section {
 
     public String arrival() {
         return arrival;
+    }
+
+    public boolean isValid() {
+        if (! isPresent(airline)) {
+            return false;
+        }
+
+        if (! isPresent(arrival)) {
+            return false;
+        }
+
+        if (! isPresent(departure)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean isPresent(String value) {
+        return value != null && ! value.isEmpty();
     }
 }

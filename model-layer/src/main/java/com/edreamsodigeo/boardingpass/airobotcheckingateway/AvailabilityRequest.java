@@ -9,17 +9,6 @@ public class AvailabilityRequest {
     }
 
     public boolean isValid() {
-        if (! isAirportPresent(section.arrival()))
-            return false;
-
-        if (! isAirportPresent(section.departure()))
-            return false;
-
-        return true;
+        return section.isValid();
     }
-
-    private boolean isAirportPresent(String airport) {
-        return airport != null && ! airport.isEmpty();
-    }
-
 }

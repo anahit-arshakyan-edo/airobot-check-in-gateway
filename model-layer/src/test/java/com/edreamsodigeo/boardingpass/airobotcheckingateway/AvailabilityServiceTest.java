@@ -9,7 +9,7 @@ import static org.testng.Assert.assertTrue;
 public class AvailabilityServiceTest {
 
     @Test
-    public void airobotAnswersWithAnAvailability() {
+    public void returnAvailabilityResultForValidRequest() {
         Availability returnedAvailability = new Availability();
         AirobotMock airobot = new AirobotMock(returnedAvailability);
         AvailabilityService availabilityService = new AvailabilityService(airobot);
@@ -19,6 +19,19 @@ public class AvailabilityServiceTest {
         AvailabilityResult availabilityResult = availabilityService.getAvailability(availabilityRequest);
 
         assertSame(availabilityResult.getAvailability(), returnedAvailability);
+    }
+
+    @Test
+    public void returnInvalidAvailabilityRequestDueToMissingAirline() {
+        NotInvokedAirobotMock airobot = new NotInvokedAirobotMock();
+        AvailabilityService availabilityService = new AvailabilityService(airobot);
+        Section section = new Section("", "LSB", "MXP");
+        AvailabilityRequest availabilityRequest = new AvailabilityRequest(section);
+
+        AvailabilityResult availability = availabilityService.getAvailability(availabilityRequest);
+
+        assertTrue(availability.isInvalidRequest());
+        assertFalse(airobot.isInvoked());
     }
 
     @Test
