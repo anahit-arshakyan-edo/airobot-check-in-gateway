@@ -3,6 +3,7 @@ package com.edreamsodigeo.boardingpass.airobotcheckingateway;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertSame;
+import static org.testng.Assert.assertTrue;
 
 public class AvailabilityServiceTest {
 
@@ -11,10 +12,22 @@ public class AvailabilityServiceTest {
         Availability returnedAvailability = new Availability();
         AirobotMock airobot = new AirobotMock(returnedAvailability);
         AvailabilityService availabilityService = new AvailabilityService(airobot);
-        AvailabilityRequest availabilityRequest = new AvailabilityRequest();
+        AvailabilityRequest availabilityRequest = new AvailabilityRequest("BCN");
 
-        Availability availability = availabilityService.getAvailability(availabilityRequest);
+        AvailabilityResult availabilityResult = availabilityService.getAvailability(availabilityRequest);
 
-        assertSame(availability, returnedAvailability);
+        assertSame(availabilityResult.getAvailability(), returnedAvailability);
+    }
+
+    @Test
+    public void returnInvalidAvailabilityRequest() {
+        AvailabilityService availabilityService = new AvailabilityService(null);
+        String departureAirport = "";
+        AvailabilityRequest availabilityRequest = new AvailabilityRequest(departureAirport);
+
+        AvailabilityResult availability = availabilityService.getAvailability(availabilityRequest);
+
+        assertTrue(availability.isInvalidRequest());
+
     }
 }
