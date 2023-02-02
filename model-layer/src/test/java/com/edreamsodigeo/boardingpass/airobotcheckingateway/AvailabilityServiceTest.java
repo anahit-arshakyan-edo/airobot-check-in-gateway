@@ -13,7 +13,8 @@ public class AvailabilityServiceTest {
         Availability returnedAvailability = new Availability();
         AirobotMock airobot = new AirobotMock(returnedAvailability);
         AvailabilityService availabilityService = new AvailabilityService(airobot);
-        AvailabilityRequest availabilityRequest = new AvailabilityRequest("BCN");
+        Section section = new Section("IB", "BCN", "MXP");
+        AvailabilityRequest availabilityRequest = new AvailabilityRequest(section);
 
         AvailabilityResult availabilityResult = availabilityService.getAvailability(availabilityRequest);
 
@@ -21,11 +22,11 @@ public class AvailabilityServiceTest {
     }
 
     @Test
-    public void returnInvalidAvailabilityRequest() {
+    public void returnInvalidAvailabilityRequestDueToMissingDeparture() {
         NotInvokedAirobotMock airobot = new NotInvokedAirobotMock();
         AvailabilityService availabilityService = new AvailabilityService(airobot);
-        String departureAirport = "";
-        AvailabilityRequest availabilityRequest = new AvailabilityRequest(departureAirport);
+        Section section = new Section("IB", "", "MXP");
+        AvailabilityRequest availabilityRequest = new AvailabilityRequest(section);
 
         AvailabilityResult availability = availabilityService.getAvailability(availabilityRequest);
 
@@ -37,7 +38,8 @@ public class AvailabilityServiceTest {
     public void relaunchAnExceptionThrownByAirobot() {;
         AirobotMockThrowsException airobot = new AirobotMockThrowsException();
         AvailabilityService availabilityService = new AvailabilityService(airobot);
-        AvailabilityRequest availabilityRequest = new AvailabilityRequest("BCN");
+        Section section = new Section("IB", "BCN", "MXP");
+        AvailabilityRequest availabilityRequest = new AvailabilityRequest(section);
 
         availabilityService.getAvailability(availabilityRequest);
     }
