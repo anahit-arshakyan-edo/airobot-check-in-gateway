@@ -2,6 +2,7 @@ package com.edreamsodigeo.boardingpass.airobotcheckingateway;
 
 import org.testng.annotations.Test;
 
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
@@ -21,17 +22,19 @@ public class AvailabilityServiceTest {
 
     @Test
     public void returnInvalidAvailabilityRequest() {
-        AvailabilityService availabilityService = new AvailabilityService(null);
+        NotInvokedAirobotMock airobot = new NotInvokedAirobotMock();
+        AvailabilityService availabilityService = new AvailabilityService(airobot);
         String departureAirport = "";
         AvailabilityRequest availabilityRequest = new AvailabilityRequest(departureAirport);
 
         AvailabilityResult availability = availabilityService.getAvailability(availabilityRequest);
 
         assertTrue(availability.isInvalidRequest());
+        assertFalse(airobot.isInvoked());
     }
 
     @Test(expectedExceptions = RuntimeException.class)
-    public void relaunchAnExceptionThrownByAirobot() {
+    public void relaunchAnExceptionThrownByAirobot() {;
         AirobotMockThrowsException airobot = new AirobotMockThrowsException();
         AvailabilityService availabilityService = new AvailabilityService(airobot);
         AvailabilityRequest availabilityRequest = new AvailabilityRequest("BCN");
