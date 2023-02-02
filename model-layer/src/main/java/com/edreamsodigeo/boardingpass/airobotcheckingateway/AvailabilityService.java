@@ -8,14 +8,12 @@ public class AvailabilityService {
     }
 
     public AvailabilityResult getAvailability(AvailabilityRequest availabilityRequest) {
-        if (isNotValid(availabilityRequest)) {
+        if (!availabilityRequest.isValid()) {
             return AvailabilityResult.ERROR_INVALID_REQUEST;
         }
+
         Availability availability = airobot.getAvailability(availabilityRequest);
         return new AvailabilityResult(availability);
     }
 
-    private boolean isNotValid(AvailabilityRequest availabilityRequest) {
-        return availabilityRequest.getDepartureAirport() == null || "".equalsIgnoreCase(availabilityRequest.getDepartureAirport());
-    }
 }

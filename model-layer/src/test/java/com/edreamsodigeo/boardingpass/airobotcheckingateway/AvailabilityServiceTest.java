@@ -34,6 +34,19 @@ public class AvailabilityServiceTest {
         assertFalse(airobot.isInvoked());
     }
 
+    @Test
+    public void returnInvalidAvailabilityRequestDueToMissingArrival() {
+        NotInvokedAirobotMock airobot = new NotInvokedAirobotMock();
+        AvailabilityService availabilityService = new AvailabilityService(airobot);
+        Section section = new Section("IB", "MXP", "");
+        AvailabilityRequest availabilityRequest = new AvailabilityRequest(section);
+
+        AvailabilityResult availability = availabilityService.getAvailability(availabilityRequest);
+
+        assertTrue(availability.isInvalidRequest());
+        assertFalse(airobot.isInvoked());
+    }
+
     @Test(expectedExceptions = RuntimeException.class)
     public void relaunchAnExceptionThrownByAirobot() {;
         AirobotMockThrowsException airobot = new AirobotMockThrowsException();

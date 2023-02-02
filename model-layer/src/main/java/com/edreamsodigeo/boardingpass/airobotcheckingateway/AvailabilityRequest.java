@@ -2,21 +2,24 @@ package com.edreamsodigeo.boardingpass.airobotcheckingateway;
 
 public class AvailabilityRequest {
 
-    private String departureAirport;
     private Section section;
-
-    public AvailabilityRequest(String departureAirport) {
-        this.departureAirport = departureAirport;
-        this.section = new Section(null, departureAirport, null);
-    }
 
     public AvailabilityRequest(Section section) {
         this.section = section;
-        this.departureAirport = section.departure();
     }
 
+    public boolean isValid() {
+        if (! isAirportPresent(section.arrival()))
+            return false;
 
-    public String getDepartureAirport() {
-        return departureAirport;
+        if (! isAirportPresent(section.departure()))
+            return false;
+
+        return true;
     }
+
+    private boolean isAirportPresent(String airport) {
+        return airport != null && ! airport.isEmpty();
+    }
+
 }

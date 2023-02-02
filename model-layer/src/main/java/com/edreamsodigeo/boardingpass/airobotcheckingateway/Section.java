@@ -19,7 +19,7 @@ public class Section {
         return departure;
     }
 
-    public String getArrival() {
+    public String arrival() {
         return arrival;
     }
 }
