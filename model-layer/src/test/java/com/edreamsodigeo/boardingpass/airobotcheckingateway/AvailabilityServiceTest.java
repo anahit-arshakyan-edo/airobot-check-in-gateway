@@ -28,6 +28,14 @@ public class AvailabilityServiceTest {
         AvailabilityResult availability = availabilityService.getAvailability(availabilityRequest);
 
         assertTrue(availability.isInvalidRequest());
+    }
 
+    @Test(expectedExceptions = RuntimeException.class)
+    public void relaunchAnExceptionThrownByAirobot() {
+        AirobotMockThrowsException airobot = new AirobotMockThrowsException();
+        AvailabilityService availabilityService = new AvailabilityService(airobot);
+        AvailabilityRequest availabilityRequest = new AvailabilityRequest("BCN");
+
+        availabilityService.getAvailability(availabilityRequest);
     }
 }
