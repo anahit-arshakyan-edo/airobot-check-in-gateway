@@ -14,7 +14,8 @@ public class AvailabilityServiceTest {
         AirobotMock airobot = new AirobotMock(returnedAvailability);
         AvailabilityService availabilityService = new AvailabilityService(airobot);
         Section section = new Section("IB", "BCN", "MXP");
-        AvailabilityRequest availabilityRequest = new AvailabilityRequest(section);
+        Passenger passenger = new Passenger();
+        AvailabilityRequest availabilityRequest = new AvailabilityRequest(section, passenger);
 
         AvailabilityResult availabilityResult = availabilityService.getAvailability(availabilityRequest);
 
