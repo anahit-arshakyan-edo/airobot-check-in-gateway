@@ -1,4 +1,4 @@
-package com.edreamsodigeo.boardingpass.airobotcheckingateway;
+package com.edreamsodigeo.boardingpass.airobotcheckingateway.availability;
 
 public class Passenger {
     private final String citizenships = "";

@@ -1,9 +1,8 @@
-package com.edreamsodigeo.boardingpass.airobotcheckingateway;
+package com.edreamsodigeo.boardingpass.airobotcheckingateway.availability;
 
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 

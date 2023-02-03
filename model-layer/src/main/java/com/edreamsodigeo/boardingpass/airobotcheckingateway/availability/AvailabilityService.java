@@ -1,4 +1,4 @@
-package com.edreamsodigeo.boardingpass.airobotcheckingateway;
+package com.edreamsodigeo.boardingpass.airobotcheckingateway.availability;
 
 public class AvailabilityService {
     private final Airobot airobot;
