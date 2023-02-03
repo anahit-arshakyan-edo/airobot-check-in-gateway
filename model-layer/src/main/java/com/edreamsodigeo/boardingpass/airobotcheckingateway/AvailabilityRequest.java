@@ -15,6 +15,6 @@ public class AvailabilityRequest {
     }
 
     public boolean isValid() {
-        return section.isValid();
+        return section != null && section.isValid();
     }
 }

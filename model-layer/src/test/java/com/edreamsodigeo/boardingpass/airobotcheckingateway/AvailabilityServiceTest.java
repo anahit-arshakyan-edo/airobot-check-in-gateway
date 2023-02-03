@@ -23,6 +23,19 @@ public class AvailabilityServiceTest {
     }
 
     @Test
+    public void returnInvalidAvailabilityRequestDueToNullSection() {
+        NotInvokedAirobotMock airobot = new NotInvokedAirobotMock();
+        AvailabilityService availabilityService = new AvailabilityService(airobot);
+        Section nullSection = null;
+        AvailabilityRequest availabilityRequest = new AvailabilityRequest(nullSection);
+
+        AvailabilityResult availability = availabilityService.getAvailability(availabilityRequest);
+
+        assertTrue(availability.isInvalidRequest());
+        assertFalse(airobot.isInvoked());
+    }
+
+    @Test
     public void returnInvalidAvailabilityRequestDueToMissingAirline() {
         NotInvokedAirobotMock airobot = new NotInvokedAirobotMock();
         AvailabilityService availabilityService = new AvailabilityService(airobot);
