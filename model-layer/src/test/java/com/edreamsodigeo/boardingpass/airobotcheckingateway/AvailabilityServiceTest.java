@@ -3,6 +3,7 @@ package com.edreamsodigeo.boardingpass.airobotcheckingateway;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
@@ -15,6 +16,20 @@ public class AvailabilityServiceTest {
         AvailabilityService availabilityService = new AvailabilityService(airobot);
         Section section = new Section("IB", "BCN", "MXP");
         Passenger passenger = new Passenger();
+        AvailabilityRequest availabilityRequest = new AvailabilityRequest(section, passenger);
+
+        AvailabilityResult availabilityResult = availabilityService.getAvailability(availabilityRequest);
+
+        assertSame(availabilityResult.getAvailability(), returnedAvailability);
+    }
+
+    @Test
+    public void returnResultForAvailabilityRequestWithNullPassenger() {
+        Availability returnedAvailability = new Availability();
+        AirobotMock airobot = new AirobotMock(returnedAvailability);
+        AvailabilityService availabilityService = new AvailabilityService(airobot);
+        Section section = new Section("IB", "BCN", "MXP");
+        Passenger passenger = null;
         AvailabilityRequest availabilityRequest = new AvailabilityRequest(section, passenger);
 
         AvailabilityResult availabilityResult = availabilityService.getAvailability(availabilityRequest);
