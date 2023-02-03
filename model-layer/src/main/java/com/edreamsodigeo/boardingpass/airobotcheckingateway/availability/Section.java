@@ -1,33 +1,19 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.availability;
 
 public class Section {
-    private String airline;
+    private final Airline airline;
     private final Airport departure;
-    private Airport arrival;
+    private final Airport arrival;
 
-    public Section(String airline, String departure, String arrival) {
+    public Section(Airline airline, Airport departure, Airport arrival) {
         this.airline = airline;
-        this.departure = new Airport(departure);
-        this.arrival = new Airport(arrival);
+        this.departure = departure;
+        this.arrival = arrival;
     }
 
     public boolean isValid() {
-        if (! isPresent(airline)) {
-            return false;
-        }
-
-        if (! arrival.isPresent()) {
-            return false;
-        }
-
-        if (! departure.isPresent()) {
-            return false;
-        }
-
-        return true;
-    }
-
-    private boolean isPresent(String value) {
-        return value != null && ! value.isEmpty();
+        return airline.isPresent() &&
+                departure.isPresent() &&
+                arrival.isPresent();
     }
 }
