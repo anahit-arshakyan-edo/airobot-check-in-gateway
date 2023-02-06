@@ -102,6 +102,22 @@ public class AvailabilityServiceTest {
         availabilityService.getAvailability(availabilityRequest);
     }
 
+    @Test
+    public void returnAvailabilityResultForValidRequestWithTwoSections() {
+        Availability returnedAvailability = new Availability();
+        AirobotMock airobot = new AirobotMock(returnedAvailability);
+        AvailabilityService availabilityService = new AvailabilityService(airobot);
+        Section firstSection = sectionOf("IB", "BCN", "MXP");
+        Section secondSection = sectionOf("FR", "MXP", "BCN");
+        Passenger passenger = new Passenger();
+        AvailabilityRequest availabilityRequest = requestOf(List.of(firstSection, secondSection), passenger);
+
+        AvailabilityResult availabilityResult = availabilityService.getAvailability(availabilityRequest);
+
+        assertTrue(availabilityResult.isValidRequest());
+        assertSame(availabilityResult.getAvailability(), returnedAvailability);
+    }
+
 
     private Section sectionOf(String airline, String departure, String arrival) {
         return new Section(new Airline(airline), new Airport(departure), new Airport(arrival));
@@ -113,6 +129,10 @@ public class AvailabilityServiceTest {
 
     private AvailabilityRequest requestOf(Section section, Passenger passenger) {
         return new AvailabilityRequest(List.of(section), passenger);
+    }
+
+    private AvailabilityRequest requestOf(List<Section> sections, Passenger passenger) {
+        return new AvailabilityRequest(sections, passenger);
     }
 
 }
