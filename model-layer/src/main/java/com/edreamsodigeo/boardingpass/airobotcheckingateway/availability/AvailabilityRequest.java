@@ -17,6 +17,6 @@ public class AvailabilityRequest {
     }
 
     public boolean isValid() {
-        return section != null && section.get(0).isValid();
+        return section != null && !section.isEmpty() && section.get(0).isValid();
     }
 }

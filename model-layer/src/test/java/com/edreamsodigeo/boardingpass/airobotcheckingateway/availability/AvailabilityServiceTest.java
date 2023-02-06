@@ -2,6 +2,7 @@ package com.edreamsodigeo.boardingpass.airobotcheckingateway.availability;
 
 import org.testng.annotations.Test;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.testng.Assert.assertFalse;
@@ -116,6 +117,19 @@ public class AvailabilityServiceTest {
 
         assertTrue(availabilityResult.isValidRequest());
         assertSame(availabilityResult.getAvailability(), returnedAvailability);
+    }
+
+    @Test
+    public void returnInvalidAvailabilityRequestDueToEmptySectionList() {
+        NotInvokedAirobotMock airobot = new NotInvokedAirobotMock();
+        AvailabilityService availabilityService = new AvailabilityService(airobot);
+        Passenger passenger = new Passenger();
+        AvailabilityRequest availabilityRequest = requestOf(Collections.emptyList(), passenger);
+
+        AvailabilityResult availabilityResult = availabilityService.getAvailability(availabilityRequest);
+
+        assertFalse(availabilityResult.isValidRequest());
+        assertFalse(airobot.isInvoked());
     }
 
 
