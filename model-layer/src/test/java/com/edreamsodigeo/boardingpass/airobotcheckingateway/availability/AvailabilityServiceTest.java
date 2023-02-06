@@ -19,6 +19,7 @@ public class AvailabilityServiceTest {
 
         AvailabilityResult availabilityResult = availabilityService.getAvailability(availabilityRequest);
 
+        assertTrue(availabilityResult.isValidRequest());
         assertSame(availabilityResult.getAvailability(), returnedAvailability);
     }
 
@@ -33,6 +34,7 @@ public class AvailabilityServiceTest {
 
         AvailabilityResult availabilityResult = availabilityService.getAvailability(availabilityRequest);
 
+        assertTrue(availabilityResult.isValidRequest());
         assertSame(availabilityResult.getAvailability(), returnedAvailability);
     }
 
@@ -45,7 +47,7 @@ public class AvailabilityServiceTest {
 
         AvailabilityResult availability = availabilityService.getAvailability(availabilityRequest);
 
-        assertTrue(availability.isInvalidRequest());
+        assertFalse(availability.isValidRequest());
         assertFalse(airobot.isInvoked());
     }
 
@@ -58,7 +60,7 @@ public class AvailabilityServiceTest {
 
         AvailabilityResult availability = availabilityService.getAvailability(availabilityRequest);
 
-        assertTrue(availability.isInvalidRequest());
+        assertFalse(availability.isValidRequest());
         assertFalse(airobot.isInvoked());
     }
 
@@ -71,7 +73,7 @@ public class AvailabilityServiceTest {
 
         AvailabilityResult availability = availabilityService.getAvailability(availabilityRequest);
 
-        assertTrue(availability.isInvalidRequest());
+        assertFalse(availability.isValidRequest());
         assertFalse(airobot.isInvoked());
     }
 
@@ -84,7 +86,7 @@ public class AvailabilityServiceTest {
 
         AvailabilityResult availability = availabilityService.getAvailability(availabilityRequest);
 
-        assertTrue(availability.isInvalidRequest());
+        assertFalse(availability.isValidRequest());
         assertFalse(airobot.isInvoked());
     }
 
