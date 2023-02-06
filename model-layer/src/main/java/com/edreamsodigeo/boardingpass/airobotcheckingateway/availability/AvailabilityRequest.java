@@ -1,20 +1,22 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.availability;
 
+import java.util.List;
+
 public class AvailabilityRequest {
 
-    private final Section section;
+    private final List<Section> section;
     private final Passenger passenger;
 
-    public AvailabilityRequest(Section section) {
-        this(section, new Passenger());
+    public AvailabilityRequest(List<Section> sections) {
+        this(sections, new Passenger());
     }
 
-    public AvailabilityRequest(Section section, Passenger passenger) {
-        this.section = section;
+    public AvailabilityRequest(List<Section> sections, Passenger passenger) {
+        this.section = sections;
         this.passenger = passenger != null ? passenger : new Passenger();
     }
 
     public boolean isValid() {
-        return section != null && section.isValid();
+        return section != null && section.get(0).isValid();
     }
 }
