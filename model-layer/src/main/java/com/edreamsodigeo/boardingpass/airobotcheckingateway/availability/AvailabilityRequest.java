@@ -4,27 +4,23 @@ import java.util.List;
 
 public class AvailabilityRequest {
 
-    private final List<Section> section;
+    private final List<Section> sections;
     private final Passenger passenger;
 
-    public AvailabilityRequest(List<Section> sections) {
-        this(sections, new Passenger());
-    }
-
     public AvailabilityRequest(List<Section> sections, Passenger passenger) {
-        this.section = sections;
+        this.sections = sections;
         this.passenger = passenger != null ? passenger : new Passenger();
     }
 
     public boolean isValid() {
-        return section != null
-                && !section.isEmpty()
-                && section.get(0).isValid()
-                && !containsNull();
+        return sections != null
+                && !sections.isEmpty()
+                && sections.get(0).isValid()
+                && !containsNull(sections);
     }
 
-    private boolean containsNull() {
-        return section.stream().anyMatch(item -> item == null);
+    private static boolean containsNull(List<Section> sections) {
+        return sections.stream().anyMatch(item -> item == null);
     }
 
 }

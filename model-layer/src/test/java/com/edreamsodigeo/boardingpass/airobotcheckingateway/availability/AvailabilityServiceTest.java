@@ -151,15 +151,15 @@ public class AvailabilityServiceTest {
     }
 
     private AvailabilityRequest requestOf(Section section) {
-        return new AvailabilityRequest(section != null ? List.of(section) : null);
+        return requestOf(section != null ? List.of(section) : null, new Passenger());
     }
 
     private AvailabilityRequest requestOf(List<Section> sections) {
-        return new AvailabilityRequest(sections);
+        return requestOf(sections, new Passenger());
     }
 
     private AvailabilityRequest requestOf(Section section, Passenger passenger) {
-        return new AvailabilityRequest(List.of(section), passenger);
+        return requestOf(List.of(section), passenger);
     }
 
     private AvailabilityRequest requestOf(List<Section> sections, Passenger passenger) {
