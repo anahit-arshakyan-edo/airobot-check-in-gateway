@@ -5,11 +5,11 @@ import java.util.List;
 public class AvailabilityRequest {
 
     private final List<Section> sections;
-    private final Passenger passenger;
+    private final Passengers passengers;
 
-    public AvailabilityRequest(List<Section> sections, Passenger passenger) {
+    public AvailabilityRequest(List<Section> sections, Passengers passengers) {
         this.sections = sections;
-        this.passenger = passenger != null ? passenger : new Passenger();
+        this.passengers = passengers != null ? passengers : new Passengers();
     }
 
     public boolean isValid() {
