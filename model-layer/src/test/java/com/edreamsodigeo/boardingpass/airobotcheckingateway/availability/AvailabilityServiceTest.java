@@ -138,5 +138,18 @@ public class AvailabilityServiceTest {
         assertRequestIsInvalidAndAirobotIsNotInvoked(availabilityResult, airobot);
     }
 
+    @Test
+    public void returnInvalidAvailabilityRequestDueToOneInvalidSectionInTheList() {
+        NotInvokedAirobotMock airobot = new NotInvokedAirobotMock();
+        AvailabilityService availabilityService = new AvailabilityService(airobot);
+        Section validSection = sectionOf("IB", "BCN", "MXP");
+        Section invalidSection = sectionOf("", "BCN", "MXP");
+        AvailabilityRequest availabilityRequest = requestOf(asList(validSection, invalidSection));
+
+        AvailabilityResult availabilityResult = availabilityService.getAvailability(availabilityRequest);
+
+        assertRequestIsInvalidAndAirobotIsNotInvoked(availabilityResult, airobot);
+    }
+
 
 }

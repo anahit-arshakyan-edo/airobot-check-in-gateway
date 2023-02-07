@@ -15,12 +15,11 @@ public class AvailabilityRequest {
     public boolean isValid() {
         return sections != null
                 && !sections.isEmpty()
-                && sections.get(0).isValid()
-                && !containsNull(sections);
+                && allValid(sections);
     }
 
-    private static boolean containsNull(List<Section> sections) {
-        return sections.stream().anyMatch(item -> item == null);
+    private static boolean allValid(List<Section> sections) {
+        return sections.stream().allMatch(section -> section != null && section.isValid());
     }
 
 }
