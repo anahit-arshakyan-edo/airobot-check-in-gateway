@@ -1,8 +1,8 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.availability;
 
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.availability.helpers.AirobotMock;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.availability.helpers.AirobotMockThrowsException;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.availability.helpers.NotInvokedAirobotMock;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.Collections;
@@ -13,13 +13,23 @@ import static com.edreamsodigeo.boardingpass.airobotcheckingateway.availability.
 import static com.edreamsodigeo.boardingpass.airobotcheckingateway.availability.helpers.AvailabilityRequestHelper.requestOf;
 import static com.edreamsodigeo.boardingpass.airobotcheckingateway.availability.helpers.AvailabilityRequestHelper.sectionOf;
 import static java.util.Arrays.asList;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 public class AvailabilityServiceTest {
+    @Mock
+    Airobot airobot;
+
+    @BeforeMethod
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
 
     @Test
     public void availabilityResultForRequestWithTwoSections() {
         Availability returnedAvailability = new Availability();
-        AirobotMock airobot = new AirobotMock(returnedAvailability);
+        when(airobot.getAvailability(any())).thenReturn(returnedAvailability);
+
         AvailabilityService availabilityService = new AvailabilityService(airobot);
         Section section1 = sectionOf("IB", "BCN", "MXP");
         Section section2 = sectionOf("FR", "MXP", "BCN");
@@ -34,7 +44,7 @@ public class AvailabilityServiceTest {
     @Test
     public void availabilityResultForRequestWithNullPassenger() {
         Availability returnedAvailability = new Availability();
-        AirobotMock airobot = new AirobotMock(returnedAvailability);
+        when(airobot.getAvailability(any())).thenReturn(returnedAvailability);
         AvailabilityService availabilityService = new AvailabilityService(airobot);
         Section section = sectionOf("IB", "BCN", "MXP");
         Passengers passengers = null;
@@ -47,7 +57,6 @@ public class AvailabilityServiceTest {
 
     @Test
     public void invalidAvailabilityRequestDueToNullSectionList() {
-        NotInvokedAirobotMock airobot = new NotInvokedAirobotMock();
         AvailabilityService availabilityService = new AvailabilityService(airobot);
         List<Section> nullSectionList = null;
         AvailabilityRequest availabilityRequest = requestOf(nullSectionList);
@@ -59,7 +68,6 @@ public class AvailabilityServiceTest {
 
     @Test
     public void invalidAvailabilityRequestDueToEmptySectionList() {
-        NotInvokedAirobotMock airobot = new NotInvokedAirobotMock();
         AvailabilityService availabilityService = new AvailabilityService(airobot);
         AvailabilityRequest availabilityRequest = requestOf(Collections.emptyList());
 
@@ -70,7 +78,6 @@ public class AvailabilityServiceTest {
 
     @Test
     public void invalidAvailabilityRequestDueToOneNullSectionInTheList() {
-        NotInvokedAirobotMock airobot = new NotInvokedAirobotMock();
         AvailabilityService availabilityService = new AvailabilityService(airobot);
         AvailabilityRequest availabilityRequest = requestOf(asList(
                 sectionOf("IB", "BCN", "MXP"), null));
@@ -80,10 +87,8 @@ public class AvailabilityServiceTest {
         assertRequestIsInvalidAndAirobotIsNotInvoked(availabilityResult, airobot);
     }
 
-
     @Test
     public void invalidAvailabilityRequestDueToMissingAirline() {
-        NotInvokedAirobotMock airobot = new NotInvokedAirobotMock();
         AvailabilityService availabilityService = new AvailabilityService(airobot);
         Section section = sectionOf("", "LSB", "MXP");
         AvailabilityRequest availabilityRequest = requestOf(section);
@@ -95,7 +100,6 @@ public class AvailabilityServiceTest {
 
     @Test
     public void invalidAvailabilityRequestDueToMissingDeparture() {
-        NotInvokedAirobotMock airobot = new NotInvokedAirobotMock();
         AvailabilityService availabilityService = new AvailabilityService(airobot);
         Section section = sectionOf("IB", "", "MXP");
         AvailabilityRequest availabilityRequest = requestOf(section);
@@ -107,7 +111,6 @@ public class AvailabilityServiceTest {
 
     @Test
     public void invalidAvailabilityRequestDueToMissingArrival() {
-        NotInvokedAirobotMock airobot = new NotInvokedAirobotMock();
         AvailabilityService availabilityService = new AvailabilityService(airobot);
         Section section = sectionOf("IB", "MXP", "");
         AvailabilityRequest availabilityRequest = requestOf(section);
@@ -119,7 +122,6 @@ public class AvailabilityServiceTest {
 
     @Test
     public void invalidAvailabilityRequestDueToOneInvalidSectionInTheList() {
-        NotInvokedAirobotMock airobot = new NotInvokedAirobotMock();
         AvailabilityService availabilityService = new AvailabilityService(airobot);
         Section validSection = sectionOf("IB", "BCN", "MXP");
         Section invalidSection = sectionOf("", "BCN", "MXP");
@@ -132,7 +134,7 @@ public class AvailabilityServiceTest {
 
     @Test(expectedExceptions = RuntimeException.class)
     public void relaunchAnExceptionThrownByAirobot() {;
-        AirobotMockThrowsException airobot = new AirobotMockThrowsException();
+        when(airobot.getAvailability(any())).thenThrow(new RuntimeException(    ));
         AvailabilityService availabilityService = new AvailabilityService(airobot);
         Section section = sectionOf("IB", "BCN", "MXP");
         AvailabilityRequest availabilityRequest = requestOf(section);
