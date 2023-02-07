@@ -17,6 +17,14 @@ public class AvailabilityRequest {
     }
 
     public boolean isValid() {
-        return section != null && !section.isEmpty() && section.get(0).isValid();
+        return section != null
+                && !section.isEmpty()
+                && section.get(0).isValid()
+                && !containsNull();
     }
+
+    private boolean containsNull() {
+        return section.stream().anyMatch(item -> item == null);
+    }
+
 }

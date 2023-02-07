@@ -5,6 +5,7 @@ import org.testng.annotations.Test;
 import java.util.Collections;
 import java.util.List;
 
+import static java.util.Arrays.asList;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
@@ -132,6 +133,18 @@ public class AvailabilityServiceTest {
         assertFalse(airobot.isInvoked());
     }
 
+    @Test
+    public void returnInvalidAvailabilityRequestDueToOneNullSectionInTheList() {
+        NotInvokedAirobotMock airobot = new NotInvokedAirobotMock();
+        AvailabilityService availabilityService = new AvailabilityService(airobot);
+        AvailabilityRequest availabilityRequest = requestOf(asList(sectionOf("IB", "BCN", "MXP"), null));
+
+        AvailabilityResult availabilityResult = availabilityService.getAvailability(availabilityRequest);
+
+        assertFalse(availabilityResult.isValidRequest());
+        assertFalse(airobot.isInvoked());
+    }
+
 
     private Section sectionOf(String airline, String departure, String arrival) {
         return new Section(new Airline(airline), new Airport(departure), new Airport(arrival));
@@ -139,6 +152,10 @@ public class AvailabilityServiceTest {
 
     private AvailabilityRequest requestOf(Section section) {
         return new AvailabilityRequest(section != null ? List.of(section) : null);
+    }
+
+    private AvailabilityRequest requestOf(List<Section> sections) {
+        return new AvailabilityRequest(sections);
     }
 
     private AvailabilityRequest requestOf(Section section, Passenger passenger) {
