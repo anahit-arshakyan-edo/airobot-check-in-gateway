@@ -38,7 +38,7 @@ public class AvailabilityServiceTest {
         AvailabilityService availabilityService = new AvailabilityService(airobot);
         Section section = sectionOf("IB", "BCN", "MXP");
         Passengers passengers = null;
-        AvailabilityRequest availabilityRequest = requestOf(section, passengers);
+        AvailabilityRequest availabilityRequest = requestOf(Collections.singletonList(section), passengers);
 
         AvailabilityResult availabilityResult = availabilityService.getAvailability(availabilityRequest);
 

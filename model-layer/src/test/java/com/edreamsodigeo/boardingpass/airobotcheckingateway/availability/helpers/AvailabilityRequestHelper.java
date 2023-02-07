@@ -21,10 +21,6 @@ public class AvailabilityRequestHelper {
         return requestOf(sections, new Passengers());
     }
 
-    public static  AvailabilityRequest requestOf(Section section, Passengers passengers) {
-        return requestOf(List.of(section), passengers);
-    }
-
     public static  AvailabilityRequest requestOf(List<Section> sections, Passengers passengers) {
         return new AvailabilityRequest(sections, passengers);
     }
