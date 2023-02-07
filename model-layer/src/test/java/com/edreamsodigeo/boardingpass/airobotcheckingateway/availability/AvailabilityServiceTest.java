@@ -111,8 +111,7 @@ public class AvailabilityServiceTest {
         AvailabilityService availabilityService = new AvailabilityService(airobot);
         Section firstSection = sectionOf("IB", "BCN", "MXP");
         Section secondSection = sectionOf("FR", "MXP", "BCN");
-        Passengers passengers = new Passengers();
-        AvailabilityRequest availabilityRequest = requestOf(List.of(firstSection, secondSection), passengers);
+        AvailabilityRequest availabilityRequest = requestOf(List.of(firstSection, secondSection));
 
         AvailabilityResult availabilityResult = availabilityService.getAvailability(availabilityRequest);
 
@@ -124,8 +123,7 @@ public class AvailabilityServiceTest {
     public void returnInvalidAvailabilityRequestDueToEmptySectionList() {
         NotInvokedAirobotMock airobot = new NotInvokedAirobotMock();
         AvailabilityService availabilityService = new AvailabilityService(airobot);
-        Passengers passengers = new Passengers();
-        AvailabilityRequest availabilityRequest = requestOf(Collections.emptyList(), passengers);
+        AvailabilityRequest availabilityRequest = requestOf(Collections.emptyList());
 
         AvailabilityResult availabilityResult = availabilityService.getAvailability(availabilityRequest);
 
