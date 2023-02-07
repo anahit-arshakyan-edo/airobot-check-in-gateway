@@ -5,7 +5,6 @@ import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.util.Collections;
 import java.util.List;
 
 import static com.edreamsodigeo.boardingpass.airobotcheckingateway.availability.helpers.AvailabilityAsserts.assertExpectedAvailabilityIsReturned;
@@ -13,6 +12,7 @@ import static com.edreamsodigeo.boardingpass.airobotcheckingateway.availability.
 import static com.edreamsodigeo.boardingpass.airobotcheckingateway.availability.helpers.AvailabilityRequestHelper.requestOf;
 import static com.edreamsodigeo.boardingpass.airobotcheckingateway.availability.helpers.AvailabilityRequestHelper.sectionOf;
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -31,9 +31,9 @@ public class AvailabilityServiceTest {
         when(airobot.getAvailability(any())).thenReturn(returnedAvailability);
 
         AvailabilityService availabilityService = new AvailabilityService(airobot);
-        Section section1 = sectionOf("IB", "BCN", "MXP");
-        Section section2 = sectionOf("FR", "MXP", "BCN");
-        AvailabilityRequest availabilityRequest = requestOf(List.of(section1, section2));
+        AvailabilityRequest availabilityRequest = requestOf(List.of(
+                sectionOf("IB", "BCN", "MXP"),
+                sectionOf("FR", "MXP", "BCN")));
 
         AvailabilityResult availabilityResult = availabilityService.getAvailability(availabilityRequest);
 
@@ -45,9 +45,9 @@ public class AvailabilityServiceTest {
         Availability returnedAvailability = new Availability();
         when(airobot.getAvailability(any())).thenReturn(returnedAvailability);
         AvailabilityService availabilityService = new AvailabilityService(airobot);
-        Section section = sectionOf("IB", "BCN", "MXP");
         Passengers passengers = null;
-        AvailabilityRequest availabilityRequest = requestOf(Collections.singletonList(section), passengers);
+        AvailabilityRequest availabilityRequest = requestOf(
+                List.of(sectionOf("IB", "BCN", "MXP")), passengers);
 
         AvailabilityResult availabilityResult = availabilityService.getAvailability(availabilityRequest);
 
@@ -68,7 +68,7 @@ public class AvailabilityServiceTest {
     @Test
     public void invalidAvailabilityRequestDueToEmptySectionList() {
         AvailabilityService availabilityService = new AvailabilityService(airobot);
-        AvailabilityRequest availabilityRequest = requestOf(Collections.emptyList());
+        AvailabilityRequest availabilityRequest = requestOf(emptyList());
 
         AvailabilityResult availabilityResult = availabilityService.getAvailability(availabilityRequest);
 
@@ -89,8 +89,7 @@ public class AvailabilityServiceTest {
     @Test
     public void invalidAvailabilityRequestDueToMissingAirline() {
         AvailabilityService availabilityService = new AvailabilityService(airobot);
-        Section section = sectionOf("", "LSB", "MXP");
-        AvailabilityRequest availabilityRequest = requestOf(section);
+        AvailabilityRequest availabilityRequest = requestOf(sectionOf("", "LSB", "MXP"));
 
         AvailabilityResult availability = availabilityService.getAvailability(availabilityRequest);
 
@@ -100,8 +99,7 @@ public class AvailabilityServiceTest {
     @Test
     public void invalidAvailabilityRequestDueToMissingDeparture() {
         AvailabilityService availabilityService = new AvailabilityService(airobot);
-        Section section = sectionOf("IB", "", "MXP");
-        AvailabilityRequest availabilityRequest = requestOf(section);
+        AvailabilityRequest availabilityRequest = requestOf(sectionOf("IB", "", "MXP"));
 
         AvailabilityResult availability = availabilityService.getAvailability(availabilityRequest);
 
@@ -111,8 +109,7 @@ public class AvailabilityServiceTest {
     @Test
     public void invalidAvailabilityRequestDueToMissingArrival() {
         AvailabilityService availabilityService = new AvailabilityService(airobot);
-        Section section = sectionOf("IB", "MXP", "");
-        AvailabilityRequest availabilityRequest = requestOf(section);
+        AvailabilityRequest availabilityRequest = requestOf(sectionOf("IB", "MXP", ""));
 
         AvailabilityResult availability = availabilityService.getAvailability(availabilityRequest);
 
@@ -132,11 +129,10 @@ public class AvailabilityServiceTest {
     }
 
     @Test(expectedExceptions = RuntimeException.class)
-    public void relaunchAnExceptionThrownByAirobot() {;
-        when(airobot.getAvailability(any())).thenThrow(new RuntimeException(    ));
+    public void relaunchAnExceptionThrownByAirobot() {
+        when(airobot.getAvailability(any())).thenThrow(new RuntimeException());
         AvailabilityService availabilityService = new AvailabilityService(airobot);
-        Section section = sectionOf("IB", "BCN", "MXP");
-        AvailabilityRequest availabilityRequest = requestOf(section);
+        AvailabilityRequest availabilityRequest = requestOf(sectionOf("IB", "BCN", "MXP"));
 
         availabilityService.getAvailability(availabilityRequest);
     }

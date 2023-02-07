@@ -1,7 +1,7 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.availability;
 
-public class AvailabilityResult {
-    private boolean validRequest = false;
+public final class AvailabilityResult {
+    private final boolean validRequest;
 
     public static final AvailabilityResult INVALID_REQUEST_ERROR = new AvailabilityResult(null, false);
 

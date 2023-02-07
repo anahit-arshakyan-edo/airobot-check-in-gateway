@@ -12,9 +12,9 @@ public class Section {
     }
 
     public boolean isValid() {
-        return airline.isPresent() &&
-                departure.isPresent() &&
-                arrival.isPresent();
+        return airline.isPresent()
+                && departure.isPresent()
+                && arrival.isPresent();
     }
 }
 

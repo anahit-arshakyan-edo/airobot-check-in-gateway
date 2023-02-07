@@ -13,7 +13,8 @@ public class AvailabilityRequest {
     }
 
     public boolean isValid() {
-        return sections != null
+        return passengers != null
+                && sections != null
                 && !sections.isEmpty()
                 && allValid(sections);
     }

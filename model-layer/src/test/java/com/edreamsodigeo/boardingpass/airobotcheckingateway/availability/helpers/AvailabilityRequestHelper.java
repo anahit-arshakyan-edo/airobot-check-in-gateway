@@ -25,4 +25,3 @@ public class AvailabilityRequestHelper {
         return new AvailabilityRequest(sections, passengers);
     }
 }
-
