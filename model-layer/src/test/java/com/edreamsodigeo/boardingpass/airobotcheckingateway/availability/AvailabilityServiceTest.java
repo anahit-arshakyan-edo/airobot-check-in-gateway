@@ -17,18 +17,19 @@ import static java.util.Arrays.asList;
 public class AvailabilityServiceTest {
 
     @Test
-    public void availabilityResultForValidRequest() {
+    public void availabilityResultForRequestWithTwoSections() {
         Availability returnedAvailability = new Availability();
         AirobotMock airobot = new AirobotMock(returnedAvailability);
         AvailabilityService availabilityService = new AvailabilityService(airobot);
-        Section section = sectionOf("IB", "BCN", "MXP");
-        Passengers passengers = new Passengers();
-        AvailabilityRequest availabilityRequest = requestOf(section, passengers);
+        Section section1 = sectionOf("IB", "BCN", "MXP");
+        Section section2 = sectionOf("FR", "MXP", "BCN");
+        AvailabilityRequest availabilityRequest = requestOf(List.of(section1, section2));
 
         AvailabilityResult availabilityResult = availabilityService.getAvailability(availabilityRequest);
 
         assertExpectedAvailabilityIsReturned(availabilityResult, returnedAvailability);
     }
+
 
     @Test
     public void availabilityResultForRequestWithNullPassenger() {
@@ -45,16 +46,40 @@ public class AvailabilityServiceTest {
     }
 
     @Test
-    public void invalidAvailabilityRequestDueToNullSection() {
+    public void invalidAvailabilityRequestDueToNullSectionList() {
         NotInvokedAirobotMock airobot = new NotInvokedAirobotMock();
         AvailabilityService availabilityService = new AvailabilityService(airobot);
-        Section nullSection = null;
-        AvailabilityRequest availabilityRequest = requestOf(nullSection);
+        List<Section> nullSectionList = null;
+        AvailabilityRequest availabilityRequest = requestOf(nullSectionList);
 
         AvailabilityResult availability = availabilityService.getAvailability(availabilityRequest);
 
         assertRequestIsInvalidAndAirobotIsNotInvoked(availability, airobot);
     }
+
+    @Test
+    public void invalidAvailabilityRequestDueToEmptySectionList() {
+        NotInvokedAirobotMock airobot = new NotInvokedAirobotMock();
+        AvailabilityService availabilityService = new AvailabilityService(airobot);
+        AvailabilityRequest availabilityRequest = requestOf(Collections.emptyList());
+
+        AvailabilityResult availabilityResult = availabilityService.getAvailability(availabilityRequest);
+
+        assertRequestIsInvalidAndAirobotIsNotInvoked(availabilityResult, airobot);
+    }
+
+    @Test
+    public void invalidAvailabilityRequestDueToOneNullSectionInTheList() {
+        NotInvokedAirobotMock airobot = new NotInvokedAirobotMock();
+        AvailabilityService availabilityService = new AvailabilityService(airobot);
+        AvailabilityRequest availabilityRequest = requestOf(asList(
+                sectionOf("IB", "BCN", "MXP"), null));
+
+        AvailabilityResult availabilityResult = availabilityService.getAvailability(availabilityRequest);
+
+        assertRequestIsInvalidAndAirobotIsNotInvoked(availabilityResult, airobot);
+    }
+
 
     @Test
     public void invalidAvailabilityRequestDueToMissingAirline() {
@@ -92,52 +117,6 @@ public class AvailabilityServiceTest {
         assertRequestIsInvalidAndAirobotIsNotInvoked(availability, airobot);
     }
 
-    @Test(expectedExceptions = RuntimeException.class)
-    public void relaunchAnExceptionThrownByAirobot() {;
-        AirobotMockThrowsException airobot = new AirobotMockThrowsException();
-        AvailabilityService availabilityService = new AvailabilityService(airobot);
-        Section section = sectionOf("IB", "BCN", "MXP");
-        AvailabilityRequest availabilityRequest = requestOf(section);
-
-        availabilityService.getAvailability(availabilityRequest);
-    }
-
-    @Test
-    public void availabilityResultForValidRequestWithTwoSections() {
-        Availability returnedAvailability = new Availability();
-        AirobotMock airobot = new AirobotMock(returnedAvailability);
-        AvailabilityService availabilityService = new AvailabilityService(airobot);
-        Section firstSection = sectionOf("IB", "BCN", "MXP");
-        Section secondSection = sectionOf("FR", "MXP", "BCN");
-        AvailabilityRequest availabilityRequest = requestOf(List.of(firstSection, secondSection));
-
-        AvailabilityResult availabilityResult = availabilityService.getAvailability(availabilityRequest);
-
-        assertExpectedAvailabilityIsReturned(availabilityResult, returnedAvailability);
-    }
-
-    @Test
-    public void invalidAvailabilityRequestDueToEmptySectionList() {
-        NotInvokedAirobotMock airobot = new NotInvokedAirobotMock();
-        AvailabilityService availabilityService = new AvailabilityService(airobot);
-        AvailabilityRequest availabilityRequest = requestOf(Collections.emptyList());
-
-        AvailabilityResult availabilityResult = availabilityService.getAvailability(availabilityRequest);
-
-        assertRequestIsInvalidAndAirobotIsNotInvoked(availabilityResult, airobot);
-    }
-
-    @Test
-    public void invalidAvailabilityRequestDueToOneNullSectionInTheList() {
-        NotInvokedAirobotMock airobot = new NotInvokedAirobotMock();
-        AvailabilityService availabilityService = new AvailabilityService(airobot);
-        AvailabilityRequest availabilityRequest = requestOf(asList(sectionOf("IB", "BCN", "MXP"), null));
-
-        AvailabilityResult availabilityResult = availabilityService.getAvailability(availabilityRequest);
-
-        assertRequestIsInvalidAndAirobotIsNotInvoked(availabilityResult, airobot);
-    }
-
     @Test
     public void invalidAvailabilityRequestDueToOneInvalidSectionInTheList() {
         NotInvokedAirobotMock airobot = new NotInvokedAirobotMock();
@@ -149,6 +128,16 @@ public class AvailabilityServiceTest {
         AvailabilityResult availabilityResult = availabilityService.getAvailability(availabilityRequest);
 
         assertRequestIsInvalidAndAirobotIsNotInvoked(availabilityResult, airobot);
+    }
+
+    @Test(expectedExceptions = RuntimeException.class)
+    public void relaunchAnExceptionThrownByAirobot() {;
+        AirobotMockThrowsException airobot = new AirobotMockThrowsException();
+        AvailabilityService availabilityService = new AvailabilityService(airobot);
+        Section section = sectionOf("IB", "BCN", "MXP");
+        AvailabilityRequest availabilityRequest = requestOf(section);
+
+        availabilityService.getAvailability(availabilityRequest);
     }
 
 
