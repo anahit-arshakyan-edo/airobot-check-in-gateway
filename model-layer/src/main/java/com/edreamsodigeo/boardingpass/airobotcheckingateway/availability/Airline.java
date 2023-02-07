@@ -11,3 +11,4 @@ public class Airline {
         return iataCode != null && ! iataCode.isEmpty();
     }
 }
+

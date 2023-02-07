@@ -11,3 +11,4 @@ public class Airport {
         return iataCode != null && ! iataCode.isEmpty();
     }
 }
+

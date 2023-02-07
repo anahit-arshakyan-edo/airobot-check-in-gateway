@@ -24,3 +24,4 @@ public class AvailabilityResult {
         return availability;
     }
 }
+

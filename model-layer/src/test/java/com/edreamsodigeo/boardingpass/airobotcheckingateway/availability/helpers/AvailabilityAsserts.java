@@ -22,3 +22,4 @@ public class AvailabilityAsserts {
         verify(airobot, never()).getAvailability(any());
     }
 }
+

@@ -40,7 +40,6 @@ public class AvailabilityServiceTest {
         assertExpectedAvailabilityIsReturned(availabilityResult, returnedAvailability);
     }
 
-
     @Test
     public void availabilityResultForRequestWithNullPassenger() {
         Availability returnedAvailability = new Availability();
@@ -141,6 +140,4 @@ public class AvailabilityServiceTest {
 
         availabilityService.getAvailability(availabilityRequest);
     }
-
-
 }
