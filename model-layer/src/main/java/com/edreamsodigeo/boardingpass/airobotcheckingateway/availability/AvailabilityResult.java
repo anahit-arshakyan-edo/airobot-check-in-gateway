@@ -3,16 +3,15 @@ package com.edreamsodigeo.boardingpass.airobotcheckingateway.availability;
 public class AvailabilityResult {
     private boolean validRequest = false;
 
-    public static final AvailabilityResult ERROR_INVALID_REQUEST = new AvailabilityResult(null, false);
+    public static final AvailabilityResult INVALID_REQUEST_ERROR = new AvailabilityResult(null, false);
 
     private final Availability availability;
 
-    public AvailabilityResult(Availability availability) {
-        this.availability = availability;
-        this.validRequest = true;
+    public static AvailabilityResult forValidRequest(Availability availability) {
+        return new AvailabilityResult(availability, true);
     }
 
-    public AvailabilityResult(Availability availability, boolean validRequest) {
+    private AvailabilityResult(Availability availability, boolean validRequest) {
         this.availability = availability;
         this.validRequest = validRequest;
     }

@@ -9,11 +9,11 @@ public class AvailabilityService {
 
     public AvailabilityResult getAvailability(AvailabilityRequest availabilityRequest) {
         if (!availabilityRequest.isValid()) {
-            return AvailabilityResult.ERROR_INVALID_REQUEST;
+            return AvailabilityResult.INVALID_REQUEST_ERROR;
         }
 
         Availability availability = airobot.getAvailability(availabilityRequest);
-        return new AvailabilityResult(availability);
+        return AvailabilityResult.forValidRequest(availability);
     }
 
 }

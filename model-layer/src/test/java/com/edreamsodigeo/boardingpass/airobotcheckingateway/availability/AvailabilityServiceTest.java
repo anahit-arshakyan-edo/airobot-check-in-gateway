@@ -1,14 +1,18 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.availability;
 
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.availability.helpers.AirobotMock;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.availability.helpers.AirobotMockThrowsException;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.availability.helpers.NotInvokedAirobotMock;
 import org.testng.annotations.Test;
 
 import java.util.Collections;
 import java.util.List;
 
+import static com.edreamsodigeo.boardingpass.airobotcheckingateway.availability.helpers.AvailabilityAsserts.assertExpectedAvailabilityIsReturned;
+import static com.edreamsodigeo.boardingpass.airobotcheckingateway.availability.helpers.AvailabilityAsserts.assertRequestIsInvalidAndAirobotIsNotInvoked;
+import static com.edreamsodigeo.boardingpass.airobotcheckingateway.availability.helpers.AvailabilityRequestHelper.requestOf;
+import static com.edreamsodigeo.boardingpass.airobotcheckingateway.availability.helpers.AvailabilityRequestHelper.sectionOf;
 import static java.util.Arrays.asList;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertSame;
-import static org.testng.Assert.assertTrue;
 
 public class AvailabilityServiceTest {
 
@@ -23,8 +27,7 @@ public class AvailabilityServiceTest {
 
         AvailabilityResult availabilityResult = availabilityService.getAvailability(availabilityRequest);
 
-        assertTrue(availabilityResult.isValidRequest());
-        assertSame(availabilityResult.getAvailability(), returnedAvailability);
+        assertExpectedAvailabilityIsReturned(availabilityResult, returnedAvailability);
     }
 
     @Test
@@ -38,8 +41,7 @@ public class AvailabilityServiceTest {
 
         AvailabilityResult availabilityResult = availabilityService.getAvailability(availabilityRequest);
 
-        assertTrue(availabilityResult.isValidRequest());
-        assertSame(availabilityResult.getAvailability(), returnedAvailability);
+        assertExpectedAvailabilityIsReturned(availabilityResult, returnedAvailability);
     }
 
     @Test
@@ -51,8 +53,7 @@ public class AvailabilityServiceTest {
 
         AvailabilityResult availability = availabilityService.getAvailability(availabilityRequest);
 
-        assertFalse(availability.isValidRequest());
-        assertFalse(airobot.isInvoked());
+        assertRequestIsInvalidAndAirobotIsNotInvoked(availability, airobot);
     }
 
     @Test
@@ -64,8 +65,7 @@ public class AvailabilityServiceTest {
 
         AvailabilityResult availability = availabilityService.getAvailability(availabilityRequest);
 
-        assertFalse(availability.isValidRequest());
-        assertFalse(airobot.isInvoked());
+        assertRequestIsInvalidAndAirobotIsNotInvoked(availability, airobot);
     }
 
     @Test
@@ -77,8 +77,7 @@ public class AvailabilityServiceTest {
 
         AvailabilityResult availability = availabilityService.getAvailability(availabilityRequest);
 
-        assertFalse(availability.isValidRequest());
-        assertFalse(airobot.isInvoked());
+        assertRequestIsInvalidAndAirobotIsNotInvoked(availability, airobot);
     }
 
     @Test
@@ -90,8 +89,7 @@ public class AvailabilityServiceTest {
 
         AvailabilityResult availability = availabilityService.getAvailability(availabilityRequest);
 
-        assertFalse(availability.isValidRequest());
-        assertFalse(airobot.isInvoked());
+        assertRequestIsInvalidAndAirobotIsNotInvoked(availability, airobot);
     }
 
     @Test(expectedExceptions = RuntimeException.class)
@@ -115,8 +113,7 @@ public class AvailabilityServiceTest {
 
         AvailabilityResult availabilityResult = availabilityService.getAvailability(availabilityRequest);
 
-        assertTrue(availabilityResult.isValidRequest());
-        assertSame(availabilityResult.getAvailability(), returnedAvailability);
+        assertExpectedAvailabilityIsReturned(availabilityResult, returnedAvailability);
     }
 
     @Test
@@ -127,8 +124,7 @@ public class AvailabilityServiceTest {
 
         AvailabilityResult availabilityResult = availabilityService.getAvailability(availabilityRequest);
 
-        assertFalse(availabilityResult.isValidRequest());
-        assertFalse(airobot.isInvoked());
+        assertRequestIsInvalidAndAirobotIsNotInvoked(availabilityResult, airobot);
     }
 
     @Test
@@ -139,29 +135,8 @@ public class AvailabilityServiceTest {
 
         AvailabilityResult availabilityResult = availabilityService.getAvailability(availabilityRequest);
 
-        assertFalse(availabilityResult.isValidRequest());
-        assertFalse(airobot.isInvoked());
+        assertRequestIsInvalidAndAirobotIsNotInvoked(availabilityResult, airobot);
     }
 
-
-    private Section sectionOf(String airline, String departure, String arrival) {
-        return new Section(new Airline(airline), new Airport(departure), new Airport(arrival));
-    }
-
-    private AvailabilityRequest requestOf(Section section) {
-        return requestOf(section != null ? List.of(section) : null, new Passengers());
-    }
-
-    private AvailabilityRequest requestOf(List<Section> sections) {
-        return requestOf(sections, new Passengers());
-    }
-
-    private AvailabilityRequest requestOf(Section section, Passengers passengers) {
-        return requestOf(List.of(section), passengers);
-    }
-
-    private AvailabilityRequest requestOf(List<Section> sections, Passengers passengers) {
-        return new AvailabilityRequest(sections, passengers);
-    }
 
 }
