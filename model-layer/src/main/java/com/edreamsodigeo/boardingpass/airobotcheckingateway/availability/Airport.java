@@ -10,6 +10,5 @@ public class Airport {
     public boolean isPresent() {
         return iataCode != null && !iataCode.isEmpty();
     }
-
 }
 

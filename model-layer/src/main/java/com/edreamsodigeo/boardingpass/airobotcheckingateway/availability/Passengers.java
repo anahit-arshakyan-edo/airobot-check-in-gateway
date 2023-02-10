@@ -8,6 +8,5 @@ public class Passengers {
 
     public Passengers() {
     }
-
 }
 

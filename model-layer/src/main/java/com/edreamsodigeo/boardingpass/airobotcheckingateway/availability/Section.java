@@ -16,6 +16,5 @@ public class Section {
                 && departure.isPresent()
                 && arrival.isPresent();
     }
-
 }
 

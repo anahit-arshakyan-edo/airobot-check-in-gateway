@@ -22,5 +22,4 @@ public class AvailabilityRequest {
     private static boolean allValid(List<Section> sections) {
         return sections.stream().allMatch(section -> section != null && section.isValid());
     }
-
 }
