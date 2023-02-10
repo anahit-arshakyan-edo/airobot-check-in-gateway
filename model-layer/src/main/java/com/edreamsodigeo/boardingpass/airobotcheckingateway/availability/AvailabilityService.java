@@ -15,5 +15,6 @@ public class AvailabilityService {
         Availability availability = airobot.getAvailability(availabilityRequest);
         return AvailabilityResult.forValidRequest(availability);
     }
+
 }
 

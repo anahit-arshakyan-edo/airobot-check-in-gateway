@@ -10,4 +10,5 @@ public class Airline {
     public boolean isPresent() {
         return iataCode != null && !iataCode.isEmpty();
     }
+
 }

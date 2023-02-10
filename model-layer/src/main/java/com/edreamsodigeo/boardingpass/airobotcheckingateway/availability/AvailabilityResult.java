@@ -23,5 +23,6 @@ public final class AvailabilityResult {
     public Availability getAvailability() {
         return availability;
     }
+
 }
 
