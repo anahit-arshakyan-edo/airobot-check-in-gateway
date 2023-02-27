@@ -1,0 +1,46 @@
+{
+	"info": {
+		"_postman_id": "54a3c988-d43e-4231-aa58-9545004f092b",
+		"name": "Airobot Gateway",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/airobot-check-in-gateway/check-in/v1/availability",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"passengers\": {\n        \"citizenships\": [\n            \"IT\"\n        ],\n        \"adults\": 1,\n        \"children\": 1,\n        \"infants\": 1\n    },\n    \"sections\": [\n        {\n            \"marketingCarrier\": \"IB\",\n            \"operatingCarrier\": \"IB\",\n            \"departureAirport\": \"MXP\",\n            \"arrivalAirport\": \"BCN\"\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/airobot-check-in-gateway/check-in/v1/availability",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"airobot-check-in-gateway",
+						"check-in",
+						"v1",
+						"availability"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -15,13 +15,13 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>service-layer</artifactId>
+            <artifactId>application</artifactId>
             <version>[${project.parent.version}]</version>
             <type>ejb</type>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>web-layer</artifactId>
+            <artifactId>web-app-adapter</artifactId>
             <version>[${project.version}]</version>
             <type>war</type>
         </dependency>
@@ -42,14 +42,14 @@
                     <modules>
                         <ejbModule>
                             <groupId>${project.groupId}</groupId>
-                            <artifactId>service-layer</artifactId>
-                            <bundleFileName>service-layer.jar</bundleFileName>
+                            <artifactId>application</artifactId>
+                            <bundleFileName>application.jar</bundleFileName>
                         </ejbModule>
                         <webModule>
                             <groupId>${project.groupId}</groupId>
-                            <artifactId>web-layer</artifactId>
+                            <artifactId>web-app-adapter</artifactId>
                             <contextRoot>/airobot-check-in-gateway</contextRoot>
-                            <bundleFileName>web-layer.war</bundleFileName>
+                            <bundleFileName>web-app-adapter.war</bundleFileName>
                         </webModule>
                     </modules>
                 </configuration>
@@ -60,7 +60,7 @@
                 <version>2.5.3</version>
                 <configuration>
                     <descriptors>
-                        <descriptor>${project.parent.basedir}/scripts-layer/src/assembly/scripts-layer-configuration.xml</descriptor>
+                        <descriptor>${project.parent.basedir}/scripts/src/assembly/scripts-layer-configuration.xml</descriptor>
                     </descriptors>
                 </configuration>
                 <executions>

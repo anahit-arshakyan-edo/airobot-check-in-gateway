@@ -1,0 +1,17 @@
+{
+  "app-name": "airobot-check-in-gateway",
+  "type": "app",
+  "introduction": "Module in charge of interacting with the Airobot check-in provider.",
+  "confluence-page": "https://jira.edreamsodigeo.com/wiki/display/KB/CheckMates",
+  "pda-pod": "Travelshop - CheckMates",
+  "platform": "gke",
+  "impact-bookings": "yes",
+  "slack-channel": "#help-checkmates",
+  "responsable": "francisco.apesteguia",
+  "email-team": "checkmates@edreamsodigeo.com",
+  "le": "francisco.apesteguia",
+  "devops": "ruben.porras",
+  "user-jira": "CheckMates Team",
+  "healthcheck": "http://lb.airobot-check-in-gateway.gke-apps.edo.sv/airobot-check-in-gateway/engineering/healthcheck",
+  "ping": "http://lb.airobot-check-in-gateway.gke-apps.edo.sv/airobot-check-in-gateway/engineering/ping"
+}

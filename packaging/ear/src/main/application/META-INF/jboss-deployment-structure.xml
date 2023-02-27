@@ -9,7 +9,7 @@
             <module name="org.apache.httpcomponents" services="import"/>
         </dependencies>
     </deployment>
-    <sub-deployment name="service-layer.jar">
+    <sub-deployment name="application.jar">
         <exclusions>
             <module name="org.apache.log4j"/>
             <module name="org.slf4j" />
@@ -18,7 +18,7 @@
             <module name="org.apache.httpcomponents" services="import"/>
         </dependencies>
     </sub-deployment>
-    <sub-deployment name="web-layer.war">
+    <sub-deployment name="web-app-adapter.war">
         <exclusions>
             <module name="org.apache.log4j"/>
             <module name="org.slf4j" />
