@@ -3,6 +3,7 @@ package com.edreamsodigeo.boardingpass.airobotcheckingateway.webapp.bootstrap;
 import com.edreams.configuration.ConfigurationEngine;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.webapp.controller.CheckInController;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.webapp.controller.DefaultExceptionMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.odigeo.commons.rest.error.UnhandledExceptionMapper;
 
 import javax.ws.rs.core.Application;
@@ -25,7 +26,8 @@ public class ServiceApplication extends Application {
         return Arrays.asList(
                 ConfigurationEngine.getInstance(CheckInController.class),
                 new DefaultExceptionMapper(),
-                new UnhandledExceptionMapper());
+                new UnhandledExceptionMapper(),
+                new JacksonContextResolver());
     }
 
     @Override
