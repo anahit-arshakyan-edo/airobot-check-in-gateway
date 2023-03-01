@@ -30,6 +30,7 @@
         <airobot-check-in-api.version>[1.0.0]</airobot-check-in-api.version>
         <mapstruct.version>1.5.3.Final</mapstruct.version>
         <tracking-api-client.version>[4.9.1]</tracking-api-client.version>
+        <lombok.version>1.18.12</lombok.version>
         <jackson.version>[2.10.0]</jackson.version>
     </properties>
 
@@ -70,6 +71,11 @@
                                 <groupId>org.mapstruct</groupId>
                                 <artifactId>mapstruct-processor</artifactId>
                                 <version>${mapstruct.version}</version>
+                            </path>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                                <version>${lombok.version}</version>
                             </path>
                         </annotationProcessorPaths>
                     </configuration>
@@ -291,6 +297,12 @@
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
             <version>${mapstruct.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

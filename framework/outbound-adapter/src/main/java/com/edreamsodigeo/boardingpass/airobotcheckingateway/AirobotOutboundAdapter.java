@@ -11,16 +11,17 @@ import com.google.inject.Singleton;
 @Singleton
 public class AirobotOutboundAdapter implements AirobotOutboundPort {
 
-    private static final String API_TOKEN = "oPkvZwp0wHIdBJWeHgU0r7TsqWUO7CMar9RkW9nVPEIG2c9bK19NYgGg4f9v";
     private final AirobotResource airobotResource;
     private final AvailabilityRequestMapper requestMapper;
     private final AvailabilityResponseMapper responseMapper;
+    private final AirobotApiConfiguration airobotApiConfiguration;
 
     @Inject
-    public AirobotOutboundAdapter(AirobotResource airobotResource) {
+    public AirobotOutboundAdapter(AirobotResource airobotResource, AirobotApiConfiguration airobotApiConfiguration) {
         this.airobotResource = airobotResource;
         this.requestMapper = new AvailabilityRequestMapper();
         this.responseMapper = new AvailabilityResponseMapper();
+        this.airobotApiConfiguration = airobotApiConfiguration;
     }
 
     @Override
@@ -28,7 +29,7 @@ public class AirobotOutboundAdapter implements AirobotOutboundPort {
         com.edreamsodigeo.boardingpass.airobotproviderapi.v1.request.AvailabilityRequest requestDto =
                 requestMapper.map(availabilityRequest);
 
-        AvailabilityResponse response = airobotResource.getFlightAvailability(API_TOKEN, requestDto);
+        AvailabilityResponse response = airobotResource.getFlightAvailability(airobotApiConfiguration.getApiToken(), requestDto);
 
         return responseMapper.map(response);
     }

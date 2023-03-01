@@ -19,23 +19,27 @@ import static com.edreamsodigeo.boardingpass.airobotcheckingateway.TestObjectMot
 import static com.edreamsodigeo.boardingpass.airobotcheckingateway.TestObjectMother.AVAILABILITY_RESPONSE_DTO;
 import static com.edreamsodigeo.boardingpass.airobotcheckingateway.TestObjectMother.AVAILABILITY_RESPONSE_PERMITTED_DOCUMENTS_EMPTY_DTO;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.testng.AssertJUnit.assertEquals;
 
 public class AirobotOutboundAdapterTest {
 
+    public static final String API_TOKEN = "token";
     @Mock
     AirobotResource airobotResource;
+    AirobotApiConfiguration airobotApiConfiguration = new AirobotApiConfiguration();
 
     @BeforeMethod
     public void setUp() {
         MockitoAnnotations.openMocks(this);
+        airobotApiConfiguration.setApiToken(API_TOKEN);
     }
 
     @Test
     public void getAvailabilityReturnsValidResponse() {
-        AirobotOutboundPort airobotOutboundAdapter = new AirobotOutboundAdapter(airobotResource);
-        when(airobotResource.getFlightAvailability(any(), any())).thenReturn(AVAILABILITY_RESPONSE_DTO);
+        AirobotOutboundPort airobotOutboundAdapter = new AirobotOutboundAdapter(airobotResource, airobotApiConfiguration);
+        when(airobotResource.getFlightAvailability(eq(API_TOKEN), any())).thenReturn(AVAILABILITY_RESPONSE_DTO);
 
         Availability availability = airobotOutboundAdapter.getAvailability(AVAILABILITY_REQUEST);
 
@@ -44,8 +48,8 @@ public class AirobotOutboundAdapterTest {
 
     @Test
     public void getAvailabilityReturnsResponseWithNoPermittedDocuments() {
-        AirobotOutboundPort airobotOutboundAdapter = new AirobotOutboundAdapter(airobotResource);
-        when(airobotResource.getFlightAvailability(any(), any())).thenReturn(AVAILABILITY_RESPONSE_PERMITTED_DOCUMENTS_EMPTY_DTO);
+        AirobotOutboundPort airobotOutboundAdapter = new AirobotOutboundAdapter(airobotResource, airobotApiConfiguration);
+        when(airobotResource.getFlightAvailability(eq(API_TOKEN), any())).thenReturn(AVAILABILITY_RESPONSE_PERMITTED_DOCUMENTS_EMPTY_DTO);
 
         Availability availability = airobotOutboundAdapter.getAvailability(AVAILABILITY_REQUEST);
 
@@ -55,8 +59,8 @@ public class AirobotOutboundAdapterTest {
     @Test(expectedExceptions = BadRequestException.class)
     public void availabilityApiCallWithInvalidInput() {
         AvailabilityRequest availabilityRequest = new AvailabilityRequest(Collections.emptyList(), Passengers.EMPTY_PASSENGERS);
-        AirobotOutboundPort airobotOutboundAdapter = new AirobotOutboundAdapter(airobotResource);
-        when(airobotResource.getFlightAvailability(any(), any())).thenThrow(BadRequestException.class);
+        AirobotOutboundPort airobotOutboundAdapter = new AirobotOutboundAdapter(airobotResource, airobotApiConfiguration);
+        when(airobotResource.getFlightAvailability(eq(API_TOKEN), any())).thenThrow(BadRequestException.class);
 
         airobotOutboundAdapter.getAvailability(availabilityRequest);
     }

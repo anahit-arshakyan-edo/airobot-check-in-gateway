@@ -39,11 +39,11 @@ different providers.
 
 ```mvn clean install``` to compile and launch tests
 
-```make -f generate-docker-compose-file```  to generate the docker-compose
-
 ```mvn clean install -P build-container-image,dev,nexus``` to build the docker image
 
-```docker-compose up``` to run the container
+```make -f generate-docker-compose-file```  to generate the docker-compose
+
+```docker-compose -f generated-docker-compose.yml up``` to run the container
 
 ```docker network create local-qa-network``` in case of need
 
@@ -170,10 +170,11 @@ See also `airobot_gateway.postman_collection.json` for a Postman collection to u
 ##TODO
 
 - Testing exception from the CheckInController
-- improve documentation of launch and invocation process
-- validate a real message with false availability, what return in the response
+- Improve documentation of launch and invocation process
+- Validate a real message with false availability, what return in the response
   availabilies is empty or not?
 - Binding the AirobotResourceModule inside the OutboundAdapterBindings
+- Refactoring AirobotOutboundAdapterTest: create an explicit request
 
 ## Hexagonal Architecture Documentation
 
