@@ -11,16 +11,17 @@ import javax.ws.rs.ext.Provider;
 @Provider
 @Produces(MediaType.APPLICATION_JSON)
 public class JacksonContextResolver implements ContextResolver<ObjectMapper> {
-    private static final ObjectMapper objectMapper = init();
+
+    private final ObjectMapper objectMapper = init();
 
     @Override
     public ObjectMapper getContext(Class<?> objectType) {
         return objectMapper;
     }
 
-    private static ObjectMapper init() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        return objectMapper;
+    private ObjectMapper init() {
+        ObjectMapper objectMapperWithJavaTime = new ObjectMapper();
+        objectMapperWithJavaTime.registerModule(new JavaTimeModule());
+        return objectMapperWithJavaTime;
     }
 }
