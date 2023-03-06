@@ -1,28 +1,25 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.webapp.controller;
 
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Availability;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.AvailabilityUseCase;
-import com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.model.Section;
-import com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.request.CheckInAvailabilityRequest;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.GetAvailabilityUseCase;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.InvalidAvailabilityRequestException;
 import com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.response.CheckInAvailabilityResponse;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.util.Collections;
-import java.util.List;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
+import static com.edreamsodigeo.boardingpass.airobotcheckingateway.webapp.controller.mothers.AvailabilityRequestMother.AVAILABILITY;
+import static com.edreamsodigeo.boardingpass.airobotcheckingateway.webapp.controller.mothers.AvailabilityRequestMother.AVAILABILITY_REQUEST;
+import static com.edreamsodigeo.boardingpass.airobotcheckingateway.webapp.controller.mothers.AvailabilityRequestMother.CHECK_IN_AVAILABILITY_REQUEST_DTO;
+import static com.edreamsodigeo.boardingpass.airobotcheckingateway.webapp.controller.mothers.AvailabilityRequestMother.CHECK_IN_AVAILABILITY_REQUEST_NO_SECTION_DTO;
+import static com.edreamsodigeo.boardingpass.airobotcheckingateway.webapp.controller.mothers.AvailabilityRequestMother.CHECK_IN_AVAILABILITY_RESPONSE_DTO;
 import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
 
 public class CheckInControllerTest {
 
     @Mock
-    private AvailabilityUseCase availabilityUseCase;
+    private GetAvailabilityUseCase availabilityUseCase;
 
     private CheckInController controller;
 
@@ -34,39 +31,15 @@ public class CheckInControllerTest {
 
     @Test
     public void getAvailabilityReturnsAvailabilityResponse() {
-        Availability availability = TestObjectMother.AVAILABILITY;
-        when(availabilityUseCase.getAvailability(any())).thenReturn(availability);
-        CheckInAvailabilityRequest request = buildAvailabilityRequest("IB", "BCN", "MAD");
-        CheckInAvailabilityResponse expectedResponse = TestObjectMother.AVAILABILTY_RESPONSE;
+        when(availabilityUseCase.getAvailability(AVAILABILITY_REQUEST)).thenReturn(AVAILABILITY);
 
-        CheckInAvailabilityResponse response = controller.getCheckInAvailability(request);
+        CheckInAvailabilityResponse response = controller.getCheckInAvailability(CHECK_IN_AVAILABILITY_REQUEST_DTO);
 
-        assertEquals(response, expectedResponse);
+        assertEquals(response, CHECK_IN_AVAILABILITY_RESPONSE_DTO);
     }
 
-    @Test
-    public void getAvailabilityReturnsAvailabilityFalse() {
-        Availability availability = TestObjectMother.AVAILABILITY_WITH_FALSE_RESULT;
-        when(availabilityUseCase.getAvailability(any())).thenReturn(availability);
-        CheckInAvailabilityRequest request = buildAvailabilityRequest("IB", "BCN", "MAD");
-
-        CheckInAvailabilityResponse response = controller.getCheckInAvailability(request);
-
-        verify(availabilityUseCase).getAvailability(any());
-        assertFalse(response.isAvailable());
+    @Test(expectedExceptions = InvalidAvailabilityRequestException.class)
+    public void throwsAnExceptionForAnInvalidRequestWithNoSection() {
+        controller.getCheckInAvailability(CHECK_IN_AVAILABILITY_REQUEST_NO_SECTION_DTO);
     }
-
-    private CheckInAvailabilityRequest buildAvailabilityRequest(String carrier, String departure, String arrival) {
-        List<Section> sections = Collections.singletonList(Section.builder()
-                .withDepartureAirport(departure)
-                .withArrivalAirport(arrival)
-                .withMarketingCarrier(carrier)
-                .withOperatingCarrier(carrier)
-                .build());
-
-        return CheckInAvailabilityRequest.builder()
-                .withSections(sections)
-                .build();
-    }
-
 }

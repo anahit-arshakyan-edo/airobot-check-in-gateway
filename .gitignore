@@ -4,3 +4,7 @@
 target/
 *.avsc
 generated-docker-compose.yml
+/application/test-output/
+/framework/web-app-adapter/test-output/
+/framework/outbound-adapter/test-output/
+/domain/test-output/

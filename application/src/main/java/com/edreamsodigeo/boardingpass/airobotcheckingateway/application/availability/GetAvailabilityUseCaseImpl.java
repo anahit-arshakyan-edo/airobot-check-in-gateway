@@ -5,20 +5,16 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 @Singleton
-public class AvailabilityInboundPort implements AvailabilityUseCase {
+public class GetAvailabilityUseCaseImpl implements GetAvailabilityUseCase {
 
     private final AirobotOutboundPort airobot;
 
     @Inject
-    public AvailabilityInboundPort(AirobotOutboundPort airobot) {
+    public GetAvailabilityUseCaseImpl(AirobotOutboundPort airobot) {
         this.airobot = airobot;
     }
 
     public Availability getAvailability(AvailabilityRequest availabilityRequest) {
-        if (!availabilityRequest.isValid()) {
-            throw new InvalidAvailabilityRequestException();
-        }
-
         return airobot.getAvailability(availabilityRequest);
     }
 }

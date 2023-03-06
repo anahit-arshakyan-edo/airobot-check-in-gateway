@@ -2,7 +2,7 @@ package com.edreamsodigeo.boardingpass.airobotcheckingateway;
 
 
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.ApplicationModuleBindings;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.AvailabilityInboundPort;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.GetAvailabilityUseCaseImpl;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.mockito.Mock;
@@ -16,7 +16,7 @@ import static org.testng.Assert.assertSame;
 public class ApplicationModuleBindingsTest {
 
     @Mock
-    private AvailabilityInboundPort inboundPort;
+    private GetAvailabilityUseCaseImpl inboundPort;
 
     @BeforeMethod
     public void setUp() {
@@ -25,9 +25,9 @@ public class ApplicationModuleBindingsTest {
 
     @Test
     public void testBindings() {
-        Injector injector = Guice.createInjector(binder -> binder.bind(AvailabilityInboundPort.class).toInstance(inboundPort), new ApplicationModuleBindings());
+        Injector injector = Guice.createInjector(binder -> binder.bind(GetAvailabilityUseCaseImpl.class).toInstance(inboundPort), new ApplicationModuleBindings());
 
-        assertSame(injector.getInstance(AvailabilityInboundPort.class), inboundPort);
+        assertSame(injector.getInstance(GetAvailabilityUseCaseImpl.class), inboundPort);
 
     }
 }

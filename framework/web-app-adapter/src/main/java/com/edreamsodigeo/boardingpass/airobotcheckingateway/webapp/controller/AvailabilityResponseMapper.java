@@ -2,13 +2,13 @@ package com.edreamsodigeo.boardingpass.airobotcheckingateway.webapp.controller;
 
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.EnumMap;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Availability;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.CheckInAvailability;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.CheckInWindow;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Document;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.DocumentRequirement;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.DocumentType;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.PassengerRequirement;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Section;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.SectionAvailability;
 import com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.response.CheckInAvailabilityResponse;
 
 import java.util.HashMap;
@@ -22,7 +22,7 @@ public class AvailabilityResponseMapper {
         boolean available = availability.isAvailable();
         boolean requiresApi = availability.isRequiresApi();
 
-        List<CheckInAvailability> availabilities = availability.availabilities();
+        List<SectionAvailability> availabilities = availability.sectionAvailabilities();
         List<com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.model.CheckInAvailability> availaibilitiesDto = availabilities.stream()
                 .map(this::mapChecInAvailability)
                 .collect(Collectors.toList());
@@ -34,13 +34,13 @@ public class AvailabilityResponseMapper {
                 .build();
     }
 
-    private com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.model.CheckInAvailability mapChecInAvailability(CheckInAvailability checkInAvailability) {
+    private com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.model.CheckInAvailability mapChecInAvailability(SectionAvailability sectionAvailability) {
         return com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.model.CheckInAvailability.builder()
-                .withSection(mapSection(checkInAvailability.section()))
-                .withCheckInWindow(mapCheckInWindow(checkInAvailability.checkInWindow()))
-                .withPassengerRequirements(mapPassengerRequirements(checkInAvailability.passengerRequirements()))
-                .withRequiresDocuments(checkInAvailability.requiresDocuments())
-                .withPermittedDocuments(mapPermittedDocuments(checkInAvailability.permittedDocuments()))
+                .withSection(mapSection(sectionAvailability.section()))
+                .withCheckInWindow(mapCheckInWindow(sectionAvailability.checkInWindow()))
+                .withPassengerRequirements(mapPassengerRequirements(sectionAvailability.passengerRequirements()))
+                .withRequiresDocuments(sectionAvailability.requiresDocuments())
+                .withPermittedDocuments(mapPermittedDocuments(sectionAvailability.permittedDocuments()))
                 .build();
     }
 

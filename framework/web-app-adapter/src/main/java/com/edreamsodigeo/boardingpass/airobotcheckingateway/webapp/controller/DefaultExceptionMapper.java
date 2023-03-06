@@ -37,7 +37,7 @@ public class DefaultExceptionMapper implements ExceptionMapper<RuntimeException>
         boolean isWarning = mappedError.status < 500;
         LOGGER.log(isWarning ? WARN : ERROR, mappedError.type, getRootCause(e));
 
-        return response(mappedError, isWarning ? e.getMessage() : "Unexpected exception");
+        return response(mappedError, e.getMessage());
     }
 
     private Response response(MappedError mappedError, String message) {

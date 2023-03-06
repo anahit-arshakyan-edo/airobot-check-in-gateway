@@ -1,32 +1,19 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 public class Availability {
 
-    private boolean available;
-    private boolean requiresApi;
-    private List<CheckInAvailability> availabilities;
+    private final boolean available;
+    private final boolean requiresApi;
+    private final List<SectionAvailability> sectionAvailabilities;
 
-    public Availability() {
-        this(false);
-    }
-
-    public Availability(boolean available) {
-        this(available, false);
-    }
-
-    public Availability(boolean available, boolean requiresApi) {
-        this(available, requiresApi, new ArrayList<>());
-    }
-
-    public Availability(boolean available, boolean requiresApi, List<CheckInAvailability> availabilities) {
+    public Availability(boolean available, boolean requiresApi, List<SectionAvailability> sectionAvailabilities) {
         this.available = available;
         this.requiresApi = requiresApi;
-        this.availabilities = availabilities == null ? Collections.emptyList() : availabilities;
+        this.sectionAvailabilities = sectionAvailabilities == null ? Collections.emptyList() : sectionAvailabilities;
     }
 
     public boolean isAvailable() {
@@ -37,8 +24,8 @@ public class Availability {
         return requiresApi;
     }
 
-    public List<CheckInAvailability> availabilities() {
-        return Collections.unmodifiableList(availabilities);
+    public List<SectionAvailability> sectionAvailabilities() {
+        return Collections.unmodifiableList(sectionAvailabilities);
     }
 
     @Override
@@ -50,12 +37,12 @@ public class Availability {
             return false;
         }
         Availability that = (Availability) o;
-        return available == that.available && requiresApi == that.requiresApi && availabilities.equals(that.availabilities);
+        return available == that.available && requiresApi == that.requiresApi && sectionAvailabilities.equals(that.sectionAvailabilities);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(available, requiresApi, availabilities);
+        return Objects.hash(available, requiresApi, sectionAvailabilities);
     }
 
     @Override
@@ -63,7 +50,7 @@ public class Availability {
         return "Availability{"
                 + "available=" + available
                 + ", requiresApi=" + requiresApi
-                + ", availabilities=" + availabilities
+                + ", availabilities=" + sectionAvailabilities
                 + '}';
     }
 }

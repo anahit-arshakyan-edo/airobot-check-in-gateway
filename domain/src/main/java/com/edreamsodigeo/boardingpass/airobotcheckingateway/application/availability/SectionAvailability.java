@@ -3,14 +3,14 @@ package com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availab
 import java.util.List;
 import java.util.Objects;
 
-public class CheckInAvailability {
+public class SectionAvailability {
     private final Section section;
     private final CheckInWindow checkInWindow;
     private final List<PassengerRequirement> passengerRequirements;
     private final boolean requiresDocuments;
     private final List<Document> permittedDocuments;
 
-    public CheckInAvailability(Section section, CheckInWindow checkInWindow,
+    public SectionAvailability(Section section, CheckInWindow checkInWindow,
                                List<PassengerRequirement> passengerRequirements,
                                boolean requiresDocuments, List<Document> permittedDocuments) {
         this.section = section;
@@ -48,7 +48,7 @@ public class CheckInAvailability {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        CheckInAvailability that = (CheckInAvailability) o;
+        SectionAvailability that = (SectionAvailability) o;
         return requiresDocuments == that.requiresDocuments && section.equals(that.section) && checkInWindow.equals(that.checkInWindow) && passengerRequirements.equals(that.passengerRequirements) && permittedDocuments.equals(that.permittedDocuments);
     }
 

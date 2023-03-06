@@ -1,27 +1,22 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class AvailabilityRequest {
+    @NotEmpty(message = "availability request should have at least one section")
+    private final List<@NotNull @Valid Section> sections;
 
-    private final List<Section> sections;
+    @NotNull
     private final Passengers passengers;
 
-    public AvailabilityRequest(List<Section> sections, Passengers passengers) {
+    AvailabilityRequest(List<Section> sections, Passengers passengers) {
         this.sections = sections;
-        this.passengers = passengers != null ? passengers : Passengers.EMPTY_PASSENGERS;
-    }
-
-    public boolean isValid() {
-        return passengers != null
-                && sections != null
-                && !sections.isEmpty()
-                && allValid(sections);
-    }
-
-    private static boolean allValid(List<Section> sections) {
-        return sections.stream().allMatch(section -> section != null && section.isValid());
+        this.passengers = passengers;
     }
 
     public List<Section> getSections() {
@@ -30,5 +25,30 @@ public class AvailabilityRequest {
 
     public Passengers getPassengers() {
         return passengers;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        AvailabilityRequest that = (AvailabilityRequest) o;
+        return Objects.equals(sections, that.sections) && Objects.equals(passengers, that.passengers);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(sections, passengers);
+    }
+
+    @Override
+    public String toString() {
+        return "AvailabilityRequest{"
+                + "sections=" + sections
+                + ", passengers=" + passengers
+                + '}';
     }
 }

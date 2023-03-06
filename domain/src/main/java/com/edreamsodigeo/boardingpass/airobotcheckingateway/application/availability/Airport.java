@@ -1,16 +1,22 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability;
 
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.validation.Checker;
+
+import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
-public class Airport {
+public final class Airport {
+    @NotBlank
     private final String iataCode;
 
-    public Airport(String iataCode) {
+    private Airport(String iataCode) {
         this.iataCode = iataCode;
     }
 
-    public boolean isPresent() {
-        return iataCode != null && !iataCode.isEmpty();
+    public static Airport create(String iataCode) {
+        Airport result = new Airport(iataCode);
+        Checker.checkValidityWithJSR380(result);
+        return result;
     }
 
     public String iataCode() {

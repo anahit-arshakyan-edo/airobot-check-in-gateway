@@ -1,15 +1,14 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway;
 
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Airline;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Airport;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Availability;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.CheckInAvailability;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.CheckInWindow;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Document;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.DocumentRequirement;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.DocumentType;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.PassengerRequirement;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Section;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.SectionAvailability;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.SectionBuilder;
 import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.model.JourneyAvailability;
 import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.model.PermittedDocuments;
 
@@ -35,22 +34,23 @@ public class AvailabilityResponseMapper {
         com.edreamsodigeo.boardingpass.airobotproviderapi.v1.model.AvailabilityData availabilityDataDto = response.getData();
         boolean available = availabilityDataDto.isAvailable();
         boolean requiresApi = availabilityDataDto.isRequiresApi();
-        List<CheckInAvailability> checkInAvailabilities = mapJourneysAvailabilityDto(availabilityDataDto.getJourneys());
+        List<SectionAvailability> checkInAvailabilities = mapJourneysAvailabilityDto(availabilityDataDto.getJourneys());
 
         return new Availability(available, requiresApi, checkInAvailabilities);
     }
 
-    private List<CheckInAvailability> mapJourneysAvailabilityDto(List<JourneyAvailability> journeysDto) {
+    private List<SectionAvailability> mapJourneysAvailabilityDto(List<JourneyAvailability> journeysDto) {
         return journeysDto.stream()
                 .map(this::mapJourneyAvailabilityDto)
                 .collect(Collectors.toList());
     }
 
-    private CheckInAvailability mapJourneyAvailabilityDto(JourneyAvailability journeyAvailabilityDto) {
-        Airline airline = new Airline(journeyAvailabilityDto.getAirline());
-        Airport departure = new Airport(journeyAvailabilityDto.getDepartureAirport());
-        Airport arrival = new Airport(journeyAvailabilityDto.getArrivalAirport());
-        Section section = new Section(airline, departure, arrival);
+    private SectionAvailability mapJourneyAvailabilityDto(JourneyAvailability journeyAvailabilityDto) {
+        Section section = new SectionBuilder()
+                .withAirline(journeyAvailabilityDto.getAirline())
+                .withDeparture(journeyAvailabilityDto.getDepartureAirport())
+                .withArrival(journeyAvailabilityDto.getArrivalAirport())
+                .build();
 
         CheckInWindow checkInWindow = mapCheckInWindowDto(journeyAvailabilityDto.getCheckInWindow());
 
@@ -60,7 +60,7 @@ public class AvailabilityResponseMapper {
 
         List<Document> permittedDocuments = mapPermittedDocumentsDto(journeyAvailabilityDto.getPermittedDocuments());
 
-        return new CheckInAvailability(
+        return new SectionAvailability(
                 section, checkInWindow, passengerRequirements, requiresDocument, permittedDocuments);
     }
 

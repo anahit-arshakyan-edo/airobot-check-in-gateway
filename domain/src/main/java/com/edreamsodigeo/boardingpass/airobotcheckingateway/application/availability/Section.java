@@ -1,22 +1,23 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 public class Section {
+    @NotNull @Valid
     private final Airline airline;
+
+    @NotNull @Valid
     private final Airport departure;
+
+    @NotNull @Valid
     private final Airport arrival;
 
-    public Section(Airline airline, Airport departure, Airport arrival) {
+    Section(Airline airline, Airport departure, Airport arrival) {
         this.airline = airline;
         this.departure = departure;
         this.arrival = arrival;
-    }
-
-    public boolean isValid() {
-        return airline.isPresent()
-                && departure.isPresent()
-                && arrival.isPresent();
     }
 
     public String getAirlineIataCode() {

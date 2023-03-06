@@ -1,9 +1,7 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway;
 
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.AirobotOutboundPort;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Availability;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.AvailabilityRequest;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Passengers;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.AirobotOutboundPort;
 import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.AirobotResource;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -11,7 +9,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import javax.ws.rs.BadRequestException;
-import java.util.Collections;
 
 import static com.edreamsodigeo.boardingpass.airobotcheckingateway.TestObjectMother.AVAILABILITY;
 import static com.edreamsodigeo.boardingpass.airobotcheckingateway.TestObjectMother.AVAILABILITY_PERMITTED_DOCUMENTS_EMPTY;
@@ -58,11 +55,10 @@ public class AirobotOutboundAdapterTest {
 
     @Test(expectedExceptions = BadRequestException.class)
     public void availabilityApiCallWithInvalidInput() {
-        AvailabilityRequest availabilityRequest = new AvailabilityRequest(Collections.emptyList(), Passengers.EMPTY_PASSENGERS);
         AirobotOutboundPort airobotOutboundAdapter = new AirobotOutboundAdapter(airobotResource, airobotApiConfiguration);
         when(airobotResource.getFlightAvailability(eq(API_TOKEN), any())).thenThrow(BadRequestException.class);
 
-        airobotOutboundAdapter.getAvailability(availabilityRequest);
+        airobotOutboundAdapter.getAvailability(AVAILABILITY_REQUEST);
     }
 
 }
