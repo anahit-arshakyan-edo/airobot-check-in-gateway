@@ -17,7 +17,7 @@
         <build.artifacts.classifier/>
         <module.name>airobot-check-in-gateway</module.name>
         <docker.image.env>dev</docker.image.env>
-        <vault.url>https://vault.services.odigeo.com:8200</vault.url>
+        <vault.url>https://vault.services.odigeo.com</vault.url>
 
         <commons-monitoring.version>9.4.2</commons-monitoring.version>
         <commons-rest.version>7.10.0</commons-rest.version>
