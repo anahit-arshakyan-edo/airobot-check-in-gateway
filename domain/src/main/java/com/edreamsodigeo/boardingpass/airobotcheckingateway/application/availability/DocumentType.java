@@ -1,6 +1,18 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability;
 
 public enum DocumentType {
-    PASSPORT,
-    NATIONAL_ID
+
+    PASSPORT("passport"),
+    NATIONAL_ID("national_id");
+
+    private final String description;
+
+    DocumentType(String description) {
+        this.description = description;
+    }
+
+    public String description() {
+        return description;
+    }
+
 }

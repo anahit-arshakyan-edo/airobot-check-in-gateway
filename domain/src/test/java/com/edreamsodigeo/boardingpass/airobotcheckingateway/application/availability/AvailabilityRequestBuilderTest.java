@@ -13,7 +13,7 @@ public class AvailabilityRequestBuilderTest {
                 .withSection("IB", "BCN", "MXP")
                 .build();
 
-        assertEquals(request.getPassengers(), Passengers.EMPTY_PASSENGERS);
+        assertEquals(request.passengers(), Passengers.EMPTY_PASSENGERS);
     }
 
     @Test
@@ -23,7 +23,7 @@ public class AvailabilityRequestBuilderTest {
                 .withSection("IB", "BCN", "MXP")
                 .build();
 
-        assertEquals(request.getPassengers(), Passengers.EMPTY_PASSENGERS);
+        assertEquals(request.passengers(), Passengers.EMPTY_PASSENGERS);
     }
 
     @Test(expectedExceptions = InvalidAvailabilityRequestException.class)

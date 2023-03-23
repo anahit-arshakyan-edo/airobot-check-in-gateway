@@ -19,15 +19,15 @@ public class CheckInRequirements {
         this.permittedDocuments = permittedDocuments;
     }
 
-    public Section getSection() {
+    public Section section() {
         return section;
     }
 
-    public CheckInWindow getCheckInWindow() {
+    public CheckInWindow checkInWindow() {
         return checkInWindow;
     }
 
-    public List<PassengerRequirement> getPassengerRequirements() {
+    public List<PassengerRequirement> passengerRequirements() {
         return passengerRequirements;
     }
 
@@ -35,7 +35,7 @@ public class CheckInRequirements {
         return requiresDocuments;
     }
 
-    public Map<DocumentType, Document> getPermittedDocuments() {
+    public Map<DocumentType, Document> permittedDocuments() {
         return permittedDocuments;
     }
 }

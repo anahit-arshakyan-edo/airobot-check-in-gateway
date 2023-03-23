@@ -60,7 +60,7 @@
                 <version>2.5.3</version>
                 <configuration>
                     <descriptors>
-                        <descriptor>${project.parent.basedir}/scripts/src/assembly/scripts-layer-configuration.xml</descriptor>
+                        <descriptor>${project.parent.basedir}/scripts-layer/src/assembly/scripts-layer-configuration.xml</descriptor>
                     </descriptors>
                 </configuration>
                 <executions>

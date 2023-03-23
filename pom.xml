@@ -32,11 +32,12 @@
         <tracking-api-client.version>[4.9.1]</tracking-api-client.version>
         <lombok.version>1.18.12</lombok.version>
         <jackson.version>[2.10.0]</jackson.version>
+        <commons-uuid.version>[1.4.0]</commons-uuid.version>
     </properties>
 
     <modules>
         <module>domain</module>
-        <module>scripts</module>
+        <module>scripts-layer</module>
         <module>application</module>
         <module>framework/web-app-adapter</module>
         <module>packaging/ear</module>
@@ -279,7 +280,13 @@
                 <artifactId>jackson-datatype-jsr310</artifactId>
                 <version>${jackson.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.odigeo.commons</groupId>
+                <artifactId>commons-uuid</artifactId>
+                <version>${commons-uuid.version}</version>
+            </dependency>
         </dependencies>
+
     </dependencyManagement>
 
     <dependencies>

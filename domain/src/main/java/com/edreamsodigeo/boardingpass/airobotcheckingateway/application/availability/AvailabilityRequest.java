@@ -19,11 +19,11 @@ public class AvailabilityRequest {
         this.passengers = passengers;
     }
 
-    public List<Section> getSections() {
+    public List<Section> sections() {
         return Collections.unmodifiableList(sections);
     }
 
-    public Passengers getPassengers() {
+    public Passengers passengers() {
         return passengers;
     }
 

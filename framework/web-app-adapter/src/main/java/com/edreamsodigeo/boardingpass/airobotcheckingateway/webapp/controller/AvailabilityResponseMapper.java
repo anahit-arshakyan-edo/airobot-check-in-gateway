@@ -110,10 +110,10 @@ public class AvailabilityResponseMapper {
 
     private com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.model.Section mapSection(Section section) {
         return com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.model.Section.builder()
-                .withOperatingCarrier(section.getAirlineIataCode())
-                .withMarketingCarrier(section.getAirlineIataCode())
-                .withDepartureAirport(section.getDepartureAirportIataCode())
-                .withArrivalAirport(section.getArrivalAirportIataCode())
+                .withOperatingCarrier(section.airlineIataCode())
+                .withMarketingCarrier(section.airlineIataCode())
+                .withDepartureAirport(section.departureAirportIataCode())
+                .withArrivalAirport(section.arrivalAirportIataCode())
                 .build();
     }
 }

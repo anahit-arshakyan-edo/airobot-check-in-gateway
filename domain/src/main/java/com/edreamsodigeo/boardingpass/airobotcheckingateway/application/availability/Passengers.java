@@ -21,19 +21,19 @@ public class Passengers {
         this.infants = infants;
     }
 
-    public List<String> getCitizenships() {
+    public List<String> citizenships() {
         return citizenships;
     }
 
-    public int getAdults() {
+    public int adults() {
         return adults;
     }
 
-    public int getChildren() {
+    public int children() {
         return children;
     }
 
-    public int getInfants() {
+    public int infants() {
         return infants;
     }
 

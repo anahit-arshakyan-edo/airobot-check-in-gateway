@@ -20,15 +20,15 @@ public class Section {
         this.arrival = arrival;
     }
 
-    public String getAirlineIataCode() {
+    public String airlineIataCode() {
         return airline.iataCode();
     }
 
-    public String getArrivalAirportIataCode() {
+    public String arrivalAirportIataCode() {
         return arrival.iataCode();
     }
 
-    public String getDepartureAirportIataCode() {
+    public String departureAirportIataCode() {
         return departure.iataCode();
     }
 

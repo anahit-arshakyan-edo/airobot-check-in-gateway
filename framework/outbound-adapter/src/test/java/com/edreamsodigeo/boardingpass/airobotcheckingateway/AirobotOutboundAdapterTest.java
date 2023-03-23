@@ -2,6 +2,8 @@ package com.edreamsodigeo.boardingpass.airobotcheckingateway;
 
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Availability;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.AirobotOutboundPort;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.configuration.AirobotApiConfiguration;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.provider.AirobotOutboundAdapter;
 import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.AirobotResource;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
