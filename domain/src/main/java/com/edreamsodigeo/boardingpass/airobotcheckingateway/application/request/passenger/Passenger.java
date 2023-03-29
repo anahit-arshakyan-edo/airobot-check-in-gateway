@@ -1,24 +1,22 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.passenger;
 
-public class Passenger {
-    private final PassengerId id;
-    private final String name;
-    private final String surname;
-    private final String gender;
-    private final String dateOfBirth;
-    private final String nationality;
-    private final Document document;
-    private final SeatPreference seatPreference;
+import java.util.Date;
+import java.util.Objects;
 
-    public Passenger(PassengerId id, String name, String surname, String gender, String dateOfBirth, String nationality, Document document, SeatPreference seatPreference) {
+public class Passenger {
+
+    private final PassengerId id;
+    private final ProviderPassengerId providerPassengerId;
+    private final String name;
+    private final String lastName;
+    private final Date dateOfBirth;
+
+    public Passenger(PassengerId id, ProviderPassengerId providerPassengerId, String name, String lastName, Date dateOfBirth) {
         this.id = id;
+        this.providerPassengerId = providerPassengerId;
         this.name = name;
-        this.surname = surname;
-        this.gender = gender;
+        this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
-        this.nationality = nationality;
-        this.document = document;
-        this.seatPreference = seatPreference;
     }
 
     public PassengerId id() {
@@ -29,27 +27,28 @@ public class Passenger {
         return name;
     }
 
-    public String surname() {
-        return surname;
+    public String lastName() {
+        return lastName;
     }
 
-    public String gender() {
-        return gender;
-    }
-
-    public String dateOfBirth() {
+    public Date dateOfBirth() {
         return dateOfBirth;
     }
 
-    public Document document() {
-        return document;
+    public ProviderPassengerId providerPassengerId() {
+        return providerPassengerId;
     }
 
-    public SeatPreference seatPreference() {
-        return seatPreference;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Passenger passenger = (Passenger) o;
+        return id.equals(passenger.id);
     }
 
-    public String nationality() {
-        return nationality;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

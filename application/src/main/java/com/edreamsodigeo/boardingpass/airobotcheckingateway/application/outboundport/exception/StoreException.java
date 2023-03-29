@@ -1,4 +1,4 @@
-package com.edreamsodigeo.boardingpass.airobotcheckingateway.persistence.exception;
+package com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.exception;
 
 public class StoreException extends RuntimeException {
 

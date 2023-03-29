@@ -1,8 +1,7 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway;
 
-
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.configuration.OutboundAdapterBindings;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.persistence.OracleBoardingPassOutboundAdapter;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.persistence.CheckInOracleOutboundAdapter;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.provider.AirobotOutboundAdapter;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -28,7 +27,7 @@ public class OutboundAdapterBindingsTest {
     @Mock
     private AirobotOutboundAdapter airobotOutboundAdapter;
     @Mock
-    private OracleBoardingPassOutboundAdapter oracleBoardingPassOutboundAdapter;
+    private CheckInOracleOutboundAdapter checkInOracleOutboundAdapter;
     @Mock
     private static Context context;
     @Mock
@@ -44,10 +43,10 @@ public class OutboundAdapterBindingsTest {
     public void testBindings() throws NamingException {
         when(context.lookup(DEFAULT_DATASOURCE_NAME)).thenReturn(dataSource);
 
-        Injector injector = Guice.createInjector(binder -> binder.bind(AirobotOutboundAdapter.class).toInstance(airobotOutboundAdapter), binder -> binder.bind(OracleBoardingPassOutboundAdapter.class).toInstance(oracleBoardingPassOutboundAdapter), new OutboundAdapterBindings());
+        Injector injector = Guice.createInjector(binder -> binder.bind(AirobotOutboundAdapter.class).toInstance(airobotOutboundAdapter), binder -> binder.bind(CheckInOracleOutboundAdapter.class).toInstance(checkInOracleOutboundAdapter), new OutboundAdapterBindings());
 
         assertSame(injector.getInstance(AirobotOutboundAdapter.class), airobotOutboundAdapter);
-        assertSame(injector.getInstance(OracleBoardingPassOutboundAdapter.class), oracleBoardingPassOutboundAdapter);
+        assertSame(injector.getInstance(CheckInOracleOutboundAdapter.class), checkInOracleOutboundAdapter);
         assertSame(injector.getInstance(DataSource.class), dataSource);
 
     }

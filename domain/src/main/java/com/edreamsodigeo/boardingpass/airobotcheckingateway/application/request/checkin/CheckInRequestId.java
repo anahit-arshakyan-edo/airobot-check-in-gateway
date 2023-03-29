@@ -1,4 +1,4 @@
-package com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.passenger;
+package com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin;
 
 import com.odigeo.commons.uuid.UUIDGenerator;
 import com.odigeo.commons.uuid.UUIDSerializer;
@@ -6,20 +6,20 @@ import com.odigeo.commons.uuid.UUIDSerializer;
 import java.util.Objects;
 import java.util.UUID;
 
-public final class PassengerId {
+public final class CheckInRequestId {
 
     private final UUID id;
 
-    private PassengerId(UUID id) {
+    private CheckInRequestId(UUID id) {
         this.id = id;
     }
 
-    public static PassengerId from(String id) {
-        return new PassengerId(UUIDSerializer.fromBytes(id.getBytes()));
+    public static CheckInRequestId from(String id) {
+        return new CheckInRequestId(UUIDSerializer.fromBytes(id.getBytes()));
     }
 
-    public static PassengerId create() {
-        return new PassengerId(UUIDGenerator.getInstance().generateUUID());
+    public static CheckInRequestId create() {
+        return new CheckInRequestId(UUIDGenerator.getInstance().generateUUID());
     }
 
     public UUID value() {
@@ -30,7 +30,7 @@ public final class PassengerId {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PassengerId that = (PassengerId) o;
+        CheckInRequestId that = (CheckInRequestId) o;
         return id.equals(that.id);
     }
 

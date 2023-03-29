@@ -1,29 +1,45 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass;
 
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.journey.JourneyId;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.passenger.PassengerId;
+import com.odigeo.commons.uuid.UUIDGenerator;
+import com.odigeo.commons.uuid.UUIDSerializer;
 
-public class BoardingPassId {
+import java.util.Objects;
+import java.util.UUID;
 
-    private final DeliveryId deliveryId;
-    private final PassengerId passengerId;
-    private final JourneyId journeyId;
+public final class BoardingPassId {
 
-    public BoardingPassId(DeliveryId deliveryId, PassengerId passengerId, JourneyId journeyId) {
-        this.deliveryId = deliveryId;
-        this.passengerId = passengerId;
-        this.journeyId = journeyId;
+    private final UUID id;
+
+    private BoardingPassId(UUID id) {
+        this.id = id;
     }
 
-    public DeliveryId deliveryId() {
-        return deliveryId;
+    public static BoardingPassId from(String id) {
+        return new BoardingPassId(UUIDSerializer.fromBytes(id.getBytes()));
     }
 
-    public PassengerId passengerId() {
-        return passengerId;
+    ;
+
+    public static BoardingPassId create() {
+        return new BoardingPassId(UUIDGenerator.getInstance().generateUUID());
     }
 
-    public JourneyId journeyId() {
-        return journeyId;
+    ;
+
+    public UUID value() {
+        return id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BoardingPassId that = (BoardingPassId) o;
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
