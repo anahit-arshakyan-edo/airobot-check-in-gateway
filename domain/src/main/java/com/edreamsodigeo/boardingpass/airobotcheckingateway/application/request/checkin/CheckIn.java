@@ -2,8 +2,8 @@ package com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request
 
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass.BoardingPass;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.passenger.Passenger;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.section.Section;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,12 +11,12 @@ public class CheckIn {
 
     private final CheckInId id;
     private final long referenceId;
-    private final List<CheckInRequest> checkInRequests;
+    private final List<BoardingPass> boardingPasses;
 
-    public CheckIn(CheckInId id, long referenceId, List<CheckInRequest> checkInRequests) {
+    public CheckIn(CheckInId id, long referenceId, List<BoardingPass> boardingPasses) {
         this.id = id;
         this.referenceId = referenceId;
-        this.checkInRequests = checkInRequests;
+        this.boardingPasses = boardingPasses;
     }
 
     public CheckInId id() {
@@ -27,23 +27,28 @@ public class CheckIn {
         return referenceId;
     }
 
-    public List<CheckInRequest> checkInRequests() {
-        return checkInRequests;
-    }
-
     public List<Passenger> passengers() {
-        return checkInRequests.stream()
-                .map(CheckInRequest::boardingPasses)
-                .flatMap(Collection::stream)
+        return boardingPasses.stream()
                 .map(BoardingPass::passenger)
                 .distinct()
                 .collect(Collectors.toList());
     }
 
     public List<BoardingPass> boardingPasses() {
-        return checkInRequests.stream()
-                .map(CheckInRequest::boardingPasses)
-                .flatMap(Collection::stream)
+        return boardingPasses;
+    }
+
+    public List<CheckInRequest> checkInRequests() {
+        return boardingPasses.stream()
+                .map(BoardingPass::checkInRequest)
+                .distinct()
+                .collect(Collectors.toList());
+    }
+
+    public List<Section> sections() {
+        return boardingPasses.stream()
+                .map(BoardingPass::section)
+                .distinct()
                 .collect(Collectors.toList());
     }
 }

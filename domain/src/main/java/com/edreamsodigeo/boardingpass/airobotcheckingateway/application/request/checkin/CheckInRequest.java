@@ -1,22 +1,15 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin;
 
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass.BoardingPass;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.passenger.Passenger;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.section.Section;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 public class CheckInRequest {
 
     private final CheckInRequestId id;
     private final String providerRequestId;
-    private final List<BoardingPass> boardingPasses;
 
-    public CheckInRequest(CheckInRequestId id, String providerRequestId, List<BoardingPass> boardingPasses) {
+    public CheckInRequest(CheckInRequestId id, String providerRequestId) {
         this.id = id;
         this.providerRequestId = providerRequestId;
-        this.boardingPasses = boardingPasses;
     }
 
     public CheckInRequestId id() {
@@ -27,15 +20,16 @@ public class CheckInRequest {
         return providerRequestId;
     }
 
-    public List<BoardingPass> boardingPasses() {
-        return boardingPasses;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CheckInRequest that = (CheckInRequest) o;
+        return id.equals(that.id);
     }
 
-    public List<Section> sections() {
-        return boardingPasses.stream()
-                .map(BoardingPass::section)
-                .distinct()
-                .collect(Collectors.toList());
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
-
 }

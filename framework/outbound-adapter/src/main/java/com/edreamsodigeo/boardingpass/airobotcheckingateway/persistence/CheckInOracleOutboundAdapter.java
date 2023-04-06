@@ -6,7 +6,6 @@ import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.CheckIn;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.CheckInId;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.CheckInRequest;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.CheckInRequestId;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.passenger.Passenger;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.section.Section;
 import com.google.inject.Inject;
@@ -25,10 +24,9 @@ public class CheckInOracleOutboundAdapter implements CheckInOutboundPort {
 
     private static final String INSERT_CHECK_IN = "INSERT INTO AIROBOT_CHECKIN_GATEWAY_OWN.CHECK_IN (ID, REFERENCE_ID, CREATED_AT) VALUES (?,?,?)";
     private static final String INSERT_CHECK_IN_REQUEST = "INSERT INTO AIROBOT_CHECKIN_GATEWAY_OWN.CHECK_IN_REQUEST (ID, CHECK_IN_ID, PROVIDER_REQUEST_ID, CREATED_AT) VALUES (?,?,?,?)";
-    private static final String INSERT_BOARDING_PASS = "INSERT INTO AIROBOT_CHECKIN_GATEWAY_OWN.BOARDING_PASS (ID, SECTION_ID, PASSENGER_ID, PROVIDER_PASSENGER_JOURNEY_ID, STATUS_CODE, STATUS_REASON, UPDATED_AT) VALUES (?,?,?,?,?,?,?)";
-    private static final String INSERT_PASSENGER = "INSERT INTO AIROBOT_CHECKIN_GATEWAY_OWN.PASSENGER (ID, CHECK_IN_ID, PROVIDER_PASSENGER_ID, NAME, LAST_NAME, DATE_OF_BIRTH) VALUES (?,?,?,?,?,?)";
-    private static final String INSERT_SECTION = "INSERT INTO AIROBOT_CHECKIN_GATEWAY_OWN.SECTION (ID, CHECK_IN_REQUEST_ID, PROVIDER_SECTION_ID, DEPARTURE_AIRPORT, ARRIVAL_AIRPORT, DEPARTURE_DATE, ARRIVAL_DATE, FLIGHT_NUMBER, MARKETING_CARRIER, OPERATING_CARRIER, PNR) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
-
+    private static final String INSERT_BOARDING_PASS = "INSERT INTO AIROBOT_CHECKIN_GATEWAY_OWN.BOARDING_PASS (ID, CHECK_IN_ID, CHECK_IN_REQUEST_ID, SECTION_ID, PASSENGER_ID, PROVIDER_PASSENGER_JOURNEY_ID, STATUS_CODE, STATUS_REASON, UPDATED_AT) VALUES (?,?,?,?,?,?,?,?,?)";
+    private static final String INSERT_PASSENGER = "INSERT INTO AIROBOT_CHECKIN_GATEWAY_OWN.PASSENGER (ID, PROVIDER_PASSENGER_ID, NAME, LAST_NAME, DATE_OF_BIRTH) VALUES (?,?,?,?,?)";
+    private static final String INSERT_SECTION = "INSERT INTO AIROBOT_CHECKIN_GATEWAY_OWN.SECTION (ID, PROVIDER_SECTION_ID, DEPARTURE_AIRPORT, ARRIVAL_AIRPORT, DEPARTURE_DATE, ARRIVAL_DATE, FLIGHT_NUMBER, MARKETING_CARRIER, OPERATING_CARRIER, PNR) VALUES (?,?,?,?,?,?,?,?,?,?)";
     private final DataSource dataSource;
 
     @Inject
@@ -39,17 +37,11 @@ public class CheckInOracleOutboundAdapter implements CheckInOutboundPort {
     public void save(CheckIn checkIn) {
 
         saveCheckIn(checkIn);
-        savePassengers(checkIn.id(), checkIn.passengers());
         saveCheckInRequests(checkIn.id(), checkIn.checkInRequests());
-        saveSections(checkIn.checkInRequests());
-        saveBoardingPasses(checkIn.boardingPasses());
+        savePassengers(checkIn.id(), checkIn.passengers());
+        saveSections(checkIn.sections());
+        saveBoardingPasses(checkIn.id(), checkIn.boardingPasses());
 
-    }
-
-    private void saveSections(List<CheckInRequest> checkInRequests) {
-        for (CheckInRequest checkInRequest : checkInRequests) {
-            saveSections(checkInRequest.id(), checkInRequest.sections());
-        }
     }
 
     private void saveCheckInRequests(CheckInId checkInId, List<CheckInRequest> checkInRequests) {
@@ -69,21 +61,20 @@ public class CheckInOracleOutboundAdapter implements CheckInOutboundPort {
         }
     }
 
-    private void saveSections(CheckInRequestId checkInRequestId, List<Section> sections) {
+    private void saveSections(List<Section> sections) {
         try (Connection connection = dataSource.getConnection(); PreparedStatement ps = connection.prepareStatement(INSERT_SECTION)) {
 
             for (Section section : sections) {
                 ps.setBytes(1, UUIDSerializer.toBytes(section.id().value()));
-                ps.setBytes(2, UUIDSerializer.toBytes(checkInRequestId.value()));
-                ps.setLong(3, section.providerSectionId().valueLong());
-                ps.setString(4, section.departureAirport().iataCode());
-                ps.setString(5, section.arrivalAirport().iataCode());
-                ps.setObject(6, section.departureDate());
-                ps.setObject(7, section.arrivalAirport());
-                ps.setInt(8, section.flightNumber());
-                ps.setString(9, section.marketingCarrier().iataCode());
-                ps.setString(10, section.operatingCarrier().iataCode());
-                ps.setString(11, section.pnr());
+                ps.setLong(2, section.providerSectionId().valueLong());
+                ps.setString(3, section.departureAirport().iataCode());
+                ps.setString(4, section.arrivalAirport().iataCode());
+                ps.setObject(5, section.departureDate());
+                ps.setObject(6, section.arrivalAirport());
+                ps.setInt(7, section.flightNumber());
+                ps.setString(8, section.marketingCarrier().iataCode());
+                ps.setString(9, section.operatingCarrier().iataCode());
+                ps.setString(10, section.pnr());
                 ps.addBatch();
             }
 
@@ -99,11 +90,10 @@ public class CheckInOracleOutboundAdapter implements CheckInOutboundPort {
 
             for (Passenger passenger : passengers) {
                 ps.setBytes(1, UUIDSerializer.toBytes(passenger.id().value()));
-                ps.setBytes(2, UUIDSerializer.toBytes(checkInId.value()));
-                ps.setLong(3, passenger.providerPassengerId().valueLong());
-                ps.setString(4, passenger.name());
-                ps.setString(5, passenger.lastName());
-                ps.setObject(6, passenger.dateOfBirth());
+                ps.setLong(2, passenger.providerPassengerId().valueLong());
+                ps.setString(3, passenger.name());
+                ps.setString(4, passenger.lastName());
+                ps.setObject(5, passenger.dateOfBirth());
                 ps.addBatch();
             }
 
@@ -114,22 +104,20 @@ public class CheckInOracleOutboundAdapter implements CheckInOutboundPort {
         }
     }
 
-    private void saveBoardingPasses(List<BoardingPass> boardingPasses) {
+    private void saveBoardingPasses(CheckInId checkInId, List<BoardingPass> boardingPasses) {
         try (Connection connection = dataSource.getConnection(); PreparedStatement ps = connection.prepareStatement(INSERT_BOARDING_PASS)) {
 
             for (BoardingPass boardingPass : boardingPasses) {
 
                 ps.setBytes(1, UUIDSerializer.toBytes(boardingPass.id().value()));
-                ps.setBytes(2, UUIDSerializer.toBytes(boardingPass.section().id().value()));
-                ps.setBytes(3, UUIDSerializer.toBytes(boardingPass.passenger().id().value()));
-                ps.setLong(4, boardingPass.providerPassengerJourneyId().valueLong());
-                ps.setString(5, boardingPass.status().code().toString());
-
-                if (boardingPass.isFailed()) {
-                    ps.setString(6, boardingPass.status().reason().toString());
-                }
-
-                ps.setObject(7, Instant.now());
+                ps.setBytes(2, UUIDSerializer.toBytes(checkInId.value()));
+                ps.setBytes(3, UUIDSerializer.toBytes(boardingPass.checkInRequest().id().value()));
+                ps.setBytes(4, UUIDSerializer.toBytes(boardingPass.section().id().value()));
+                ps.setBytes(5, UUIDSerializer.toBytes(boardingPass.passenger().id().value()));
+                ps.setLong(6, boardingPass.providerPassengerJourneyId().valueLong());
+                ps.setString(7, boardingPass.status().code().toString());
+                ps.setString(8, boardingPass.status().reason() != null ? boardingPass.status().reason().toString() : null);
+                ps.setObject(9, Instant.now());
 
                 ps.addBatch();
             }
