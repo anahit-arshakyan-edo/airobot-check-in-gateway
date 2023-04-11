@@ -16,8 +16,12 @@ public class ProviderPassengerId {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         ProviderPassengerId that = (ProviderPassengerId) o;
         return id == that.id;
     }

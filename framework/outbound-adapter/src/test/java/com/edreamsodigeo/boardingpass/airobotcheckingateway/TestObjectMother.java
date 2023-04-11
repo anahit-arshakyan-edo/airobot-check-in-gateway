@@ -12,8 +12,8 @@ import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availabi
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Section;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.SectionAvailability;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.SectionBuilder;
-import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.model.JourneyAvailability;
-import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.model.PermittedDocuments;
+import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.JourneyAvailability;
+import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.PermittedDocuments;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -24,11 +24,11 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
 public class TestObjectMother {
-    private static final com.edreamsodigeo.boardingpass.airobotproviderapi.v1.model.PermittedDocuments
+    private static final com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.PermittedDocuments
             PERMITTED_DOCUMENTS_NATIONAL_ID_AND_PASSPORT_DTO = permittedDocuments();
 
-    private static final com.edreamsodigeo.boardingpass.airobotproviderapi.v1.model.PermittedDocuments
-            PERMITTED_DOCUMENTS_EMPTY_DTO = new com.edreamsodigeo.boardingpass.airobotproviderapi.v1.model.PermittedDocuments();
+    private static final com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.PermittedDocuments
+            PERMITTED_DOCUMENTS_EMPTY_DTO = new com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.PermittedDocuments();
 
     private static final Section SECTION = new SectionBuilder()
             .withAirline("IB")
@@ -44,17 +44,17 @@ public class TestObjectMother {
                     .withPassengers(PASSENGERS)
                     .build();
 
-    public static final com.edreamsodigeo.boardingpass.airobotproviderapi.v1.response.AvailabilityResponse
+    public static final com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.response.AvailabilityResponse
             AVAILABILITY_RESPONSE_DTO = availabilityResponse(journeysDto(PERMITTED_DOCUMENTS_NATIONAL_ID_AND_PASSPORT_DTO));
 
-    public static final com.edreamsodigeo.boardingpass.airobotproviderapi.v1.response.AvailabilityResponse
+    public static final com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.response.AvailabilityResponse
             AVAILABILITY_RESPONSE_PERMITTED_DOCUMENTS_EMPTY_DTO = availabilityResponse(journeysDto(PERMITTED_DOCUMENTS_EMPTY_DTO));
 
-    private static com.edreamsodigeo.boardingpass.airobotproviderapi.v1.response.AvailabilityResponse availabilityResponse(List<JourneyAvailability> journeys) {
-        com.edreamsodigeo.boardingpass.airobotproviderapi.v1.response.AvailabilityResponse availabilityResponse =
-                new com.edreamsodigeo.boardingpass.airobotproviderapi.v1.response.AvailabilityResponse();
-        com.edreamsodigeo.boardingpass.airobotproviderapi.v1.model.AvailabilityData availabilityData =
-                new com.edreamsodigeo.boardingpass.airobotproviderapi.v1.model.AvailabilityData();
+    private static com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.response.AvailabilityResponse availabilityResponse(List<JourneyAvailability> journeys) {
+        com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.response.AvailabilityResponse availabilityResponse =
+                new com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.response.AvailabilityResponse();
+        com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.AvailabilityData availabilityData =
+                new com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.AvailabilityData();
         availabilityData.setAvailable(true);
         availabilityData.setRequiresApi(true);
         availabilityData.setJourneys(journeys);
@@ -62,9 +62,9 @@ public class TestObjectMother {
         return availabilityResponse;
     }
 
-    private static List<com.edreamsodigeo.boardingpass.airobotproviderapi.v1.model.JourneyAvailability> journeysDto(PermittedDocuments permittedDocuments) {
-        com.edreamsodigeo.boardingpass.airobotproviderapi.v1.model.JourneyAvailability journeyDto =
-                new com.edreamsodigeo.boardingpass.airobotproviderapi.v1.model.JourneyAvailability();
+    private static List<com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.JourneyAvailability> journeysDto(PermittedDocuments permittedDocuments) {
+        com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.JourneyAvailability journeyDto =
+                new com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.JourneyAvailability();
         journeyDto.setAirline("IB");
         journeyDto.setDepartureAirport("BCN");
         journeyDto.setArrivalAirport("MAD");
@@ -76,36 +76,36 @@ public class TestObjectMother {
         return Collections.singletonList(journeyDto);
     }
 
-    private static com.edreamsodigeo.boardingpass.airobotproviderapi.v1.model.CheckInWindow checkInWindow() {
-        com.edreamsodigeo.boardingpass.airobotproviderapi.v1.model.CheckInWindow checkInWindow =
-                new com.edreamsodigeo.boardingpass.airobotproviderapi.v1.model.CheckInWindow();
+    private static com.edreamsodigeo.boardingpass.airobotproviderapi.v1.createcheckin.model.CheckInWindow checkInWindow() {
+        com.edreamsodigeo.boardingpass.airobotproviderapi.v1.createcheckin.model.CheckInWindow checkInWindow =
+                new com.edreamsodigeo.boardingpass.airobotproviderapi.v1.createcheckin.model.CheckInWindow();
         checkInWindow.setOpeningTime(360);
         checkInWindow.setClosingTime(60);
         return checkInWindow;
     }
 
-    private static com.edreamsodigeo.boardingpass.airobotproviderapi.v1.model.PermittedDocuments permittedDocuments() {
-        com.edreamsodigeo.boardingpass.airobotproviderapi.v1.model.PermittedDocuments permittedDocuments =
-                new com.edreamsodigeo.boardingpass.airobotproviderapi.v1.model.PermittedDocuments();
+    private static com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.PermittedDocuments permittedDocuments() {
+        com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.PermittedDocuments permittedDocuments =
+                new com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.PermittedDocuments();
 
-        com.edreamsodigeo.boardingpass.airobotproviderapi.v1.model.NationalId nationalId = nationalId();
-        com.edreamsodigeo.boardingpass.airobotproviderapi.v1.model.Passport passport = passport();
+        com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.NationalId nationalId = nationalId();
+        com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.Passport passport = passport();
 
         permittedDocuments.setNationalId(nationalId);
         permittedDocuments.setPassport(passport);
         return permittedDocuments;
     }
 
-    private static com.edreamsodigeo.boardingpass.airobotproviderapi.v1.model.Passport passport() {
-        com.edreamsodigeo.boardingpass.airobotproviderapi.v1.model.Passport passport =
-                new com.edreamsodigeo.boardingpass.airobotproviderapi.v1.model.Passport();
+    private static com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.Passport passport() {
+        com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.Passport passport =
+                new com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.Passport();
         passport.setRequirements(Arrays.asList("doc_number", "doc_country", "doc_expire_date", "doc_issue_date"));
         return passport;
     }
 
-    private static com.edreamsodigeo.boardingpass.airobotproviderapi.v1.model.NationalId nationalId() {
-        com.edreamsodigeo.boardingpass.airobotproviderapi.v1.model.NationalId nationalId =
-                new com.edreamsodigeo.boardingpass.airobotproviderapi.v1.model.NationalId();
+    private static com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.NationalId nationalId() {
+        com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.NationalId nationalId =
+                new com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.NationalId();
         nationalId.setRequirements(Arrays.asList("doc_number", "doc_country", "doc_expire_date", "doc_issue_date"));
         return nationalId;
     }

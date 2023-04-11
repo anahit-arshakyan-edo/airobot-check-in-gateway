@@ -2,6 +2,7 @@ package com.edreamsodigeo.boardingpass.airobotcheckingateway.webapp.controller;
 
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.GetAvailabilityUseCase;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.InvalidAvailabilityRequestException;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.CreateCheckInUseCase;
 import com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.response.CheckInAvailabilityResponse;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -20,13 +21,15 @@ public class CheckInControllerTest {
 
     @Mock
     private GetAvailabilityUseCase availabilityUseCase;
+    @Mock
+    private CreateCheckInUseCase createCheckInUseCase;
 
     private CheckInController controller;
 
     @BeforeMethod
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        controller = new CheckInController(availabilityUseCase);
+        controller = new CheckInController(availabilityUseCase, createCheckInUseCase);
     }
 
     @Test
