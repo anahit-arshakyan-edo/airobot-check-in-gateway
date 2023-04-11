@@ -1,8 +1,10 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway;
 
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.RequestCheckInOutboundPort;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.configuration.OutboundAdapterBindings;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.persistence.SaveCheckInOracleOutboundAdapter;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.provider.GetAvailabilityAirobotOutboundAdapter;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.provider.RequestCheckInAirobotOutboundAdapter;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.mockito.Mock;
@@ -27,7 +29,9 @@ public class OutboundAdapterBindingsTest {
     @Mock
     private GetAvailabilityAirobotOutboundAdapter airobotOutboundAdapter;
     @Mock
-    private SaveCheckInOracleOutboundAdapter checkInOracleOutboundAdapter;
+    private RequestCheckInAirobotOutboundAdapter requestCheckInAirobotOutboundAdapter;
+    @Mock
+    private SaveCheckInOracleOutboundAdapter saveCheckInOracleOutboundAdapter;
     @Mock
     private static Context context;
     @Mock
@@ -43,10 +47,11 @@ public class OutboundAdapterBindingsTest {
     public void testBindings() throws NamingException {
         when(context.lookup(DEFAULT_DATASOURCE_NAME)).thenReturn(dataSource);
 
-        Injector injector = Guice.createInjector(binder -> binder.bind(GetAvailabilityAirobotOutboundAdapter.class).toInstance(airobotOutboundAdapter), binder -> binder.bind(SaveCheckInOracleOutboundAdapter.class).toInstance(checkInOracleOutboundAdapter), new OutboundAdapterBindings());
+        Injector injector = Guice.createInjector(binder -> binder.bind(GetAvailabilityAirobotOutboundAdapter.class).toInstance(airobotOutboundAdapter), binder -> binder.bind(RequestCheckInAirobotOutboundAdapter.class).toInstance(requestCheckInAirobotOutboundAdapter), binder -> binder.bind(SaveCheckInOracleOutboundAdapter.class).toInstance(saveCheckInOracleOutboundAdapter), new OutboundAdapterBindings());
 
         assertSame(injector.getInstance(GetAvailabilityAirobotOutboundAdapter.class), airobotOutboundAdapter);
-        assertSame(injector.getInstance(SaveCheckInOracleOutboundAdapter.class), checkInOracleOutboundAdapter);
+        assertSame(injector.getInstance(SaveCheckInOracleOutboundAdapter.class), saveCheckInOracleOutboundAdapter);
+        assertSame(injector.getInstance(RequestCheckInAirobotOutboundAdapter.class), requestCheckInAirobotOutboundAdapter);
         assertSame(injector.getInstance(DataSource.class), dataSource);
 
     }
