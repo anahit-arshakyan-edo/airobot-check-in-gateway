@@ -3,6 +3,6 @@ package com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboun
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Availability;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.AvailabilityRequest;
 
-public interface AirobotOutboundPort {
+public interface GetAvailabilityOutboundPort {
     Availability getAvailability(AvailabilityRequest availabilityRequest);
 }

@@ -2,8 +2,6 @@ package com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboun
 
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.CheckIn;
 
-public interface CheckInOutboundPort {
-
-    void save(CheckIn checkIn);
-
+public interface RequestCheckInOutboundPort {
+    CheckIn request(CheckIn checkIn);
 }

@@ -10,8 +10,8 @@ import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availabi
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Section;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.SectionAvailability;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.SectionBuilder;
-import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.model.JourneyAvailability;
-import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.model.PermittedDocuments;
+import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.JourneyAvailability;
+import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.PermittedDocuments;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -31,8 +31,8 @@ public class AvailabilityResponseMapper {
             .put("doc_issue_date", DocumentRequirement.ISSUE_DATE)
             .put("doc_number", DocumentRequirement.NUMBER);
 
-    public Availability map(com.edreamsodigeo.boardingpass.airobotproviderapi.v1.response.AvailabilityResponse response) {
-        com.edreamsodigeo.boardingpass.airobotproviderapi.v1.model.AvailabilityData availabilityDataDto = response.getData();
+    public Availability map(com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.response.AvailabilityResponse response) {
+        com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.AvailabilityData availabilityDataDto = response.getData();
         boolean available = availabilityDataDto.isAvailable();
         boolean requiresApi = availabilityDataDto.isRequiresApi();
         List<SectionAvailability> checkInAvailabilities = mapJourneysAvailabilityDto(availabilityDataDto.getJourneys());
@@ -75,7 +75,7 @@ public class AvailabilityResponseMapper {
         return PASSENGER_REQUIREMENT_ENUM_MAP.getOrThrow(requirementDto);
     }
 
-    private CheckInWindow mapCheckInWindowDto(com.edreamsodigeo.boardingpass.airobotproviderapi.v1.model.CheckInWindow checkInWindowDto) {
+    private CheckInWindow mapCheckInWindowDto(com.edreamsodigeo.boardingpass.airobotproviderapi.v1.createcheckin.model.CheckInWindow checkInWindowDto) {
         Duration openingTime = mapTimeDto(checkInWindowDto.getOpeningTime());
         Duration closingTime = mapTimeDto(checkInWindowDto.getClosingTime());
         return new CheckInWindow(openingTime, closingTime);
@@ -102,7 +102,7 @@ public class AvailabilityResponseMapper {
     }
 
     private Document mapNationalIdDto(PermittedDocuments permittedDocumentsDto) {
-        com.edreamsodigeo.boardingpass.airobotproviderapi.v1.model.NationalId nationalIdDto = permittedDocumentsDto.getNationalId();
+        com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.NationalId nationalIdDto = permittedDocumentsDto.getNationalId();
         if (nationalIdDto == null) {
             return null;
         }
@@ -112,7 +112,7 @@ public class AvailabilityResponseMapper {
     }
 
     private Document mapPassportDto(PermittedDocuments permittedDocumentsDto) {
-        com.edreamsodigeo.boardingpass.airobotproviderapi.v1.model.Passport passportDto = permittedDocumentsDto.getPassport();
+        com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.Passport passportDto = permittedDocumentsDto.getPassport();
         if (passportDto == null) {
             return null;
         }

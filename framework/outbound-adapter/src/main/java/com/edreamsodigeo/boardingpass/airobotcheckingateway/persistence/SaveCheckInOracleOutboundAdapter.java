@@ -1,6 +1,6 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.persistence;
 
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.CheckInOutboundPort;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.SaveCheckInOutboundPort;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.exception.StoreException;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass.BoardingPass;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.CheckIn;
@@ -20,7 +20,7 @@ import java.time.Instant;
 import java.util.List;
 
 @Singleton
-public class CheckInOracleOutboundAdapter implements CheckInOutboundPort {
+public class SaveCheckInOracleOutboundAdapter implements SaveCheckInOutboundPort {
 
     private static final String INSERT_CHECK_IN = "INSERT INTO AIROBOT_CHECKIN_GATEWAY_OWN.CHECK_IN (ID, REFERENCE_ID, CREATED_AT) VALUES (?,?,?)";
     private static final String INSERT_CHECK_IN_REQUEST = "INSERT INTO AIROBOT_CHECKIN_GATEWAY_OWN.CHECK_IN_REQUEST (ID, CHECK_IN_ID, PROVIDER_REQUEST_ID, CREATED_AT) VALUES (?,?,?,?)";
@@ -30,18 +30,16 @@ public class CheckInOracleOutboundAdapter implements CheckInOutboundPort {
     private final DataSource dataSource;
 
     @Inject
-    public CheckInOracleOutboundAdapter(DataSource dataSource) {
+    public SaveCheckInOracleOutboundAdapter(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     public void save(CheckIn checkIn) {
-
         saveCheckIn(checkIn);
         saveCheckInRequests(checkIn.id(), checkIn.checkInRequests());
-        savePassengers(checkIn.id(), checkIn.passengers());
+        savePassengers(checkIn.passengers());
         saveSections(checkIn.sections());
         saveBoardingPasses(checkIn.id(), checkIn.boardingPasses());
-
     }
 
     private void saveCheckInRequests(CheckInId checkInId, List<CheckInRequest> checkInRequests) {
@@ -85,7 +83,7 @@ public class CheckInOracleOutboundAdapter implements CheckInOutboundPort {
         }
     }
 
-    private void savePassengers(CheckInId checkInId, List<Passenger> passengers) {
+    private void savePassengers(List<Passenger> passengers) {
         try (Connection connection = dataSource.getConnection(); PreparedStatement ps = connection.prepareStatement(INSERT_PASSENGER)) {
 
             for (Passenger passenger : passengers) {

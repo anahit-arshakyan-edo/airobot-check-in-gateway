@@ -18,13 +18,9 @@ public final class BoardingPassId {
         return new BoardingPassId(UUIDSerializer.fromBytes(id.getBytes()));
     }
 
-    ;
-
     public static BoardingPassId create() {
         return new BoardingPassId(UUIDGenerator.getInstance().generateUUID());
     }
-
-    ;
 
     public UUID value() {
         return id;
@@ -32,8 +28,12 @@ public final class BoardingPassId {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         BoardingPassId that = (BoardingPassId) o;
         return id.equals(that.id);
     }

@@ -28,8 +28,12 @@ public final class SectionId {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         SectionId sectionId = (SectionId) o;
         return id.equals(sectionId.id);
     }

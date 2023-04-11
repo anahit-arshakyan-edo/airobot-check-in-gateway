@@ -1,6 +1,6 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability;
 
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.AirobotOutboundPort;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.GetAvailabilityOutboundPort;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;
@@ -15,7 +15,7 @@ public class GetAvailabilityUseCaseImplTest {
     private  static final Availability EXPECTED_AVAILABILITY = new Availability(true, true, emptyList());
 
     @Mock
-    AirobotOutboundPort airobot;
+    GetAvailabilityOutboundPort airobot;
 
     @BeforeMethod
     public void setUp() {

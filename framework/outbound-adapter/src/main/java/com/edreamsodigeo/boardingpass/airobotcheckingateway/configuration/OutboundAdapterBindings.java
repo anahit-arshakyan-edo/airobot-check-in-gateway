@@ -1,7 +1,7 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.configuration;
 
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.AirobotOutboundPort;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.provider.AirobotOutboundAdapter;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.GetAvailabilityOutboundPort;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.provider.GetAvailabilityAirobotOutboundAdapter;
 import com.google.inject.AbstractModule;
 
 import javax.naming.InitialContext;
@@ -14,7 +14,7 @@ public class OutboundAdapterBindings extends AbstractModule {
 
     @Override
     protected void configure() {
-        bind(AirobotOutboundPort.class).to(AirobotOutboundAdapter.class);
+        bind(GetAvailabilityOutboundPort.class).to(GetAvailabilityAirobotOutboundAdapter.class);
         bind(DataSource.class).toInstance(dataSourceInstance());
     }
 
