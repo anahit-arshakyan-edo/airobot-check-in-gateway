@@ -1,7 +1,7 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.provider;
 
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Passengers;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Section;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.Passengers;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.Section;
 import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.Journey;
 import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.request.AvailabilityRequest;
 
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class AvailabilityRequestMapper {
-    public AvailabilityRequest map(com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.AvailabilityRequest request) {
+    public AvailabilityRequest map(com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.AvailabilityRequest request) {
         List<Journey> journeysDto = mapFromSectionList(request.sections());
         com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.Passengers passengersDto = mapFromPassengers(request.passengers());
         return mapFromAvailabilityRequest(journeysDto, passengersDto);

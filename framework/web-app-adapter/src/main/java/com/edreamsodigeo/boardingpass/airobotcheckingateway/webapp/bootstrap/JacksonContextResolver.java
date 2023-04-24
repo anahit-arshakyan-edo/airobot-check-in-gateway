@@ -1,5 +1,6 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.webapp.bootstrap;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
@@ -22,6 +23,7 @@ public class JacksonContextResolver implements ContextResolver<ObjectMapper> {
     private ObjectMapper init() {
         ObjectMapper objectMapperWithJavaTime = new ObjectMapper();
         objectMapperWithJavaTime.registerModule(new JavaTimeModule());
+        objectMapperWithJavaTime.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         return objectMapperWithJavaTime;
     }
 }

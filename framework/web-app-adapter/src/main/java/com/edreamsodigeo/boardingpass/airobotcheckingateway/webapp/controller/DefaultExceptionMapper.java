@@ -1,6 +1,6 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.webapp.controller;
 
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.InvalidAvailabilityRequestException;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.InvalidAvailabilityRequestException;
 import com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.exception.GatewayException;
 import com.google.common.collect.ImmutableMap;
 import com.odigeo.commons.rest.error.SimpleExceptionBean;

@@ -1,11 +1,11 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.configuration;
 
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.GetAvailabilityOutboundPort;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.RequestCheckInOutboundPort;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.SaveCheckInOutboundPort;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.outboundport.GetAvailabilityOutboundPort;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.outboundport.RequestCheckInOutboundPort;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.outboundport.SaveCheckInOutboundPort;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.persistence.SaveCheckInOracleOutboundAdapter;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.provider.GetAvailabilityAirobotOutboundAdapter;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.provider.RequestCheckInAirobotOutboundAdapter;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.provider.GetAvailabilityAirobotApiOutboundAdapter;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.provider.RequestCheckInAirobotApiOutboundAdapter;
 import com.google.inject.AbstractModule;
 
 import javax.naming.InitialContext;
@@ -18,8 +18,8 @@ public class OutboundAdapterBindings extends AbstractModule {
 
     @Override
     protected void configure() {
-        bind(GetAvailabilityOutboundPort.class).to(GetAvailabilityAirobotOutboundAdapter.class);
-        bind(RequestCheckInOutboundPort.class).to(RequestCheckInAirobotOutboundAdapter.class);
+        bind(GetAvailabilityOutboundPort.class).to(GetAvailabilityAirobotApiOutboundAdapter.class);
+        bind(RequestCheckInOutboundPort.class).to(RequestCheckInAirobotApiOutboundAdapter.class);
         bind(SaveCheckInOutboundPort.class).to(SaveCheckInOracleOutboundAdapter.class);
         bind(DataSource.class).toInstance(dataSourceInstance());
     }

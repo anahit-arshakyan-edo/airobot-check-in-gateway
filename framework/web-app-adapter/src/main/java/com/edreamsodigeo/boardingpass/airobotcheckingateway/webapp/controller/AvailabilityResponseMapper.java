@@ -1,14 +1,14 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.webapp.controller;
 
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.EnumMap;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Availability;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.CheckInWindow;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Document;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.DocumentRequirement;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.DocumentType;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.PassengerRequirement;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Section;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.SectionAvailability;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.Availability;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.CheckInWindow;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.Document;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.DocumentRequirement;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.DocumentType;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.PassengerRequirement;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.Section;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.SectionAvailability;
 import com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.response.CheckInAvailabilityResponse;
 
 import java.util.HashMap;

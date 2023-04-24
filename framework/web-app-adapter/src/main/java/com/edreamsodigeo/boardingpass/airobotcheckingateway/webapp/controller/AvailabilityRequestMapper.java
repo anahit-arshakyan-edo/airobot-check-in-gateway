@@ -1,15 +1,15 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.webapp.controller;
 
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.AvailabilityRequest;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.AvailabilityRequestBuilder;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Passengers;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Section;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.SectionBuilder;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.AvailabilityRequest;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.AvailabilityRequestBuilder;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.Passengers;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.Section;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.SectionBuilder;
 import com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.request.CheckInAvailabilityRequest;
 
 import java.util.List;
 
-import static com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Passengers.EMPTY_PASSENGERS;
+import static com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.Passengers.EMPTY_PASSENGERS;
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 

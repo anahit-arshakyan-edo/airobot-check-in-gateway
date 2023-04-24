@@ -1,9 +1,9 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway;
 
 
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.ApplicationModuleBindings;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.GetAvailabilityUseCaseImpl;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.CreateCheckInUseCaseImpl;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.ApplicationModuleBindings;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.GetAvailabilityUseCaseImpl;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.request.CreateCheckInUseCaseImpl;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.mockito.Mock;

@@ -1,6 +1,6 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.webapp.controller.mothers;
 
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.CheckInWindow;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.CheckInWindow;
 
 import static com.edreamsodigeo.boardingpass.airobotcheckingateway.webapp.controller.mothers.DurationMother.ONE_HOUR;
 import static com.edreamsodigeo.boardingpass.airobotcheckingateway.webapp.controller.mothers.DurationMother.SIX_HOURS;

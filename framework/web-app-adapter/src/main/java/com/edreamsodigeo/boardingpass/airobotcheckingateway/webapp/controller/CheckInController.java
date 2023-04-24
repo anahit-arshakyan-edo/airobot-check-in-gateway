@@ -1,15 +1,16 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.webapp.controller;
 
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Availability;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.AvailabilityRequest;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.GetAvailabilityUseCase;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.CreateCheckInUseCase;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.Availability;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.AvailabilityRequest;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.GetAvailabilityUseCase;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.request.CreateCheckInUseCase;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.request.checkin.itinerary.ItineraryCheckIn;
 import com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.ItineraryCheckInProviderResource;
 import com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.exception.GatewayException;
 import com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.request.CheckInAvailabilityRequest;
 import com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.request.CreateCheckInRequest;
 import com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.response.CheckInAvailabilityResponse;
-import com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.response.CreateCheckinResponse;
+import com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.response.CreateCheckInResponse;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.jboss.resteasy.spi.BadRequestException;
@@ -19,7 +20,7 @@ public class CheckInController implements ItineraryCheckInProviderResource {
     private final GetAvailabilityUseCase availabilityUseCase;
     private final AvailabilityRequestMapper requestMapper = new AvailabilityRequestMapper();
     private final CreateCheckInUseCase createCheckInUseCase;
-    private final CreateCheckInRequestMapper createCheckInRequestMapper = new CreateCheckInRequestMapper();
+    private final ItineraryCheckInMapper itineraryCheckInMapper = new ItineraryCheckInMapper();
     private final CreateCheckInResponseMapper createCheckInResponseMapper = new CreateCheckInResponseMapper();
 
     @Inject
@@ -38,7 +39,8 @@ public class CheckInController implements ItineraryCheckInProviderResource {
     }
 
     @Override
-    public CreateCheckinResponse createCheckIn(CreateCheckInRequest createCheckInRequest) throws GatewayException, BadRequestException {
-        return createCheckInResponseMapper.map(createCheckInUseCase.createCheckIn(createCheckInRequestMapper.map(createCheckInRequest)));
+    public CreateCheckInResponse createCheckIn(CreateCheckInRequest createCheckInRequest) throws GatewayException, BadRequestException {
+        ItineraryCheckIn requestedItineraryCheckIn = createCheckInUseCase.createCheckIn(itineraryCheckInMapper.from(createCheckInRequest));
+        return createCheckInResponseMapper.map(requestedItineraryCheckIn);
     }
 }
