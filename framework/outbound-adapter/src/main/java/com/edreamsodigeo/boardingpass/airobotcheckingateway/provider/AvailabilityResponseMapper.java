@@ -75,7 +75,7 @@ public class AvailabilityResponseMapper {
         return PASSENGER_REQUIREMENT_ENUM_MAP.getOrThrow(requirementDto);
     }
 
-    private CheckInWindow mapCheckInWindowDto(com.edreamsodigeo.boardingpass.airobotproviderapi.v1.createcheckin.model.CheckInWindow checkInWindowDto) {
+    private CheckInWindow mapCheckInWindowDto(com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.CheckInWindow checkInWindowDto) {
         Duration openingTime = mapTimeDto(checkInWindowDto.getOpeningTime());
         Duration closingTime = mapTimeDto(checkInWindowDto.getClosingTime());
         return new CheckInWindow(openingTime, closingTime);

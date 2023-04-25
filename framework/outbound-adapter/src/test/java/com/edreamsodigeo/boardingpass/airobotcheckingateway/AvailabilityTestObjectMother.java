@@ -76,9 +76,9 @@ public class AvailabilityTestObjectMother {
         return Collections.singletonList(journeyDto);
     }
 
-    private static com.edreamsodigeo.boardingpass.airobotproviderapi.v1.createcheckin.model.CheckInWindow checkInWindow() {
-        com.edreamsodigeo.boardingpass.airobotproviderapi.v1.createcheckin.model.CheckInWindow checkInWindow =
-                new com.edreamsodigeo.boardingpass.airobotproviderapi.v1.createcheckin.model.CheckInWindow();
+    private static com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.CheckInWindow checkInWindow() {
+        com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.CheckInWindow checkInWindow =
+                new com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.CheckInWindow();
         checkInWindow.setOpeningTime(360);
         checkInWindow.setClosingTime(60);
         return checkInWindow;
