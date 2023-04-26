@@ -28,7 +28,6 @@ import javax.ws.rs.BadRequestException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.edreamsodigeo.boardingpass.airobotcheckingateway.AvailabilityTestObjectMother.AVAILABILITY;
 import static com.edreamsodigeo.boardingpass.airobotcheckingateway.AvailabilityTestObjectMother.AVAILABILITY_PERMITTED_DOCUMENTS_EMPTY;

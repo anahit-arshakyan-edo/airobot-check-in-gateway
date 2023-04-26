@@ -26,6 +26,7 @@ import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.createcheckin.respon
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class SegmentCheckInMapper {
 
@@ -35,7 +36,7 @@ public class SegmentCheckInMapper {
         List<BoardingPass> requestedBoardingPasses = new ArrayList<>();
 
         for (com.edreamsodigeo.boardingpass.airobotproviderapi.v1.createcheckin.model.Passenger passenger : checkInData.getPassengers()) {
-            for (com.edreamsodigeo.boardingpass.airobotproviderapi.v1.createcheckin.model.ScheduledJourney journey : checkInData.getJourneys()) {
+            for (ScheduledJourney journey : checkInData.getJourneys()) {
                 PassengerJourney passengerJourneyToMap = matchPassengerWithJourney(checkInData.getPassengerJourneys(), passenger, journey);
                 requestedBoardingPasses.add(getBoardingPass(passenger, journey, passengerJourneyToMap));
             }
@@ -49,8 +50,7 @@ public class SegmentCheckInMapper {
                         checkInData.getLang(),
                         checkInData.getCountry(),
                         checkInData.getBookingEmail(),
-                        checkInData.getEmail())
-                ,
+                        checkInData.getEmail()),
                 requestedBoardingPasses
         );
     }
@@ -63,13 +63,13 @@ public class SegmentCheckInMapper {
                 .orElseThrow();
     }
 
-    private BoardingPass getBoardingPass(com.edreamsodigeo.boardingpass.airobotproviderapi.v1.createcheckin.model.Passenger passenger, ScheduledJourney scheduledJourney, com.edreamsodigeo.boardingpass.airobotproviderapi.v1.createcheckin.model.PassengerJourney passengerJourney) {
+    private BoardingPass getBoardingPass(com.edreamsodigeo.boardingpass.airobotproviderapi.v1.createcheckin.model.Passenger passenger, ScheduledJourney scheduledJourney, PassengerJourney passengerJourney) {
         return new BoardingPass(
                 BoardingPassId.create(),
                 getSection(scheduledJourney),
                 getPassenger(passenger),
                 new Status(
-                        Status.Code.valueOf(passengerJourney.getStatus().toUpperCase()),
+                        Status.Code.valueOf(passengerJourney.getStatus().toUpperCase(Locale.ENGLISH)),
                         null
                 ),
                 ProviderPassengerSectionId.from(passengerJourney.getPassengerJourneyId())
@@ -106,12 +106,12 @@ public class SegmentCheckInMapper {
 
     private Gender getPassengerGender(com.edreamsodigeo.boardingpass.airobotproviderapi.v1.createcheckin.model.Gender gender) {
         switch (gender) {
-            case MALE:
-                return Gender.M;
-            case FEMALE:
-                return Gender.F;
-            default:
-                return null;
+        case MALE:
+            return Gender.M;
+        case FEMALE:
+            return Gender.F;
+        default:
+            return null;
         }
     }
 
