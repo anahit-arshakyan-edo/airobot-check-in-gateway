@@ -61,7 +61,7 @@ public class SaveCheckInOracleOutboundAdapter implements SaveCheckInOutboundPort
 
             ps.execute();
         } catch (SQLException e) {
-            throw new StoreException("Exception while saving CheckInRequest", e);
+            throw new StoreException("Exception while saving CheckInRequest: " + e.getMessage(), e);
         }
     }
 
@@ -85,7 +85,7 @@ public class SaveCheckInOracleOutboundAdapter implements SaveCheckInOutboundPort
             ps.executeBatch();
 
         } catch (SQLException e) {
-            throw new StoreException("Exception while saving Sections", e);
+            throw new StoreException("Exception while saving Sections: " + e.getMessage(), e);
         }
     }
 
@@ -104,7 +104,7 @@ public class SaveCheckInOracleOutboundAdapter implements SaveCheckInOutboundPort
             ps.executeBatch();
 
         } catch (SQLException e) {
-            throw new StoreException("Exception while saving Passengers", e);
+            throw new StoreException("Exception while saving Passengers: " + e.getMessage(), e);
         }
     }
 
@@ -129,7 +129,7 @@ public class SaveCheckInOracleOutboundAdapter implements SaveCheckInOutboundPort
             ps.executeBatch();
 
         } catch (SQLException e) {
-            throw new StoreException("Exception while saving BoardingPasses", e);
+            throw new StoreException("Exception while saving BoardingPasses: " + e.getMessage(), e);
         }
     }
 
@@ -140,7 +140,7 @@ public class SaveCheckInOracleOutboundAdapter implements SaveCheckInOutboundPort
             ps.setTimestamp(3, Timestamp.from(Instant.now()));
             ps.execute();
         } catch (SQLException e) {
-            throw new StoreException("Exception while saving CheckIn", e);
+            throw new StoreException("Exception while saving CheckIn: " + e.getMessage(), e);
         }
     }
 
