@@ -1,7 +1,7 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.webapp.controller.mothers;
 
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.Section;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.SectionBuilder;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Section;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.SectionBuilder;
 
 public class SectionMother {
     public static final com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.model.Section SECTION_DTO =

@@ -1,12 +1,12 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.webapp.controller.mothers;
 
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.Availability;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.AvailabilityRequest;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.AvailabilityRequestBuilder;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Availability;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.AvailabilityRequest;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.AvailabilityRequestBuilder;
 import com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.request.CheckInAvailabilityRequest;
 import com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.response.CheckInAvailabilityResponse;
 
-import static com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.Passengers.EMPTY_PASSENGERS;
+import static com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Passengers.EMPTY_PASSENGERS;
 import static com.edreamsodigeo.boardingpass.airobotcheckingateway.webapp.controller.mothers.SectionAvailabilityMother.CHECK_IN_AVAILABILITY_DTO;
 import static com.edreamsodigeo.boardingpass.airobotcheckingateway.webapp.controller.mothers.SectionAvailabilityMother.SECTION_AVAILABILITY;
 import static com.edreamsodigeo.boardingpass.airobotcheckingateway.webapp.controller.mothers.SectionMother.SECTION;

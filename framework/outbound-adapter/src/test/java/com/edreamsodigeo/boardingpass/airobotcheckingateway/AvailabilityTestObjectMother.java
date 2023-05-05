@@ -1,17 +1,17 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway;
 
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.Availability;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.AvailabilityRequest;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.AvailabilityRequestBuilder;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.CheckInWindow;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.Document;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.DocumentRequirement;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.DocumentType;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.PassengerRequirement;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.Passengers;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.Section;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.SectionAvailability;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.SectionBuilder;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Availability;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.AvailabilityRequest;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.AvailabilityRequestBuilder;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.CheckInWindow;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Document;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.DocumentRequirement;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.DocumentType;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.PassengerRequirement;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Passengers;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Section;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.SectionAvailability;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.SectionBuilder;
 import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.JourneyAvailability;
 import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.PermittedDocuments;
 

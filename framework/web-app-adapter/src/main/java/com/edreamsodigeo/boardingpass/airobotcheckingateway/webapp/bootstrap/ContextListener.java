@@ -2,7 +2,7 @@ package com.edreamsodigeo.boardingpass.airobotcheckingateway.webapp.bootstrap;
 
 import com.codahale.metrics.health.HealthCheckRegistry;
 import com.edreams.configuration.ConfigurationEngine;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.ApplicationModuleBindings;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.ApplicationModuleBindings;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.configuration.OutboundAdapterBindings;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.webapp.healthcheck.AirobotHealthCheck;
 import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.AirobotResourceModule;

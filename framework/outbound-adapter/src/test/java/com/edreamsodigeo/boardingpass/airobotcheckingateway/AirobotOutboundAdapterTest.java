@@ -1,22 +1,22 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway;
 
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.Airline;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.Airport;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.Availability;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.DocumentType;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.outboundport.GetAvailabilityOutboundPort;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Airline;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Airport;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Availability;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.DocumentType;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.GetAvailabilityOutboundPort;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.configuration.AirobotApiConfiguration;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.outboundport.RequestCheckInOutboundPort;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.request.checkin.itinerary.ItineraryCheckIn;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.request.checkin.segment.BoardingPassDeliveryCustomization;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.request.checkin.segment.ProviderRequestId;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.request.checkin.segment.SegmentCheckIn;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.request.passenger.Document;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.request.passenger.Gender;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.request.passenger.Passenger;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.request.section.Section;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.provider.GetAvailabilityAirobotApiOutboundAdapter;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.provider.RequestCheckInAirobotApiOutboundAdapter;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.RequestCheckInOutboundPort;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ItineraryCheckIn;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.BoardingPassDeliveryCustomization;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.ProviderRequestId;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.SegmentCheckIn;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.passenger.Document;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.passenger.Gender;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.passenger.Passenger;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.section.Section;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.provider.availability.GetAvailabilityAirobotApiOutboundAdapter;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.provider.create.RequestCheckInAirobotApiOutboundAdapter;
 import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.AirobotResource;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -89,18 +89,16 @@ public class AirobotOutboundAdapterTest {
         when(airobotResource.createCheckIn(eq(API_TOKEN), any())).thenReturn(CREATE_CHECK_IN_RESPONSE_DTO);
 
         ItineraryCheckIn itineraryCheckIn = itineraryCheckIn();
-        ItineraryCheckIn requestedItineraryCheckIn = requestCheckInOutboundPort.request(itineraryCheckIn);
 
-        assertNotNull(requestedItineraryCheckIn);
-
-        List<SegmentCheckIn> segmentCheckIns = requestedItineraryCheckIn.segmentCheckIns();
-
-        assertNotNull(segmentCheckIns);
-        SegmentCheckIn outboundSegmentCheckIn = segmentCheckIns.stream()
+        SegmentCheckIn outboundSegmentCheckIn = itineraryCheckIn.segmentCheckIns().stream()
                 .filter(segmentCheckIn -> "MXP".equals(segmentCheckIn.boardingPasses().get(0).section().departureAirport().iataCode()))
                 .findFirst().orElseThrow();
 
-        BoardingPassDeliveryCustomization boardingPassDeliveryCustomization = outboundSegmentCheckIn.boardingPassDeliveryCustomization();
+        SegmentCheckIn requestedSegmentCheckIn = requestCheckInOutboundPort.request(itineraryCheckIn.referenceId(), outboundSegmentCheckIn);
+
+        assertNotNull(requestedSegmentCheckIn);
+
+        BoardingPassDeliveryCustomization boardingPassDeliveryCustomization = requestedSegmentCheckIn.boardingPassDeliveryCustomization();
 
         assertEquals("jon@doe.com", boardingPassDeliveryCustomization.bookingEmail());
         assertEquals("jon@doe.com", boardingPassDeliveryCustomization.deliveryEmail());
@@ -108,9 +106,9 @@ public class AirobotOutboundAdapterTest {
         assertEquals("es_ES", boardingPassDeliveryCustomization.language());
         assertEquals("EDREAMS", boardingPassDeliveryCustomization.brand());
 
-        assertEquals(ProviderRequestId.from("12345ABCDEF"), outboundSegmentCheckIn.providerRequestId());
+        assertEquals(ProviderRequestId.from("12345ABCDEF"), requestedSegmentCheckIn.providerRequestId());
 
-        List<Passenger> passengers = outboundSegmentCheckIn.passengers();
+        List<Passenger> passengers = requestedSegmentCheckIn.passengers();
         assertNotNull(passengers);
 
         Passenger passenger = passengers.get(0);
@@ -131,7 +129,7 @@ public class AirobotOutboundAdapterTest {
         assertEquals(LocalDate.of(2020, 10,  1), document.issueDate());
         assertEquals(LocalDate.of(2025, 10,  1), document.expireDate());
 
-        List<Section> sections = outboundSegmentCheckIn.sections();
+        List<Section> sections = requestedSegmentCheckIn.sections();
         assertNotNull(sections);
 
         Section section = sections.get(0);
@@ -143,7 +141,7 @@ public class AirobotOutboundAdapterTest {
         assertEquals(LocalDateTime.of(2023, 2, 1, 23, 0), section.arrivalDate());
         assertEquals(Airline.create("FR"), section.marketingCarrier());
         assertEquals(Airline.create("FR"), section.operatingCarrier());
-        assertEquals(1234, section.flightNumber());
+        assertEquals(Integer.valueOf(1234), section.flightNumber());
         assertEquals("ABC123", section.pnr());
 
     }

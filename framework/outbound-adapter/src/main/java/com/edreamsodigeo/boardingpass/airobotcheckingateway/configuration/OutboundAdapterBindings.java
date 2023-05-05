@@ -1,11 +1,15 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.configuration;
 
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.outboundport.GetAvailabilityOutboundPort;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.outboundport.RequestCheckInOutboundPort;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.outboundport.SaveCheckInOutboundPort;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.GetAvailabilityOutboundPort;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.GetCheckInOutboundPort;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.GetCheckInStatusOutboundPort;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.RequestCheckInOutboundPort;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.SaveCheckInOutboundPort;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.persistence.GetCheckInOracleOutboundAdapter;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.persistence.SaveCheckInOracleOutboundAdapter;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.provider.GetAvailabilityAirobotApiOutboundAdapter;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.provider.RequestCheckInAirobotApiOutboundAdapter;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.provider.availability.GetAvailabilityAirobotApiOutboundAdapter;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.provider.status.GetCheckInStatusAirobotApiOutboundAdapter;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.provider.create.RequestCheckInAirobotApiOutboundAdapter;
 import com.google.inject.AbstractModule;
 
 import javax.naming.InitialContext;
@@ -21,6 +25,8 @@ public class OutboundAdapterBindings extends AbstractModule {
         bind(GetAvailabilityOutboundPort.class).to(GetAvailabilityAirobotApiOutboundAdapter.class);
         bind(RequestCheckInOutboundPort.class).to(RequestCheckInAirobotApiOutboundAdapter.class);
         bind(SaveCheckInOutboundPort.class).to(SaveCheckInOracleOutboundAdapter.class);
+        bind(GetCheckInOutboundPort.class).to(GetCheckInOracleOutboundAdapter.class);
+        bind(GetCheckInStatusOutboundPort.class).to(GetCheckInStatusAirobotApiOutboundAdapter.class);
         bind(DataSource.class).toInstance(dataSourceInstance());
     }
 

@@ -1,24 +1,24 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway;
 
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.Airline;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.Airport;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.DocumentType;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.request.boardingpass.BoardingPass;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.request.boardingpass.BoardingPassId;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.request.boardingpass.ProviderPassengerSectionId;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.request.boardingpass.Status;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.request.checkin.itinerary.ItineraryCheckIn;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.request.checkin.itinerary.ItineraryCheckInId;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.request.checkin.segment.BoardingPassDeliveryCustomization;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.request.checkin.segment.ProviderRequestId;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.request.checkin.segment.SegmentCheckIn;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.request.checkin.segment.SegmentCheckInId;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.request.passenger.Gender;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.request.passenger.Passenger;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.request.passenger.PassengerId;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.request.passenger.ProviderPassengerId;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.request.section.ProviderSectionId;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.request.section.SectionId;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Airline;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Airport;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.DocumentType;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass.BoardingPass;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass.BoardingPassId;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass.ProviderPassengerSectionId;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass.Status;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ItineraryCheckIn;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ItineraryCheckInId;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.BoardingPassDeliveryCustomization;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.ProviderRequestId;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.SegmentCheckIn;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.SegmentCheckInId;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.passenger.Gender;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.passenger.Passenger;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.passenger.PassengerId;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.passenger.ProviderPassengerId;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.section.ProviderSectionId;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.section.SectionId;
 import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.createcheckin.model.PassengerJourney;
 import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.createcheckin.model.ScheduledJourney;
 
@@ -68,8 +68,8 @@ public class CreateCheckInTestObjectMother {
         document.setType(com.edreamsodigeo.boardingpass.airobotproviderapi.v1.createcheckin.model.DocumentType.PASSPORT);
         document.setNumber("123456");
         document.setCountry("ES");
-        document.setIssueDate(LocalDate.of(2020, 10,  1));
-        document.setExpireDate(LocalDate.of(2025, 10,  1));
+        document.setIssueDate(LocalDate.of(2020, 10, 1));
+        document.setExpireDate(LocalDate.of(2025, 10, 1));
         return document;
     }
 
@@ -134,7 +134,13 @@ public class CreateCheckInTestObjectMother {
     }
 
     private static BoardingPassDeliveryCustomization boardingPassDeliveryCustomization() {
-        return new BoardingPassDeliveryCustomization("EDREAMS", "es_ES", "ES", "jon@doe.com", "jon@doe.com");
+        return BoardingPassDeliveryCustomization.builder()
+                .withBrand("EDREAMS")
+                .withLanguage("es_ES")
+                .withCountry("ES")
+                .withBookingEmail("jon@doe.com")
+                .withDeliveryEmail("jon@doe.com")
+                .build();
     }
 
     private static List<BoardingPass> outboundBoardingPasses() {
@@ -158,28 +164,48 @@ public class CreateCheckInTestObjectMother {
     }
 
     private static Passenger passenger() {
-        return new Passenger(
-                PassengerId.create(), ProviderPassengerId.notAssigned(), "Jon", "Doe", LocalDate.of(1980, 2, 1),
-                Gender.M, "ES", new com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.request.passenger.Document(
-                DocumentType.PASSPORT, "ABC123", LocalDate.of(2025, 10, 1), LocalDate.of(2020, 10, 1), "ES"
-        )
-        );
+        return Passenger.builder()
+                .withId(PassengerId.create())
+                .withProviderPassengerId(ProviderPassengerId.notAssigned())
+                .withName("Jon")
+                .withLastName("Doe")
+                .withDateOfBirth(LocalDate.of(1980, 2, 1))
+                .withGender(Gender.M)
+                .withNationality("ES")
+                .withDocument(com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.passenger.Document.create(
+                        DocumentType.PASSPORT, "ABC123", LocalDate.of(2025, 10, 1), LocalDate.of(2020, 10, 1), "ES"
+                ))
+                .build();
     }
 
-    private static com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.request.section.Section outboundSection() {
-        return new com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.request.section.Section(
-                SectionId.create(), ProviderSectionId.notAssigned(), Airline.create("FR"), Airline.create("FR"),
-                Airport.create("MXP"), Airport.create("BCN"), LocalDateTime.of(2023, 2, 1, 22, 0), LocalDateTime.of(2023, 2, 1, 23, 0),
-                1234, "ABC123"
-        );
+    private static com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.section.Section outboundSection() {
+        return com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.section.Section.builder()
+                .withId(SectionId.create())
+                .withProviderSectionId(ProviderSectionId.notAssigned())
+                .withMarketingCarrier(Airline.create("FR"))
+                .withOperatingCarrier(Airline.create("FR"))
+                .withDepartureAirport(Airport.create("MXP"))
+                .withArrivalAirport(Airport.create("BCN"))
+                .withDepartureDate(LocalDateTime.of(2023, 2, 1, 22, 0))
+                .withArrivalDate(LocalDateTime.of(2023, 2, 1, 23, 0))
+                .withFlightNumber(1234)
+                .withPnr("ABC123")
+                .build();
     }
 
-    private static com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.request.section.Section inboundSection() {
-        return new com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.request.section.Section(
-                SectionId.create(), ProviderSectionId.notAssigned(), Airline.create("FR"), Airline.create("FR"),
-                Airport.create("BCN"), Airport.create("MXP"), LocalDateTime.of(2023, 2, 5, 22, 0), LocalDateTime.of(2023, 2, 5, 23, 0),
-                1234, "ABC123"
-        );
+    private static com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.section.Section inboundSection() {
+        return com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.section.Section.builder()
+                .withId(SectionId.create())
+                .withProviderSectionId(ProviderSectionId.notAssigned())
+                .withMarketingCarrier(Airline.create("FR"))
+                .withOperatingCarrier(Airline.create("FR"))
+                .withDepartureAirport(Airport.create("BCN"))
+                .withArrivalAirport(Airport.create("MXP"))
+                .withDepartureDate(LocalDateTime.of(2023, 2, 5, 22, 0))
+                .withArrivalDate(LocalDateTime.of(2023, 2, 5, 23, 0))
+                .withFlightNumber(1234)
+                .withPnr("ABC123")
+                .build();
     }
 
 }

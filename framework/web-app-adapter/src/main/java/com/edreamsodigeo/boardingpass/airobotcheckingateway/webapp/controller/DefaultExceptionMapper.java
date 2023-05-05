@@ -1,6 +1,6 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.webapp.controller;
 
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.InvalidAvailabilityRequestException;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.ValidationException;
 import com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.exception.GatewayException;
 import com.google.common.collect.ImmutableMap;
 import com.odigeo.commons.rest.error.SimpleExceptionBean;
@@ -23,12 +23,9 @@ public class DefaultExceptionMapper implements ExceptionMapper<RuntimeException>
     private static final Logger LOGGER = Logger.getLogger(DefaultExceptionMapper.class);
     private static final MappedError UNEXPECTED_EXCEPTION = new MappedError(500, GatewayException.class);
     private static final ImmutableMap<Class<? extends Exception>, MappedError> EXCEPTION_MAPPER = ImmutableMap.of(
-            InvalidAvailabilityRequestException.class, new MappedError(400, BadRequestException.class)
+            ValidationException.class, new MappedError(400, BadRequestException.class),
+            IllegalArgumentException.class, new MappedError(400, BadRequestException.class)
     );
-
-    public DefaultExceptionMapper() {
-
-    }
 
     @Override
     public Response toResponse(RuntimeException e) {

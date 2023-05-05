@@ -1,13 +1,13 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.webapp.controller.mothers;
 
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.Document;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.SectionAvailability;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Document;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.SectionAvailability;
 
 import java.util.Map;
 
-import static com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.DocumentRequirement.NUMBER;
-import static com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.DocumentType.NATIONAL_ID;
-import static com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.PassengerRequirement.GENDER;
+import static com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.DocumentRequirement.NUMBER;
+import static com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.DocumentType.NATIONAL_ID;
+import static com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.PassengerRequirement.GENDER;
 import static com.edreamsodigeo.boardingpass.airobotcheckingateway.webapp.controller.mothers.CheckInWindowMother.CHECK_IN_WINDOW;
 import static com.edreamsodigeo.boardingpass.airobotcheckingateway.webapp.controller.mothers.CheckInWindowMother.CHECK_IN_WINDOW_DTO;
 import static com.edreamsodigeo.boardingpass.airobotcheckingateway.webapp.controller.mothers.DocumentMother.DOCUMENT_DTO;

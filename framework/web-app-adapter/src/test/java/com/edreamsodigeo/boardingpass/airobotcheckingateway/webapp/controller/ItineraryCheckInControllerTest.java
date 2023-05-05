@@ -1,8 +1,9 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.webapp.controller;
 
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.GetAvailabilityUseCase;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.availability.InvalidAvailabilityRequestException;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.domain.request.CreateCheckInUseCase;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.GetAvailabilityUseCase;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.ValidationException;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.CreateCheckInUseCase;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.status.GetCheckInStatusUseCase;
 import com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.response.CheckInAvailabilityResponse;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -23,13 +24,15 @@ public class ItineraryCheckInControllerTest {
     private GetAvailabilityUseCase availabilityUseCase;
     @Mock
     private CreateCheckInUseCase createCheckInUseCase;
+    @Mock
+    private GetCheckInStatusUseCase getCheckInStatusUseCase;
 
     private CheckInController controller;
 
     @BeforeMethod
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        controller = new CheckInController(availabilityUseCase, createCheckInUseCase);
+        controller = new CheckInController(availabilityUseCase, createCheckInUseCase, getCheckInStatusUseCase);
     }
 
     @Test
@@ -41,7 +44,7 @@ public class ItineraryCheckInControllerTest {
         assertEquals(response, CHECK_IN_AVAILABILITY_RESPONSE_DTO);
     }
 
-    @Test(expectedExceptions = InvalidAvailabilityRequestException.class)
+    @Test(expectedExceptions = ValidationException.class)
     public void throwsAnExceptionForAnInvalidRequestWithNoSection() {
         controller.getCheckInAvailability(CHECK_IN_AVAILABILITY_REQUEST_NO_SECTION_DTO);
     }
