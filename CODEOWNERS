@@ -1,4 +1,4 @@
 @@@Architecture @"Antonio Di Virgilio"
 
-/scripts-layer/src/main/resources/com/odigeo/resources/scripts/** @@Architecture
+scripts-layer/src/main/resources/com/odigeo/resources/scripts/** @@Architecture
 CODEOWNERS @@Architecture
