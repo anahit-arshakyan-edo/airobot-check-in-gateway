@@ -1,8 +1,8 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.provider.status;
 
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass.ProviderRequestId;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.configuration.AirobotApiConfiguration;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.GetCheckInStatusOutboundPort;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.ProviderRequestId;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.SegmentCheckIn;
 import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.AirobotResource;
 import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getcheckinstatus.response.CheckInStatusResponse;

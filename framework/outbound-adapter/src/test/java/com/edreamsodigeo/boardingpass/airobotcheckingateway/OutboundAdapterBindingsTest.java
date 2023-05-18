@@ -32,7 +32,7 @@ public class OutboundAdapterBindingsTest {
     @Mock
     private RequestCheckInAirobotApiOutboundAdapter requestCheckInAirobotApiOutboundAdapter;
     @Mock
-    private SaveCheckInOracleOutboundAdapter saveCheckInOracleOutboundAdapter;
+    private SaveCheckInOracleOutboundAdapter saveItineraryCheckInOracleOutboundAdapter;
     @Mock
     private GetCheckInStatusAirobotApiOutboundAdapter getCheckInStatusAirobotApiOutboundAdapter;
     @Mock
@@ -55,13 +55,13 @@ public class OutboundAdapterBindingsTest {
         Injector injector = Guice.createInjector(
             binder -> binder.bind(GetAvailabilityAirobotApiOutboundAdapter.class).toInstance(airobotOutboundAdapter),
             binder -> binder.bind(RequestCheckInAirobotApiOutboundAdapter.class).toInstance(requestCheckInAirobotApiOutboundAdapter),
-            binder -> binder.bind(SaveCheckInOracleOutboundAdapter.class).toInstance(saveCheckInOracleOutboundAdapter),
+            binder -> binder.bind(SaveCheckInOracleOutboundAdapter.class).toInstance(saveItineraryCheckInOracleOutboundAdapter),
             binder -> binder.bind(GetCheckInStatusAirobotApiOutboundAdapter.class).toInstance(getCheckInStatusAirobotApiOutboundAdapter),
             binder -> binder.bind(GetCheckInOracleOutboundAdapter.class).toInstance(getCheckInOracleOutboundAdapter),
                 new OutboundAdapterBindings());
 
         assertSame(injector.getInstance(GetAvailabilityAirobotApiOutboundAdapter.class), airobotOutboundAdapter);
-        assertSame(injector.getInstance(SaveCheckInOracleOutboundAdapter.class), saveCheckInOracleOutboundAdapter);
+        assertSame(injector.getInstance(SaveCheckInOracleOutboundAdapter.class), saveItineraryCheckInOracleOutboundAdapter);
         assertSame(injector.getInstance(RequestCheckInAirobotApiOutboundAdapter.class), requestCheckInAirobotApiOutboundAdapter);
         assertSame(injector.getInstance(GetCheckInStatusAirobotApiOutboundAdapter.class), getCheckInStatusAirobotApiOutboundAdapter);
         assertSame(injector.getInstance(GetCheckInOracleOutboundAdapter.class), getCheckInOracleOutboundAdapter);

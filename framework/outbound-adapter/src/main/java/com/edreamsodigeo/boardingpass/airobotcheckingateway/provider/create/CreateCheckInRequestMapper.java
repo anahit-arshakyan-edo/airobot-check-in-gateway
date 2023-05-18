@@ -1,8 +1,9 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.provider.create;
 
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass.BoardingPass;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.BoardingPassDeliveryCustomization;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.SegmentCheckIn;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass.DeliveryOptions;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass.ProviderReferenceId;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.ProviderRequest;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.section.Section;
 import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.createcheckin.model.Document;
 import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.createcheckin.model.DocumentType;
@@ -15,23 +16,25 @@ import java.util.List;
 
 public class CreateCheckInRequestMapper {
 
-    public CreateCheckInRequest map(SegmentCheckIn segmentCheckIn, long referenceId) {
+    public CreateCheckInRequest map(ProviderReferenceId providerReferenceId, ProviderRequest providerRequest) {
+
+        List<BoardingPass> boardingPasses = providerRequest.boardingPasses();
 
         List<Passenger> passengers = new ArrayList<>();
         List<ScheduledJourney> journeys = new ArrayList<>();
-        BoardingPassDeliveryCustomization boardingPassDeliveryCustomization = segmentCheckIn.boardingPassDeliveryCustomization();
+        DeliveryOptions deliveryOptions = providerRequest.deliveryOptions();
 
-        for (BoardingPass boardingPass: segmentCheckIn.boardingPasses()) {
+        for (BoardingPass boardingPass: boardingPasses) {
             passengers.add(mapPassenger(boardingPass.passenger()));
-            journeys.add(mapJourney(boardingPass.section(), referenceId));
+            journeys.add(mapJourney(boardingPass.section(), providerReferenceId.valueLong()));
         }
 
         return CreateCheckInRequest.builder()
-                .bookingEmail(boardingPassDeliveryCustomization.bookingEmail())
-                .email(boardingPassDeliveryCustomization.deliveryEmail())
-                .lang(boardingPassDeliveryCustomization.language())
-                .brand(boardingPassDeliveryCustomization.brand())
-                .country(boardingPassDeliveryCustomization.country())
+                .bookingEmail(deliveryOptions.bookingEmail())
+                .email(deliveryOptions.deliveryEmail())
+                .lang(deliveryOptions.language())
+                .brand(deliveryOptions.brand())
+                .country(deliveryOptions.country())
                 .passengers(passengers)
                 .journeys(journeys)
                 .build();

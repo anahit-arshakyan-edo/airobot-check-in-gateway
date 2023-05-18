@@ -2,15 +2,14 @@ package com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request
 
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.RequestCheckInOutboundPort;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.SaveCheckInOutboundPort;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.ProviderRequest;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ItineraryCheckIn;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.SegmentCheckIn;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ItineraryCheckInId;
 import com.google.inject.Inject;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.edreams.configuration.ConfigurationEngine.injectMembers;
 
@@ -21,7 +20,7 @@ public class CreateCheckInUseCaseImpl implements CreateCheckInUseCase {
     @Inject
     private RequestCheckInOutboundPort requestCheckInOutboundPort;
     @Inject
-    private SaveCheckInOutboundPort saveCheckInOutboundPort;
+    private SaveCheckInOutboundPort saveItineraryCheckInOutboundPort;
 
     @PostConstruct
     public void init() {
@@ -29,22 +28,22 @@ public class CreateCheckInUseCaseImpl implements CreateCheckInUseCase {
     }
 
     @Override
-    public ItineraryCheckIn createCheckIn(ItineraryCheckIn itineraryCheckInToBeRequested) {
+    public ItineraryCheckInId createCheckIn(ItineraryCheckIn itineraryCheckIn) {
 
-        List<SegmentCheckIn> requestedSegmentCheckIns = new ArrayList<>();
+        sendAndUpdateCheckInRequests(itineraryCheckIn);
+        storeItineraryCheckIn(itineraryCheckIn);
 
-        for (SegmentCheckIn segmentCheckInToBeRequested : itineraryCheckInToBeRequested.segmentCheckIns()) {
-            SegmentCheckIn requestedSegmentCheckIn = requestCheckInOutboundPort.request(itineraryCheckInToBeRequested.referenceId(), segmentCheckInToBeRequested);
-            requestedSegmentCheckIns.add(requestedSegmentCheckIn);
+        return itineraryCheckIn.id();
+    }
+
+    private void sendAndUpdateCheckInRequests(ItineraryCheckIn itineraryCheckIn) {
+        for (ProviderRequest providerRequest : itineraryCheckIn.providerRequests()) {
+            requestCheckInOutboundPort.send(itineraryCheckIn.referenceId(), providerRequest);
         }
+    }
 
-        ItineraryCheckIn requestedItineraryCheckIn = new ItineraryCheckIn(
-                itineraryCheckInToBeRequested.id(),
-                requestedSegmentCheckIns
-        );
-
-        saveCheckInOutboundPort.save(requestedItineraryCheckIn);
-        return requestedItineraryCheckIn;
+    private void storeItineraryCheckIn(ItineraryCheckIn itineraryCheckIn) {
+        saveItineraryCheckInOutboundPort.save(itineraryCheckIn);
     }
 
 }

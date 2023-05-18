@@ -5,12 +5,10 @@ import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availabi
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.DocumentType;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass.BoardingPass;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass.BoardingPassId;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass.DeliveryOptions;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass.ProviderPassengerSectionId;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass.Status;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.BoardingPassDeliveryCustomization;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.ProviderRequestId;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.SegmentCheckIn;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.SegmentCheckInId;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.passenger.Document;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.passenger.Gender;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.passenger.Passenger;
@@ -43,18 +41,14 @@ public class SegmentCheckInMapper {
             }
         }
 
-        return new SegmentCheckIn(
-                SegmentCheckInId.create(),
-                ProviderRequestId.from(checkInData.getRequestId()),
-                BoardingPassDeliveryCustomization.builder()
+        return SegmentCheckIn.from(requestedBoardingPasses,
+                DeliveryOptions.builder()
                         .withBrand(checkInData.getBrand())
                         .withLanguage(checkInData.getLang())
                         .withCountry(checkInData.getCountry())
                         .withBookingEmail(checkInData.getBookingEmail())
                         .withDeliveryEmail(checkInData.getEmail())
-                        .build(),
-                requestedBoardingPasses
-        );
+                        .build());
     }
 
     private PassengerJourney mapPassengerJourney(List<PassengerJourney> passengerJourneys, com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getcheckinstatus.model.Passenger passenger, ScheduledJourney journey) {
@@ -66,16 +60,16 @@ public class SegmentCheckInMapper {
     }
 
     private BoardingPass mapBoardingPass(com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getcheckinstatus.model.Passenger passenger, ScheduledJourney scheduledJourney, PassengerJourney passengerJourney) {
-        return new BoardingPass(
-                BoardingPassId.create(),
-                mapSection(scheduledJourney),
-                mapPassenger(passenger),
-                new Status(
+        return BoardingPass.builder()
+                .withId(BoardingPassId.create())
+                .withProviderPassengerSectionId(ProviderPassengerSectionId.from(passengerJourney.getPassengerJourneyId()))
+                .withStatus(new Status(
                         Status.Code.valueOf(passengerJourney.getStatus().toUpperCase(Locale.ENGLISH)),
                         null
-                ),
-                ProviderPassengerSectionId.from(passengerJourney.getPassengerJourneyId())
-        );
+                ))
+                .withPassenger(mapPassenger(passenger))
+                .withSection(mapSection(scheduledJourney))
+                .build();
     }
 
     private Section mapSection(ScheduledJourney journey) {

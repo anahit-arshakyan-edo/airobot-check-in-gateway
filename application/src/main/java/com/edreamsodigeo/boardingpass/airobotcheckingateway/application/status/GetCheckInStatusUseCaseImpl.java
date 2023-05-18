@@ -2,9 +2,9 @@ package com.edreamsodigeo.boardingpass.airobotcheckingateway.application.status;
 
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.GetCheckInOutboundPort;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.GetCheckInStatusOutboundPort;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass.ProviderRequestId;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ItineraryCheckIn;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ItineraryCheckInId;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.ProviderRequestId;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.SegmentCheckIn;
 import com.google.inject.Inject;
 
@@ -39,7 +39,7 @@ public class GetCheckInStatusUseCaseImpl implements GetCheckInStatusUseCase {
         List<ProviderRequestId> providerRequestIds = this.getCheckInOutboundPort.getProviderRequestIds(itineraryCheckInId);
 
         if (providerRequestIds.isEmpty()) {
-            throw new ProviderRequestNotFoundException("No Provider Requests belonging to this CheckIn ID have been found");
+            throw new ItineraryCheckInNotFoundException("No Provider Requests belonging to this CheckIn ID have been found");
         }
 
         for (ProviderRequestId providerRequestId : providerRequestIds) {

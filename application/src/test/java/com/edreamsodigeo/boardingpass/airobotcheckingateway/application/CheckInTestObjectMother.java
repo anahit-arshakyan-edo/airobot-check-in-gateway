@@ -5,14 +5,12 @@ import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availabi
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.DocumentType;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass.BoardingPass;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass.BoardingPassId;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass.DeliveryOptions;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass.ProviderPassengerSectionId;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass.Status;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ItineraryCheckIn;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ItineraryCheckInId;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.BoardingPassDeliveryCustomization;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.ProviderRequestId;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.SegmentCheckIn;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.SegmentCheckInId;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.passenger.Gender;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.passenger.Passenger;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.passenger.PassengerId;
@@ -32,38 +30,38 @@ public class CheckInTestObjectMother {
 
     public static ItineraryCheckIn oneWayWithoutStopsItineraryCheckIn() {
         List<SegmentCheckIn> segmentCheckIns = new ArrayList<>();
-        SegmentCheckIn outboundSegment = new SegmentCheckIn(SegmentCheckInId.create(), ProviderRequestId.from(OUTBOUND_PROVIDER_REQUEST_ID), boardingPassDeliveryCustomization(), outboundBoardingPassesWithoutStops());
+        SegmentCheckIn outboundSegment = SegmentCheckIn.from(outboundBoardingPassesWithoutStops(), boardingPassDeliveryCustomization());
         segmentCheckIns.add(outboundSegment);
-        return new ItineraryCheckIn(ItineraryCheckInId.create(), segmentCheckIns);
+        return ItineraryCheckIn.from(ItineraryCheckInId.create(), segmentCheckIns);
     }
 
     public static ItineraryCheckIn oneWayWithStopsItineraryCheckIn() {
         List<SegmentCheckIn> segmentCheckIns = new ArrayList<>();
-        SegmentCheckIn outboundSegment = new SegmentCheckIn(SegmentCheckInId.create(), ProviderRequestId.from(OUTBOUND_PROVIDER_REQUEST_ID), boardingPassDeliveryCustomization(), outboundBoardingPassesWithStops());
+        SegmentCheckIn outboundSegment = SegmentCheckIn.from(outboundBoardingPassesWithStops(), boardingPassDeliveryCustomization());
         segmentCheckIns.add(outboundSegment);
-        return new ItineraryCheckIn(ItineraryCheckInId.create(), segmentCheckIns);
+        return ItineraryCheckIn.from(ItineraryCheckInId.create(), segmentCheckIns);
     }
 
     public static ItineraryCheckIn roundTripWithoutStopsItineraryCheckIn() {
         List<SegmentCheckIn> segmentCheckIns = new ArrayList<>();
-        SegmentCheckIn outboundSegment = new SegmentCheckIn(SegmentCheckInId.create(), ProviderRequestId.from(OUTBOUND_PROVIDER_REQUEST_ID), boardingPassDeliveryCustomization(), outboundBoardingPassesWithoutStops());
-        SegmentCheckIn inboundSegment = new SegmentCheckIn(SegmentCheckInId.create(), ProviderRequestId.from(INBOUND_PROVIDER_REQUEST_ID), boardingPassDeliveryCustomization(), inboundBoardingPassesWithoutStops());
+        SegmentCheckIn outboundSegment = SegmentCheckIn.from(outboundBoardingPassesWithoutStops(), boardingPassDeliveryCustomization());
+        SegmentCheckIn inboundSegment = SegmentCheckIn.from(inboundBoardingPassesWithoutStops(), boardingPassDeliveryCustomization());
         segmentCheckIns.add(outboundSegment);
         segmentCheckIns.add(inboundSegment);
-        return new ItineraryCheckIn(ItineraryCheckInId.create(), segmentCheckIns);
+        return ItineraryCheckIn.from(ItineraryCheckInId.create(), segmentCheckIns);
     }
 
     public static ItineraryCheckIn roundTripWithStopsItineraryCheckIn() {
         List<SegmentCheckIn> segmentCheckIns = new ArrayList<>();
-        SegmentCheckIn outboundSegment = new SegmentCheckIn(SegmentCheckInId.create(), ProviderRequestId.from(OUTBOUND_PROVIDER_REQUEST_ID), boardingPassDeliveryCustomization(), outboundBoardingPassesWithStops());
-        SegmentCheckIn inboundSegment = new SegmentCheckIn(SegmentCheckInId.create(), ProviderRequestId.from(INBOUND_PROVIDER_REQUEST_ID), boardingPassDeliveryCustomization(), inboundBoardingPassesWithStops());
+        SegmentCheckIn outboundSegment = SegmentCheckIn.from(outboundBoardingPassesWithStops(), boardingPassDeliveryCustomization());
+        SegmentCheckIn inboundSegment = SegmentCheckIn.from(inboundBoardingPassesWithStops(), boardingPassDeliveryCustomization());
         segmentCheckIns.add(outboundSegment);
         segmentCheckIns.add(inboundSegment);
-        return new ItineraryCheckIn(ItineraryCheckInId.create(), segmentCheckIns);
+        return ItineraryCheckIn.from(ItineraryCheckInId.create(), segmentCheckIns);
     }
 
-    private static BoardingPassDeliveryCustomization boardingPassDeliveryCustomization() {
-        return BoardingPassDeliveryCustomization.builder()
+    private static DeliveryOptions boardingPassDeliveryCustomization() {
+        return DeliveryOptions.builder()
                 .withBrand("EDREAMS")
                 .withLanguage("es_ES")
                 .withCountry("ES")
@@ -75,8 +73,13 @@ public class CheckInTestObjectMother {
     private static List<BoardingPass> outboundBoardingPassesWithoutStops() {
         List<BoardingPass> boardingPasses = new ArrayList<>();
 
-        BoardingPass boardingPass = new BoardingPass(BoardingPassId.create(), outboundSectionA(), passenger(),
-                new Status(Status.Code.PENDING, null), ProviderPassengerSectionId.notAssigned());
+        BoardingPass boardingPass = BoardingPass.builder()
+                .withId(BoardingPassId.create())
+                .withSection(outboundSectionA())
+                .withPassenger(passenger())
+                .withStatus(new Status(Status.Code.PENDING, null))
+                .withProviderPassengerSectionId(ProviderPassengerSectionId.notAssigned())
+                .build();
 
         boardingPasses.add(boardingPass);
         return boardingPasses;
@@ -85,11 +88,21 @@ public class CheckInTestObjectMother {
     private static List<BoardingPass> outboundBoardingPassesWithStops() {
         List<BoardingPass> boardingPasses = new ArrayList<>();
 
-        BoardingPass boardingPassA = new BoardingPass(BoardingPassId.create(), outboundSectionA(), passenger(),
-                new Status(Status.Code.PENDING, null), ProviderPassengerSectionId.notAssigned());
+        BoardingPass boardingPassA = BoardingPass.builder()
+                .withId(BoardingPassId.create())
+                .withSection(outboundSectionA())
+                .withPassenger(passenger())
+                .withStatus(new Status(Status.Code.PENDING, null))
+                .withProviderPassengerSectionId(ProviderPassengerSectionId.notAssigned())
+                .build();
 
-        BoardingPass boardingPassB = new BoardingPass(BoardingPassId.create(), outboundSectionB(), passenger(),
-                new Status(Status.Code.PENDING, null), ProviderPassengerSectionId.notAssigned());
+        BoardingPass boardingPassB = BoardingPass.builder()
+                .withId(BoardingPassId.create())
+                .withSection(outboundSectionB())
+                .withPassenger(passenger())
+                .withStatus(new Status(Status.Code.PENDING, null))
+                .withProviderPassengerSectionId(ProviderPassengerSectionId.notAssigned())
+                .build();
 
         boardingPasses.add(boardingPassA);
         boardingPasses.add(boardingPassB);
@@ -100,8 +113,13 @@ public class CheckInTestObjectMother {
     private static List<BoardingPass> inboundBoardingPassesWithoutStops() {
         List<BoardingPass> boardingPasses = new ArrayList<>();
 
-        BoardingPass boardingPass = new BoardingPass(BoardingPassId.create(), inboundSectionA(), passenger(),
-                new Status(Status.Code.PENDING, null), ProviderPassengerSectionId.notAssigned());
+        BoardingPass boardingPass = BoardingPass.builder()
+                .withId(BoardingPassId.create())
+                .withSection(inboundSectionA())
+                .withPassenger(passenger())
+                .withStatus(new Status(Status.Code.PENDING, null))
+                .withProviderPassengerSectionId(ProviderPassengerSectionId.notAssigned())
+                .build();
 
         boardingPasses.add(boardingPass);
         return boardingPasses;
@@ -110,11 +128,21 @@ public class CheckInTestObjectMother {
     private static List<BoardingPass> inboundBoardingPassesWithStops() {
         List<BoardingPass> boardingPasses = new ArrayList<>();
 
-        BoardingPass boardingPassA = new BoardingPass(BoardingPassId.create(), inboundSectionA(), passenger(),
-                new Status(Status.Code.PENDING, null), ProviderPassengerSectionId.notAssigned());
+        BoardingPass boardingPassA = BoardingPass.builder()
+                .withId(BoardingPassId.create())
+                .withSection(inboundSectionA())
+                .withPassenger(passenger())
+                .withStatus(new Status(Status.Code.PENDING, null))
+                .withProviderPassengerSectionId(ProviderPassengerSectionId.notAssigned())
+                .build();
 
-        BoardingPass boardingPassB = new BoardingPass(BoardingPassId.create(), inboundSectionB(), passenger(),
-                new Status(Status.Code.PENDING, null), ProviderPassengerSectionId.notAssigned());
+        BoardingPass boardingPassB = BoardingPass.builder()
+                .withId(BoardingPassId.create())
+                .withSection(inboundSectionB())
+                .withPassenger(passenger())
+                .withStatus(new Status(Status.Code.PENDING, null))
+                .withProviderPassengerSectionId(ProviderPassengerSectionId.notAssigned())
+                .build();
 
         boardingPasses.add(boardingPassA);
         boardingPasses.add(boardingPassB);
@@ -163,7 +191,7 @@ public class CheckInTestObjectMother {
                 .withDepartureDate(LocalDateTime.of(2023, 2, 1, 22, 0))
                 .withArrivalDate(LocalDateTime.of(2023, 2, 1, 23, 0))
                 .withFlightNumber(1234)
-                .withPnr("ABC123")
+                .withPnr("ABC456")
                 .build();
     }
 
@@ -193,7 +221,7 @@ public class CheckInTestObjectMother {
                 .withDepartureDate(LocalDateTime.of(2023, 2, 5, 22, 0))
                 .withArrivalDate(LocalDateTime.of(2023, 2, 5, 23, 0))
                 .withFlightNumber(1234)
-                .withPnr("ABC123")
+                .withPnr("ABC456")
                 .build();
     }
 

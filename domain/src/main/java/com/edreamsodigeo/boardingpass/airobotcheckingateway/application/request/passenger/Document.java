@@ -6,6 +6,7 @@ import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.validati
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.Objects;
 
 public final class Document {
     @NotNull
@@ -50,5 +51,22 @@ public final class Document {
 
     public String country() {
         return country;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Document document = (Document) o;
+        return type == document.type && number.equals(document.number) && expireDate.equals(document.expireDate) && Objects.equals(issueDate, document.issueDate) && country.equals(document.country);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, number, expireDate, issueDate, country);
     }
 }

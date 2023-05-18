@@ -9,10 +9,8 @@ import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass.Status;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ItineraryCheckIn;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ItineraryCheckInId;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.BoardingPassDeliveryCustomization;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass.DeliveryOptions;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.SegmentCheckIn;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.SegmentCheckInId;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.ProviderRequestId;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.passenger.Document;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.passenger.Gender;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.passenger.Passenger;
@@ -42,10 +40,10 @@ public class ItineraryCheckInMapper {
             }
         }
 
-        return new ItineraryCheckIn(ItineraryCheckInId.create(), segmentCheckIns);
+        return ItineraryCheckIn.from(ItineraryCheckInId.create(), segmentCheckIns);
     }
 
-    private SegmentCheckIn mapSegmentCheckIn(com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.model.create.Passenger passenger, Segment flightSegment, BoardingPassDeliveryCustomization boardingPassDeliveryCustomization) {
+    private SegmentCheckIn mapSegmentCheckIn(com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.model.create.Passenger passenger, Segment flightSegment, DeliveryOptions deliveryOptions) {
 
         List<BoardingPass> boardingPasses = new ArrayList<>();
 
@@ -53,16 +51,14 @@ public class ItineraryCheckInMapper {
             boardingPasses.add(mapBoardingPass(mapSection(section), mapPassenger(passenger), new Status(Status.Code.INITIALIZED, null)));
         }
 
-        return new SegmentCheckIn(
-                SegmentCheckInId.create(),
-                ProviderRequestId.notAssigned(),
-                boardingPassDeliveryCustomization,
-                boardingPasses
+        return SegmentCheckIn.from(
+                boardingPasses,
+                deliveryOptions
         );
     }
 
-    private BoardingPassDeliveryCustomization mapBoardingPassDeliveryCustomization(CreateCheckInRequest createCheckInRequestDto) {
-        return BoardingPassDeliveryCustomization.builder()
+    private DeliveryOptions mapBoardingPassDeliveryCustomization(CreateCheckInRequest createCheckInRequestDto) {
+        return DeliveryOptions.builder()
                 .withBrand(createCheckInRequestDto.getWebsite().getBrand().name())
                 .withLanguage(createCheckInRequestDto.getLocale())
                 .withCountry(createCheckInRequestDto.getWebsite().getCode())
@@ -72,12 +68,14 @@ public class ItineraryCheckInMapper {
     }
 
     private BoardingPass mapBoardingPass(Section section, Passenger passenger, Status status) {
-        return new BoardingPass(
-                BoardingPassId.create(),
-                section,
-                passenger,
-                status,
-                ProviderPassengerSectionId.notAssigned());
+
+        return BoardingPass.builder()
+                .withId(BoardingPassId.create())
+                .withSection(section)
+                .withPassenger(passenger)
+                .withStatus(status)
+                .withProviderPassengerSectionId(ProviderPassengerSectionId.notAssigned())
+                .build();
     }
 
     private Section mapSection(com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.model.create.Section section) {

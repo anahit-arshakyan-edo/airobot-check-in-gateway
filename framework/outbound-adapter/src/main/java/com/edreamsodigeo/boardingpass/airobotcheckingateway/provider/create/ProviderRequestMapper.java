@@ -6,11 +6,9 @@ import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availabi
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass.BoardingPass;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass.BoardingPassId;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass.ProviderPassengerSectionId;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass.ProviderRequestId;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass.Status;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.BoardingPassDeliveryCustomization;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.ProviderRequestId;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.SegmentCheckIn;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.SegmentCheckInId;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.ProviderRequest;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.passenger.Document;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.passenger.Gender;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.passenger.Passenger;
@@ -28,9 +26,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class SegmentCheckInMapper {
+public class ProviderRequestMapper {
 
-    public SegmentCheckIn map(CreateCheckInResponse createCheckInResponse) {
+    public void updateProviderRequest(ProviderRequest providerRequest, CreateCheckInResponse createCheckInResponse) {
+
+        List<BoardingPass> providerRequestBoardingPasses = providerRequest.boardingPasses();
+
 
         CheckInData checkInData = createCheckInResponse.getData();
         List<BoardingPass> requestedBoardingPasses = new ArrayList<>();
@@ -42,18 +43,17 @@ public class SegmentCheckInMapper {
             }
         }
 
-        return new SegmentCheckIn(
-                SegmentCheckInId.create(),
-                ProviderRequestId.from(checkInData.getRequestId()),
-                BoardingPassDeliveryCustomization.builder()
-                        .withBrand(checkInData.getBrand())
-                        .withLanguage(checkInData.getLang())
-                        .withCountry(checkInData.getCountry())
-                        .withBookingEmail(checkInData.getBookingEmail())
-                        .withDeliveryEmail(checkInData.getEmail())
-                        .build(),
-                requestedBoardingPasses
-        );
+        providerRequest.setProviderRequestId(ProviderRequestId.from(checkInData.getRequestId()));
+
+        for (BoardingPass requestedBoardingPass : requestedBoardingPasses) {
+            BoardingPass providerRequestBoardingPass = providerRequestBoardingPasses.stream().filter(boardingPass -> boardingPass.equals(requestedBoardingPass)).findAny().orElseThrow();
+            providerRequestBoardingPass.setStatus(requestedBoardingPass.status());
+
+            providerRequestBoardingPass.setProviderPassengerSectionId(requestedBoardingPass.providerPassengerSectionId());
+            providerRequestBoardingPass.section().setProviderSectionId(requestedBoardingPass.section().providerSectionId());
+            providerRequestBoardingPass.passenger().setProviderPassengerId(requestedBoardingPass.passenger().providerPassengerId());
+        }
+
     }
 
     private PassengerJourney mapPassengerJourney(List<PassengerJourney> passengerJourneys, com.edreamsodigeo.boardingpass.airobotproviderapi.v1.createcheckin.model.Passenger passenger, ScheduledJourney journey) {
@@ -65,16 +65,16 @@ public class SegmentCheckInMapper {
     }
 
     private BoardingPass mapBoardingPass(com.edreamsodigeo.boardingpass.airobotproviderapi.v1.createcheckin.model.Passenger passenger, ScheduledJourney scheduledJourney, PassengerJourney passengerJourney) {
-        return new BoardingPass(
-                BoardingPassId.create(),
-                mapSection(scheduledJourney),
-                mapPassenger(passenger),
-                new Status(
+        return BoardingPass.builder()
+                .withId(BoardingPassId.create())
+                .withSection(mapSection(scheduledJourney))
+                .withPassenger(mapPassenger(passenger))
+                .withStatus(new Status(
                         Status.Code.valueOf(passengerJourney.getStatus().toUpperCase(Locale.ENGLISH)),
                         null
-                ),
-                ProviderPassengerSectionId.from(passengerJourney.getPassengerJourneyId())
-        );
+                ))
+                .withProviderPassengerSectionId(ProviderPassengerSectionId.from(passengerJourney.getPassengerJourneyId()))
+                .build();
     }
 
     private Section mapSection(ScheduledJourney journey) {

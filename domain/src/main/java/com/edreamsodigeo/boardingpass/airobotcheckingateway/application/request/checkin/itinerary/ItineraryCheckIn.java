@@ -1,6 +1,8 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary;
 
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass.BoardingPass;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass.ProviderReferenceId;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.ProviderRequest;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.SegmentCheckIn;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.passenger.Passenger;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.section.Section;
@@ -21,6 +23,14 @@ public class ItineraryCheckIn {
         this.segmentCheckIns = segmentCheckIns;
     }
 
+    public static ItineraryCheckIn from(ItineraryCheckInId id, List<SegmentCheckIn> segmentCheckIns) {
+        return new ItineraryCheckIn(id, segmentCheckIns);
+    }
+
+    public static ItineraryCheckIn from(List<SegmentCheckIn> segmentCheckIns) {
+        return new ItineraryCheckIn(ItineraryCheckInId.create(), segmentCheckIns);
+    }
+
     public ItineraryCheckInId id() {
         return id;
     }
@@ -35,7 +45,9 @@ public class ItineraryCheckIn {
 
     public List<BoardingPass> boardingPasses() {
         return segmentCheckIns.stream()
-                .map(SegmentCheckIn::boardingPasses)
+                .map(SegmentCheckIn::providerRequests)
+                .flatMap(List::stream)
+                .map(ProviderRequest::boardingPasses)
                 .flatMap(List::stream)
                 .collect(Collectors.toList());
     }
@@ -44,7 +56,6 @@ public class ItineraryCheckIn {
         return segmentCheckIns().stream()
                 .map(SegmentCheckIn::sections)
                 .flatMap(List::stream)
-                .distinct()
                 .collect(Collectors.toList());
     }
 
@@ -52,7 +63,13 @@ public class ItineraryCheckIn {
         return segmentCheckIns().stream()
                 .map(SegmentCheckIn::passengers)
                 .flatMap(List::stream)
-                .distinct()
+                .collect(Collectors.toList());
+    }
+
+    public List<ProviderRequest> providerRequests() {
+        return segmentCheckIns().stream()
+                .map(SegmentCheckIn::providerRequests)
+                .flatMap(List::stream)
                 .collect(Collectors.toList());
     }
 

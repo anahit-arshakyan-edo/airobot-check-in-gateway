@@ -1,8 +1,8 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport;
 
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ProviderReferenceId;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.SegmentCheckIn;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass.ProviderReferenceId;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.ProviderRequest;
 
 public interface RequestCheckInOutboundPort {
-    SegmentCheckIn request(ProviderReferenceId providerReferenceId, SegmentCheckIn segmentCheckIn);
+    void send(ProviderReferenceId providerReferenceId, ProviderRequest providerRequest);
 }

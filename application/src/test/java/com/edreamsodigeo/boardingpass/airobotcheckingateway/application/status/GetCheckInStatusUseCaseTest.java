@@ -4,9 +4,9 @@ import com.edreams.configuration.ConfigurationEngine;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.CheckInTestObjectMother;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.GetCheckInOutboundPort;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.GetCheckInStatusOutboundPort;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass.ProviderRequestId;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ItineraryCheckIn;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ItineraryCheckInId;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.ProviderRequestId;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.SegmentCheckIn;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.section.Section;
 import com.google.inject.AbstractModule;
@@ -158,7 +158,7 @@ public class GetCheckInStatusUseCaseTest {
         assertSame(inboundSectionB, expectedInboundSectionB);
     }
 
-    @Test(expectedExceptions = ProviderRequestNotFoundException.class)
+    @Test(expectedExceptions = ItineraryCheckInNotFoundException.class)
     public void noProviderRequestsFound() {
         when(getCheckInOutboundPort.getProviderRequestIds(any())).thenReturn(Collections.emptyList());
 

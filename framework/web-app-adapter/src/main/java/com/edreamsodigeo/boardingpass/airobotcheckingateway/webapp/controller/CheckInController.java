@@ -46,8 +46,8 @@ public class CheckInController implements ItineraryCheckInProviderResource {
 
     @Override
     public CreateCheckInResponse createCheckIn(CreateCheckInRequest createCheckInRequest) throws GatewayException, BadRequestException {
-        ItineraryCheckIn requestedItineraryCheckIn = createCheckInUseCase.createCheckIn(itineraryCheckInMapper.map(createCheckInRequest));
-        return createCheckInResponseMapper.map(requestedItineraryCheckIn);
+        ItineraryCheckInId itineraryCheckInId = createCheckInUseCase.createCheckIn(itineraryCheckInMapper.map(createCheckInRequest));
+        return createCheckInResponseMapper.map(itineraryCheckInId);
     }
 
     @Override

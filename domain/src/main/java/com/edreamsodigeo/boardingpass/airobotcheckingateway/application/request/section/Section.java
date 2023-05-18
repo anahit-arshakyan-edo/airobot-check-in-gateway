@@ -12,7 +12,7 @@ import java.util.Objects;
 public class Section {
 
     private final SectionId id;
-    private final ProviderSectionId providerSectionId;
+    private ProviderSectionId providerSectionId;
     private final Airline marketingCarrier;
     @NotNull
     private final Airline operatingCarrier;
@@ -82,6 +82,11 @@ public class Section {
         return operatingCarrier;
     }
 
+    public void setProviderSectionId(ProviderSectionId providerSectionId) {
+        this.providerSectionId = providerSectionId;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -91,12 +96,12 @@ public class Section {
             return false;
         }
         Section section = (Section) o;
-        return id.equals(section.id);
+        return Objects.equals(marketingCarrier, section.marketingCarrier) && operatingCarrier.equals(section.operatingCarrier) && departureAirport.equals(section.departureAirport) && arrivalAirport.equals(section.arrivalAirport) && departureDate.equals(section.departureDate) && arrivalDate.equals(section.arrivalDate) && flightNumber.equals(section.flightNumber) && pnr.equals(section.pnr);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(marketingCarrier, operatingCarrier, departureAirport, arrivalAirport, departureDate, arrivalDate, flightNumber, pnr);
     }
 
     public static Section.SectionBuilder builder() {

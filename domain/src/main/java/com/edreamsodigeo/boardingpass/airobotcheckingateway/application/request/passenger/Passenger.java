@@ -9,7 +9,7 @@ import java.util.Objects;
 public class Passenger {
 
     private final PassengerId id;
-    private final ProviderPassengerId providerPassengerId;
+    private ProviderPassengerId providerPassengerId;
     @NotBlank
     private final String name;
     @NotBlank
@@ -62,6 +62,10 @@ public class Passenger {
         return document;
     }
 
+    public void setProviderPassengerId(ProviderPassengerId providerPassengerId) {
+        this.providerPassengerId = providerPassengerId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -71,16 +75,16 @@ public class Passenger {
             return false;
         }
         Passenger passenger = (Passenger) o;
-        return id.equals(passenger.id);
-    }
-
-    public static Passenger.PassengerBuilder builder() {
-        return new Passenger.PassengerBuilder();
+        return name.equals(passenger.name) && lastName.equals(passenger.lastName) && Objects.equals(dateOfBirth, passenger.dateOfBirth) && gender == passenger.gender && Objects.equals(nationality, passenger.nationality) && Objects.equals(document, passenger.document);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(name, lastName, dateOfBirth, gender, nationality, document);
+    }
+
+    public static Passenger.PassengerBuilder builder() {
+        return new Passenger.PassengerBuilder();
     }
 
     public static class PassengerBuilder {

@@ -1,4 +1,4 @@
-package com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment;
+package com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass;
 
 import java.util.Objects;
 
