@@ -4,8 +4,8 @@ import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availabi
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Section;
 import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.Journey;
 import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.request.AvailabilityRequest;
+import org.apache.commons.lang3.StringUtils;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,7 +33,7 @@ public class AvailabilityRequestMapper {
 
     private com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.Passengers mapFromPassengers(Passengers passengers) {
         return com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.Passengers.builder()
-                .citizenship((passengers.citizenships() == null || passengers.citizenships().isEmpty()) ? null : passengers.citizenships().get(0)) //Super contract receive a list, but aiorbot we only have a string, it's correct?
+                .citizenship((passengers.citizenships() == null || passengers.citizenships().isEmpty()) ? StringUtils.EMPTY : passengers.citizenships().get(0)) //Super contract receive a list, but aiorbot we only have a string, it's correct?
                 .adults(passengers.adults())
                 .teens(0) // airobot model has this field that is not present in super-contract
                 .children(passengers.children())
