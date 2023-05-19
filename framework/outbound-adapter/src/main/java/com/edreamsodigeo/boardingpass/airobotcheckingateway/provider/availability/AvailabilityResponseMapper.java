@@ -102,20 +102,22 @@ public class AvailabilityResponseMapper {
     }
 
     private Document mapNationalIdDto(PermittedDocuments permittedDocumentsDto) {
-        com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.NationalId nationalIdDto = permittedDocumentsDto.getNationalId();
-        if (nationalIdDto == null) {
+        if (permittedDocumentsDto == null || permittedDocumentsDto.getNationalId() == null) {
             return null;
         }
+
+        com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.NationalId nationalIdDto = permittedDocumentsDto.getNationalId();
 
         List<DocumentRequirement> nationalIdRequirements = mapDocumentRequirementsDto(nationalIdDto.getRequirements());
         return new Document(DocumentType.NATIONAL_ID, nationalIdRequirements);
     }
 
     private Document mapPassportDto(PermittedDocuments permittedDocumentsDto) {
-        com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.Passport passportDto = permittedDocumentsDto.getPassport();
-        if (passportDto == null) {
+        if (permittedDocumentsDto == null || permittedDocumentsDto.getPassport() == null) {
             return null;
         }
+
+        com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.model.Passport passportDto = permittedDocumentsDto.getPassport();
 
         List<DocumentRequirement> passportRequirements = mapDocumentRequirementsDto(passportDto.getRequirements());
         return new Document(DocumentType.PASSPORT, passportRequirements);

@@ -24,7 +24,7 @@ public class AvailabilityResponseMapper {
 
         List<SectionAvailability> availabilities = availability.sectionAvailabilities();
         List<com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.model.CheckInAvailability> availaibilitiesDto = availabilities.stream()
-                .map(this::mapChecInAvailability)
+                .map(this::mapCheckInAvailability)
                 .collect(Collectors.toList());
 
         return CheckInAvailabilityResponse.builder()
@@ -34,7 +34,7 @@ public class AvailabilityResponseMapper {
                 .build();
     }
 
-    private com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.model.CheckInAvailability mapChecInAvailability(SectionAvailability sectionAvailability) {
+    private com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.model.CheckInAvailability mapCheckInAvailability(SectionAvailability sectionAvailability) {
         return com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.model.CheckInAvailability.builder()
                 .withSection(mapSection(sectionAvailability.section()))
                 .withCheckInWindow(mapCheckInWindow(sectionAvailability.checkInWindow()))
