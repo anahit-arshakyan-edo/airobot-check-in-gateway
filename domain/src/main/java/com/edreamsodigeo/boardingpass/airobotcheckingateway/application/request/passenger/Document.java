@@ -62,7 +62,7 @@ public final class Document {
             return false;
         }
         Document document = (Document) o;
-        return type == document.type && number.equals(document.number) && expireDate.equals(document.expireDate) && Objects.equals(issueDate, document.issueDate) && country.equals(document.country);
+        return type == document.type && number.equals(document.number) && expireDate.equals(document.expireDate) && country.equals(document.country);
     }
 
     @Override

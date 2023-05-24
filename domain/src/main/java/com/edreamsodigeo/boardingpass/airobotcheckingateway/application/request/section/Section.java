@@ -7,6 +7,7 @@ import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.validati
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 public class Section {
@@ -152,12 +153,12 @@ public class Section {
         }
 
         public SectionBuilder withDepartureDate(LocalDateTime departureDate) {
-            this.departureDate = departureDate;
+            this.departureDate = departureDate.truncatedTo(ChronoUnit.MINUTES);
             return this;
         }
 
         public SectionBuilder withArrivalDate(LocalDateTime arrivalDate) {
-            this.arrivalDate = arrivalDate;
+            this.arrivalDate = arrivalDate.truncatedTo(ChronoUnit.MINUTES);
             return this;
         }
 

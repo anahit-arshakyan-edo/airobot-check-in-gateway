@@ -1,4 +1,4 @@
-package com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass;
+package com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary;
 
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.validation.Checker;
 

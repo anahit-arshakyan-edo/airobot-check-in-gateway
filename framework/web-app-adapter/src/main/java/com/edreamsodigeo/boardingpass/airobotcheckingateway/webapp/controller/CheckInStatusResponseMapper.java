@@ -1,6 +1,6 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.webapp.controller;
 
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass.BoardingPass;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.BoardingPass;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ItineraryCheckIn;
 import com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.getcheckinstatus.CheckInStatus;
 import com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.getcheckinstatus.CheckInStatusResponse;
@@ -34,7 +34,7 @@ public class CheckInStatusResponseMapper {
                 .build();
     }
 
-    private Status mapStatus(com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.boardingpass.Status status) {
+    private Status mapStatus(com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.Status status) {
 
         Status.Code statusCode = null;
         Status.Reason statusReason = null;
