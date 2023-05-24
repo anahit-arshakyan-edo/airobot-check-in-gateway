@@ -8,7 +8,7 @@ services:
     volumes:
     - ~/containersLogs/airobot-check-in-gateway:/opt/eap/standalone/log
     environment:
-      - ENV_ORACLE_HOST=local-oracle-airobot-check-in-gateway
+      - ENV_ORACLE_HOST=local-oracle
       - ENV_ORACLE_PORT=1521
       - ENV_ORACLE_SERVICE_NAME=EDDKRQA
 networks:
