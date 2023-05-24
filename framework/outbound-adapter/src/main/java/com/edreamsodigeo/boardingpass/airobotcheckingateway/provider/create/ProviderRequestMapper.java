@@ -117,6 +117,9 @@ public class ProviderRequestMapper {
     }
 
     private Document mapDocument(com.edreamsodigeo.boardingpass.airobotproviderapi.v1.createcheckin.model.Document document) {
+        if (document == null) {
+            return null;
+        }
         return Document.create(
                 DocumentType.valueOf(document.getType().name()),
                 document.getNumber(),

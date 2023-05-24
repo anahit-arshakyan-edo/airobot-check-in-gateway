@@ -107,6 +107,9 @@ public class ItineraryCheckInMapper {
     }
 
     private Document mapDocument(com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.model.create.Document document) {
+        if (document == null) {
+            return null;
+        }
         return Document.create(
                 DocumentType.valueOf(document.getType().name()),
                 document.getNumber(),

@@ -54,6 +54,9 @@ public class CreateCheckInRequestMapper {
     }
 
     private Document mapDocument(com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.passenger.Document documentToMap) {
+        if (documentToMap == null) {
+            return null;
+        }
         Document document = new Document();
         document.setType(DocumentType.valueOf(documentToMap.type().name()));
         document.setNumber(documentToMap.number());
