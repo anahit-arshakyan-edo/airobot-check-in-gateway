@@ -90,7 +90,7 @@ public class CheckInStatusResponseMapper {
                 .withArrivalAirport(section.arrivalAirport().iataCode())
                 .withDepartureDate(section.departureDate())
                 .withArrivalDate(section.arrivalDate())
-                .withMarketingCarrier(section.marketingCarrier().iataCode())
+                .withMarketingCarrier(null)
                 .withOperatingCarrier(section.operatingCarrier().iataCode())
                 .withFlightNumber(section.flightNumber())
                 .withPnr(section.pnr())

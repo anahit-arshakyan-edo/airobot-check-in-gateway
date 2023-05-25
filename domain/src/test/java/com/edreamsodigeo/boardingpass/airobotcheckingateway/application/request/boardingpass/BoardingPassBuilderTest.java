@@ -58,7 +58,6 @@ public class BoardingPassBuilderTest {
         return com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.section.Section.builder()
                 .withId(SectionId.create())
                 .withProviderSectionId(ProviderSectionId.from(1))
-                .withMarketingCarrier(Airline.create("FR"))
                 .withOperatingCarrier(Airline.create("FR"))
                 .withDepartureAirport(Airport.create("MXP"))
                 .withArrivalAirport(Airport.create("BCN"))

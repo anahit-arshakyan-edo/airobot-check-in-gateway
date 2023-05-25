@@ -82,7 +82,6 @@ public class ItineraryCheckInMapper {
         return Section.builder()
                 .withId(SectionId.create())
                 .withProviderSectionId(ProviderSectionId.notAssigned())
-                .withMarketingCarrier(Airline.create(section.getMarketingCarrier()))
                 .withOperatingCarrier(Airline.create(section.getOperatingCarrier()))
                 .withDepartureAirport(Airport.create(section.getDepartureAirport()))
                 .withArrivalAirport(Airport.create(section.getArrivalAirport()))

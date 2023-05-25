@@ -14,7 +14,6 @@ public class Section {
 
     private final SectionId id;
     private ProviderSectionId providerSectionId;
-    private final Airline marketingCarrier;
     @NotNull
     private final Airline operatingCarrier;
     @NotNull
@@ -30,10 +29,9 @@ public class Section {
     @NotBlank
     private final String pnr;
 
-    private Section(SectionId id, ProviderSectionId providerSectionId, Airline marketingCarrier, Airline operatingCarrier, Airport departureAirport, Airport arrivalAirport, LocalDateTime departureDate, LocalDateTime arrivalDate, Integer flightNumber, String pnr) {
+    private Section(SectionId id, ProviderSectionId providerSectionId, Airline operatingCarrier, Airport departureAirport, Airport arrivalAirport, LocalDateTime departureDate, LocalDateTime arrivalDate, Integer flightNumber, String pnr) {
         this.id = id;
         this.providerSectionId = providerSectionId;
-        this.marketingCarrier = marketingCarrier;
         this.operatingCarrier = operatingCarrier;
         this.departureAirport = departureAirport;
         this.arrivalAirport = arrivalAirport;
@@ -75,10 +73,6 @@ public class Section {
         return providerSectionId;
     }
 
-    public Airline marketingCarrier() {
-        return marketingCarrier;
-    }
-
     public Airline operatingCarrier() {
         return operatingCarrier;
     }
@@ -97,12 +91,12 @@ public class Section {
             return false;
         }
         Section section = (Section) o;
-        return Objects.equals(marketingCarrier, section.marketingCarrier) && operatingCarrier.equals(section.operatingCarrier) && departureAirport.equals(section.departureAirport) && arrivalAirport.equals(section.arrivalAirport) && departureDate.equals(section.departureDate) && arrivalDate.equals(section.arrivalDate) && flightNumber.equals(section.flightNumber) && pnr.equals(section.pnr);
+        return operatingCarrier.equals(section.operatingCarrier) && departureAirport.equals(section.departureAirport) && arrivalAirport.equals(section.arrivalAirport) && departureDate.equals(section.departureDate) && arrivalDate.equals(section.arrivalDate) && flightNumber.equals(section.flightNumber) && pnr.equals(section.pnr);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(marketingCarrier, operatingCarrier, departureAirport, arrivalAirport, departureDate, arrivalDate, flightNumber, pnr);
+        return Objects.hash(operatingCarrier, departureAirport, arrivalAirport, departureDate, arrivalDate, flightNumber, pnr);
     }
 
     public static Section.SectionBuilder builder() {
@@ -113,7 +107,6 @@ public class Section {
 
         private SectionId id;
         private ProviderSectionId providerSectionId;
-        private Airline marketingCarrier;
         private Airline operatingCarrier;
         private Airport departureAirport;
         private Airport arrivalAirport;
@@ -129,11 +122,6 @@ public class Section {
 
         public SectionBuilder withProviderSectionId(ProviderSectionId providerSectionId) {
             this.providerSectionId = providerSectionId;
-            return this;
-        }
-
-        public SectionBuilder withMarketingCarrier(Airline marketingCarrier) {
-            this.marketingCarrier = marketingCarrier;
             return this;
         }
 
@@ -173,7 +161,7 @@ public class Section {
         }
 
         public Section build() {
-            Section section = new Section(this.id, this.providerSectionId, this.marketingCarrier, this.operatingCarrier, this.departureAirport, this.arrivalAirport,
+            Section section = new Section(this.id, this.providerSectionId, this.operatingCarrier, this.departureAirport, this.arrivalAirport,
                     this.departureDate, this.arrivalDate, this.flightNumber, this.pnr);
             Checker.checkValidityWithJSR380(section);
             return section;

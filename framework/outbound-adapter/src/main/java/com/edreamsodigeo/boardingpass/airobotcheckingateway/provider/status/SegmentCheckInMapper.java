@@ -76,7 +76,6 @@ public class SegmentCheckInMapper {
         return Section.builder()
                 .withId(SectionId.create())
                 .withProviderSectionId(ProviderSectionId.from(journey.getId()))
-                .withMarketingCarrier(Airline.create(journey.getAirline()))
                 .withOperatingCarrier(Airline.create(journey.getAirline()))
                 .withDepartureAirport(Airport.create(journey.getDepartureAirport()))
                 .withArrivalAirport(Airport.create(journey.getArrivalAirport()))
