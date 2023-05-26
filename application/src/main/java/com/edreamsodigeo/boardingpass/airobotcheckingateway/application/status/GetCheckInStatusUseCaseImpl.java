@@ -2,7 +2,8 @@ package com.edreamsodigeo.boardingpass.airobotcheckingateway.application.status;
 
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.GetCheckInOutboundPort;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.GetCheckInStatusOutboundPort;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ProviderRequestId;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.ProviderRequestMetadata;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.BoardingPassMetadata;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ItineraryCheckIn;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ItineraryCheckInId;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.SegmentCheckIn;
@@ -36,14 +37,17 @@ public class GetCheckInStatusUseCaseImpl implements GetCheckInStatusUseCase {
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public ItineraryCheckIn getStatus(ItineraryCheckInId itineraryCheckInId) {
         List<SegmentCheckIn> segmentCheckIns = new ArrayList<>();
-        List<ProviderRequestId> providerRequestIds = this.getCheckInOutboundPort.getProviderRequestIds(itineraryCheckInId);
+        List<ProviderRequestMetadata> providerRequestsMetadata = this.getCheckInOutboundPort.getProviderRequestsMetadata(itineraryCheckInId);
 
-        if (providerRequestIds.isEmpty()) {
+        if (providerRequestsMetadata.isEmpty()) {
             throw new ItineraryCheckInNotFoundException("No Provider Requests belonging to this CheckIn ID have been found");
         }
 
-        for (ProviderRequestId providerRequestId : providerRequestIds) {
-            segmentCheckIns.add(this.getCheckInStatusOutboundPort.getStatus(providerRequestId));
+        for (ProviderRequestMetadata providerRequestMetadata : providerRequestsMetadata) {
+            List<BoardingPassMetadata> boardingPassesMetadata = this.getCheckInOutboundPort.getBoardingPassesMetadata(providerRequestMetadata.providerRequestId());
+            SegmentCheckIn segmentCheckIn = this.getCheckInStatusOutboundPort.getStatus(providerRequestMetadata.requestId());
+            BoardingPassIdMapper.fillBoardingPassesWithId(boardingPassesMetadata, segmentCheckIn.boardingPasses());
+            segmentCheckIns.add(segmentCheckIn);
         }
 
         return new ItineraryCheckIn(

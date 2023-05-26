@@ -4,7 +4,9 @@ import com.edreams.configuration.ConfigurationEngine;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.CheckInTestObjectMother;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.GetCheckInOutboundPort;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.GetCheckInStatusOutboundPort;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ProviderRequestId;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.ProviderRequestId;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.ProviderRequestMetadata;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.RequestId;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ItineraryCheckIn;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ItineraryCheckInId;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.SegmentCheckIn;
@@ -50,14 +52,14 @@ public class GetCheckInStatusUseCaseTest {
     @Test
     public void oneWayWithoutStops() {
 
-        List<ProviderRequestId> providerRequestIds = new ArrayList<>();
-        providerRequestIds.add(ProviderRequestId.from(CheckInTestObjectMother.OUTBOUND_PROVIDER_REQUEST_ID));
+        List<ProviderRequestMetadata> providerRequestsMetadata = new ArrayList<>();
+        providerRequestsMetadata.add(ProviderRequestMetadata.from(ProviderRequestId.create(), RequestId.from(CheckInTestObjectMother.OUTBOUND_PROVIDER_REQUEST_ID)));
 
         ItineraryCheckIn expectedItineraryCheckIn = CheckInTestObjectMother.oneWayWithoutStopsItineraryCheckIn();
         SegmentCheckIn expectedOutboundSegmentCheckIn = expectedItineraryCheckIn.segmentCheckIns().get(0);
 
-        when(getCheckInOutboundPort.getProviderRequestIds(any())).thenReturn(providerRequestIds);
-        when(getCheckInStatusOutboundPort.getStatus(ProviderRequestId.from(CheckInTestObjectMother.OUTBOUND_PROVIDER_REQUEST_ID)))
+        when(getCheckInOutboundPort.getProviderRequestsMetadata(any())).thenReturn(providerRequestsMetadata);
+        when(getCheckInStatusOutboundPort.getStatus(RequestId.from(CheckInTestObjectMother.OUTBOUND_PROVIDER_REQUEST_ID)))
                 .thenReturn(expectedOutboundSegmentCheckIn);
 
         ItineraryCheckIn itineraryCheckIn = getCheckInStatusUseCase.getStatus(ItineraryCheckInId.create());
@@ -72,14 +74,14 @@ public class GetCheckInStatusUseCaseTest {
     @Test
     public void oneWayWithStops() {
 
-        List<ProviderRequestId> providerRequestIds = new ArrayList<>();
-        providerRequestIds.add(ProviderRequestId.from(CheckInTestObjectMother.OUTBOUND_PROVIDER_REQUEST_ID));
+        List<ProviderRequestMetadata> providerRequestsMetadata = new ArrayList<>();
+        providerRequestsMetadata.add(ProviderRequestMetadata.from(ProviderRequestId.create(), RequestId.from(CheckInTestObjectMother.OUTBOUND_PROVIDER_REQUEST_ID)));
 
         ItineraryCheckIn expectedItineraryCheckIn = CheckInTestObjectMother.oneWayWithStopsItineraryCheckIn();
         SegmentCheckIn expectedOutboundSegmentCheckIn = expectedItineraryCheckIn.segmentCheckIns().get(0);
 
-        when(getCheckInOutboundPort.getProviderRequestIds(any())).thenReturn(providerRequestIds);
-        when(getCheckInStatusOutboundPort.getStatus(ProviderRequestId.from(CheckInTestObjectMother.OUTBOUND_PROVIDER_REQUEST_ID)))
+        when(getCheckInOutboundPort.getProviderRequestsMetadata(any())).thenReturn(providerRequestsMetadata);
+        when(getCheckInStatusOutboundPort.getStatus(RequestId.from(CheckInTestObjectMother.OUTBOUND_PROVIDER_REQUEST_ID)))
                 .thenReturn(expectedOutboundSegmentCheckIn);
 
         ItineraryCheckIn itineraryCheckIn = getCheckInStatusUseCase.getStatus(ItineraryCheckInId.create());
@@ -97,18 +99,18 @@ public class GetCheckInStatusUseCaseTest {
     @Test
     public void roundTripWithoutStops() {
 
-        List<ProviderRequestId> providerRequestIds = new ArrayList<>();
-        providerRequestIds.add(ProviderRequestId.from(CheckInTestObjectMother.OUTBOUND_PROVIDER_REQUEST_ID));
-        providerRequestIds.add(ProviderRequestId.from(CheckInTestObjectMother.INBOUND_PROVIDER_REQUEST_ID));
+        List<ProviderRequestMetadata> providerRequestsMetadata = new ArrayList<>();
+        providerRequestsMetadata.add(ProviderRequestMetadata.from(ProviderRequestId.create(), RequestId.from(CheckInTestObjectMother.OUTBOUND_PROVIDER_REQUEST_ID)));
+        providerRequestsMetadata.add(ProviderRequestMetadata.from(ProviderRequestId.create(), RequestId.from(CheckInTestObjectMother.INBOUND_PROVIDER_REQUEST_ID)));
 
         ItineraryCheckIn expectedItineraryCheckIn = CheckInTestObjectMother.roundTripWithoutStopsItineraryCheckIn();
         SegmentCheckIn expectedOutboundSegmentCheckIn = expectedItineraryCheckIn.segmentCheckIns().get(0);
         SegmentCheckIn expectedInboundSegmentCheckIn = expectedItineraryCheckIn.segmentCheckIns().get(1);
 
-        when(getCheckInOutboundPort.getProviderRequestIds(any())).thenReturn(providerRequestIds);
-        when(getCheckInStatusOutboundPort.getStatus(ProviderRequestId.from(CheckInTestObjectMother.OUTBOUND_PROVIDER_REQUEST_ID)))
+        when(getCheckInOutboundPort.getProviderRequestsMetadata(any())).thenReturn(providerRequestsMetadata);
+        when(getCheckInStatusOutboundPort.getStatus(RequestId.from(CheckInTestObjectMother.OUTBOUND_PROVIDER_REQUEST_ID)))
                 .thenReturn(expectedOutboundSegmentCheckIn);
-        when(getCheckInStatusOutboundPort.getStatus(ProviderRequestId.from(CheckInTestObjectMother.INBOUND_PROVIDER_REQUEST_ID)))
+        when(getCheckInStatusOutboundPort.getStatus(RequestId.from(CheckInTestObjectMother.INBOUND_PROVIDER_REQUEST_ID)))
                 .thenReturn(expectedInboundSegmentCheckIn);
 
         ItineraryCheckIn itineraryCheckIn = getCheckInStatusUseCase.getStatus(ItineraryCheckInId.create());
@@ -126,18 +128,18 @@ public class GetCheckInStatusUseCaseTest {
     @Test
     public void roundTripWithStops() {
 
-        List<ProviderRequestId> providerRequestIds = new ArrayList<>();
-        providerRequestIds.add(ProviderRequestId.from(CheckInTestObjectMother.OUTBOUND_PROVIDER_REQUEST_ID));
-        providerRequestIds.add(ProviderRequestId.from(CheckInTestObjectMother.INBOUND_PROVIDER_REQUEST_ID));
+        List<ProviderRequestMetadata> providerRequestsMetadata = new ArrayList<>();
+        providerRequestsMetadata.add(ProviderRequestMetadata.from(ProviderRequestId.create(), RequestId.from(CheckInTestObjectMother.OUTBOUND_PROVIDER_REQUEST_ID)));
+        providerRequestsMetadata.add(ProviderRequestMetadata.from(ProviderRequestId.create(), RequestId.from(CheckInTestObjectMother.INBOUND_PROVIDER_REQUEST_ID)));
 
         ItineraryCheckIn expectedItineraryCheckIn = CheckInTestObjectMother.roundTripWithStopsItineraryCheckIn();
         SegmentCheckIn expectedOutboundSegmentCheckIn = expectedItineraryCheckIn.segmentCheckIns().get(0);
         SegmentCheckIn expectedInboundSegmentCheckIn = expectedItineraryCheckIn.segmentCheckIns().get(1);
 
-        when(getCheckInOutboundPort.getProviderRequestIds(any())).thenReturn(providerRequestIds);
-        when(getCheckInStatusOutboundPort.getStatus(ProviderRequestId.from(CheckInTestObjectMother.OUTBOUND_PROVIDER_REQUEST_ID)))
+        when(getCheckInOutboundPort.getProviderRequestsMetadata(any())).thenReturn(providerRequestsMetadata);
+        when(getCheckInStatusOutboundPort.getStatus(RequestId.from(CheckInTestObjectMother.OUTBOUND_PROVIDER_REQUEST_ID)))
                 .thenReturn(expectedOutboundSegmentCheckIn);
-        when(getCheckInStatusOutboundPort.getStatus(ProviderRequestId.from(CheckInTestObjectMother.INBOUND_PROVIDER_REQUEST_ID)))
+        when(getCheckInStatusOutboundPort.getStatus(RequestId.from(CheckInTestObjectMother.INBOUND_PROVIDER_REQUEST_ID)))
                 .thenReturn(expectedInboundSegmentCheckIn);
 
         ItineraryCheckIn itineraryCheckIn = getCheckInStatusUseCase.getStatus(ItineraryCheckInId.create());
@@ -160,7 +162,7 @@ public class GetCheckInStatusUseCaseTest {
 
     @Test(expectedExceptions = ItineraryCheckInNotFoundException.class)
     public void noProviderRequestsFound() {
-        when(getCheckInOutboundPort.getProviderRequestIds(any())).thenReturn(Collections.emptyList());
+        when(getCheckInOutboundPort.getProviderRequestsMetadata(any())).thenReturn(Collections.emptyList());
 
         getCheckInStatusUseCase.getStatus(ItineraryCheckInId.create());
 

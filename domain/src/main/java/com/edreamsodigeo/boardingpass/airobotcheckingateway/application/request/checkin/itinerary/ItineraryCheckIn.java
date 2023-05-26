@@ -17,7 +17,7 @@ public class ItineraryCheckIn {
 
     public ItineraryCheckIn(ItineraryCheckInId id, List<SegmentCheckIn> segmentCheckIns) {
         this.id = id;
-        this.referenceId = ProviderReferenceId.from(id.value().getMostSignificantBits());
+        this.referenceId = ProviderReferenceId.from(Math.abs(id.value().getMostSignificantBits()));
         this.segmentCheckIns = segmentCheckIns;
     }
 

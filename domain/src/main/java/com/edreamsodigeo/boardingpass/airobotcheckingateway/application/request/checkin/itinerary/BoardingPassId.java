@@ -17,6 +17,10 @@ public final class BoardingPassId {
         return new BoardingPassId(UUID.fromString(id));
     }
 
+    public static BoardingPassId from(UUID id) {
+        return new BoardingPassId(id);
+    }
+
     public static BoardingPassId create() {
         return new BoardingPassId(UUIDGenerator.getInstance().generateUUID());
     }

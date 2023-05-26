@@ -4,7 +4,6 @@ import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availabi
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Airport;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.DocumentType;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.BoardingPass;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.BoardingPassId;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.DeliveryOptions;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ProviderPassengerSectionId;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.Status;
@@ -61,7 +60,6 @@ public class SegmentCheckInMapper {
 
     private BoardingPass mapBoardingPass(com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getcheckinstatus.model.Passenger passenger, ScheduledJourney scheduledJourney, PassengerJourney passengerJourney) {
         return BoardingPass.builder()
-                .withId(BoardingPassId.create())
                 .withProviderPassengerSectionId(ProviderPassengerSectionId.from(passengerJourney.getPassengerJourneyId()))
                 .withStatus(new Status(
                         Status.Code.valueOf(passengerJourney.getStatus().toUpperCase(Locale.ENGLISH)),

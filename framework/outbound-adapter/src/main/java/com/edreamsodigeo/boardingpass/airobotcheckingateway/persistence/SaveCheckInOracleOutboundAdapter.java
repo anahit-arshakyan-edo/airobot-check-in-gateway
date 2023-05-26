@@ -8,7 +8,6 @@ import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ItineraryCheckInId;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.odigeo.commons.uuid.UUIDGenerator;
 import com.odigeo.commons.uuid.UUIDSerializer;
 
 import javax.sql.DataSource;
@@ -17,8 +16,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.List;
-import java.util.UUID;
 
 @Singleton
 public class SaveCheckInOracleOutboundAdapter implements SaveCheckInOutboundPort {
@@ -51,37 +48,33 @@ public class SaveCheckInOracleOutboundAdapter implements SaveCheckInOutboundPort
 
     private void saveCheckInRequests(ItineraryCheckIn itineraryCheckIn) {
         for (ProviderRequest providerRequest : itineraryCheckIn.providerRequests()) {
-            UUID providerRequestId = saveCheckInRequest(itineraryCheckIn.id(), providerRequest);
-            saveBoardingPasses(providerRequestId, providerRequest.boardingPasses());
+            saveCheckInRequest(itineraryCheckIn.id(), providerRequest);
+            saveBoardingPasses(providerRequest);
         }
     }
 
-    private UUID saveCheckInRequest(ItineraryCheckInId itineraryCheckInId, ProviderRequest providerRequest) {
+    private void saveCheckInRequest(ItineraryCheckInId itineraryCheckInId, ProviderRequest providerRequest) {
         try (Connection connection = dataSource.getConnection(); PreparedStatement ps = connection.prepareStatement(INSERT_CHECK_IN_REQUEST)) {
 
-            UUID id = UUIDGenerator.getInstance().generateUUID();
-
-            ps.setBytes(1, UUIDSerializer.toBytes(id));
+            ps.setBytes(1, UUIDSerializer.toBytes(providerRequest.providerRequestId().value()));
             ps.setBytes(2, UUIDSerializer.toBytes(itineraryCheckInId.value()));
-            ps.setString(3, providerRequest.providerRequestId().valueString());
+            ps.setString(3, providerRequest.requestId().valueString());
             ps.setTimestamp(4, Timestamp.from(Instant.now()));
 
             ps.execute();
-
-            return id;
 
         } catch (SQLException e) {
             throw new StoreException("Exception while saving CheckInRequest: " + e.getMessage(), e);
         }
     }
 
-    private void saveBoardingPasses(UUID providerRequestId, List<BoardingPass> boardingPasses) {
+    private void saveBoardingPasses(ProviderRequest providerRequest) {
         try (Connection connection = dataSource.getConnection(); PreparedStatement ps = connection.prepareStatement(INSERT_BOARDING_PASS)) {
 
-            for (BoardingPass boardingPass : boardingPasses) {
+            for (BoardingPass boardingPass : providerRequest.boardingPasses()) {
 
                 ps.setBytes(1, UUIDSerializer.toBytes(boardingPass.id().value()));
-                ps.setBytes(2, UUIDSerializer.toBytes(providerRequestId));
+                ps.setBytes(2, UUIDSerializer.toBytes(providerRequest.providerRequestId().value()));
                 ps.setLong(3, boardingPass.providerPassengerSectionId().valueLong());
 
                 ps.addBatch();

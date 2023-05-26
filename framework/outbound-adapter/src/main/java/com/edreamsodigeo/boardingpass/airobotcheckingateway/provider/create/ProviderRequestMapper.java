@@ -3,10 +3,10 @@ package com.edreamsodigeo.boardingpass.airobotcheckingateway.provider.create;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Airline;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.Airport;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.availability.DocumentType;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.RequestId;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.BoardingPass;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.BoardingPassId;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ProviderPassengerSectionId;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ProviderRequestId;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.Status;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.ProviderRequest;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.passenger.Document;
@@ -43,7 +43,7 @@ public class ProviderRequestMapper {
             }
         }
 
-        providerRequest.setProviderRequestId(ProviderRequestId.from(checkInData.getRequestId()));
+        providerRequest.setRequestId(RequestId.from(checkInData.getRequestId()));
 
         for (BoardingPass requestedBoardingPass : requestedBoardingPasses) {
             BoardingPass providerRequestBoardingPass = providerRequestBoardingPasses.stream().filter(boardingPass -> boardingPass.equals(requestedBoardingPass)).findAny().orElseThrow();

@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class BoardingPass {
 
-    private final BoardingPassId id;
+    private BoardingPassId id;
     private final Section section;
     private final Passenger passenger;
     private Status status;
@@ -73,6 +73,10 @@ public class BoardingPass {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public void setId(BoardingPassId id) {
+        this.id = id;
     }
 
     public void setProviderPassengerSectionId(ProviderPassengerSectionId providerPassengerSectionId) {

@@ -2,33 +2,38 @@ package com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request
 
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.BoardingPass;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.DeliveryOptions;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ProviderRequestId;
 
 import java.util.List;
 import java.util.Objects;
 
 public final class ProviderRequest {
 
-    private ProviderRequestId providerRequestId;
+    private final ProviderRequestId providerRequestId;
+    private RequestId requestId;
     private final List<BoardingPass> boardingPasses;
     private final DeliveryOptions deliveryOptions;
 
-    private ProviderRequest(ProviderRequestId providerRequestId, List<BoardingPass> boardingPasses, DeliveryOptions deliveryOptions) {
+    private ProviderRequest(ProviderRequestId providerRequestId, RequestId requestId, List<BoardingPass> boardingPasses, DeliveryOptions deliveryOptions) {
         this.providerRequestId = providerRequestId;
+        this.requestId = requestId;
         this.boardingPasses = boardingPasses;
         this.deliveryOptions = deliveryOptions;
     }
 
-    public static ProviderRequest from(String providerRequestId, List<BoardingPass> boardingPasses, DeliveryOptions deliveryOptions) {
-        return new ProviderRequest(ProviderRequestId.from(providerRequestId), boardingPasses, deliveryOptions);
+    public static ProviderRequest from(String providerRequestId, String requestId, List<BoardingPass> boardingPasses, DeliveryOptions deliveryOptions) {
+        return new ProviderRequest(ProviderRequestId.from(providerRequestId), RequestId.from(requestId), boardingPasses, deliveryOptions);
     }
 
     public static ProviderRequest from(List<BoardingPass> boardingPasses, DeliveryOptions deliveryOptions) {
-        return new ProviderRequest(ProviderRequestId.notAssigned(), boardingPasses, deliveryOptions);
+        return new ProviderRequest(ProviderRequestId.create(), RequestId.notAssigned(), boardingPasses, deliveryOptions);
     }
 
     public ProviderRequestId providerRequestId() {
         return providerRequestId;
+    }
+
+    public RequestId requestId() {
+        return requestId;
     }
 
     public List<BoardingPass> boardingPasses() {
@@ -39,8 +44,8 @@ public final class ProviderRequest {
         return deliveryOptions;
     }
 
-    public void setProviderRequestId(ProviderRequestId providerRequestId) {
-        this.providerRequestId = providerRequestId;
+    public void setRequestId(RequestId requestId) {
+        this.requestId = requestId;
     }
 
     @Override
@@ -52,11 +57,11 @@ public final class ProviderRequest {
             return false;
         }
         ProviderRequest that = (ProviderRequest) o;
-        return providerRequestId.equals(that.providerRequestId);
+        return requestId.equals(that.requestId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(providerRequestId);
+        return Objects.hash(requestId);
     }
 }

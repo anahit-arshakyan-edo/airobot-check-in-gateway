@@ -1,6 +1,6 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.provider.status;
 
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ProviderRequestId;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.RequestId;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.configuration.AirobotApiConfiguration;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.GetCheckInStatusOutboundPort;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.SegmentCheckIn;
@@ -25,7 +25,7 @@ public class GetCheckInStatusAirobotApiOutboundAdapter implements GetCheckInStat
 
 
     @Override
-    public SegmentCheckIn getStatus(ProviderRequestId requestId) {
+    public SegmentCheckIn getStatus(RequestId requestId) {
         CheckInStatusResponse checkInStatusResponse = this.airobotResource.getCheckInStatus(airobotApiConfiguration.getApiToken(), requestId.valueString());
         return segmentCheckInMapper.map(checkInStatusResponse);
     }
