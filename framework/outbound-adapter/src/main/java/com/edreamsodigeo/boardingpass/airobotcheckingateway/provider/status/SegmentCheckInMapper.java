@@ -109,14 +109,16 @@ public class SegmentCheckInMapper {
     }
 
     private Document mapDocument(com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getcheckinstatus.model.Document document) {
-        return Document.create(
-                DocumentType.valueOf(document.getType().name()),
-                document.getNumber(),
-                document.getExpireDate(),
-                document.getIssueDate(),
-                document.getCountry()
-        );
+        return (document != null)
+                ?
+                Document.create(
+                        DocumentType.valueOf(document.getType().name()),
+                        document.getNumber(),
+                        document.getExpireDate(),
+                        document.getIssueDate(),
+                        document.getCountry())
+                :
+                null;
     }
-
 
 }
