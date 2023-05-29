@@ -4,5 +4,5 @@ import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.ProviderRequest;
 
 public interface RequestCheckInOutboundPort {
-    void send(ProviderReferenceId providerReferenceId, ProviderRequest providerRequest);
+    void requestCheckIn(ProviderReferenceId providerReferenceId, ProviderRequest providerRequest);
 }

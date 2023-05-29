@@ -48,7 +48,7 @@ public class CreateCheckInUseCaseImpl implements CreateCheckInUseCase {
 
     private void sendAndUpdateCheckInRequests(ItineraryCheckIn itineraryCheckIn) {
         for (ProviderRequest providerRequest : itineraryCheckIn.providerRequests()) {
-            requestCheckInOutboundPort.send(itineraryCheckIn.referenceId(), providerRequest);
+            requestCheckInOutboundPort.requestCheckIn(itineraryCheckIn.referenceId(), providerRequest);
         }
     }
 

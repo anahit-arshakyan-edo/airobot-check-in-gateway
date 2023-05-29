@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.edreamsodigeo.boardingpass.airobotcheckingateway</groupId>
@@ -35,6 +36,7 @@
         <commons-uuid.version>[1.4.0]</commons-uuid.version>
         <itinerary-check-in-provider-api.version>[1.3.0]</itinerary-check-in-provider-api.version>
         <jboss-ejb-api_3.1_spec.version>[1.0.2.Final]</jboss-ejb-api_3.1_spec.version>
+        <datadog-hq.version>[0.103.0]</datadog-hq.version>
     </properties>
 
     <modules>
@@ -292,6 +294,11 @@
                 <artifactId>jboss-ejb-api_3.1_spec</artifactId>
                 <version>${jboss-ejb-api_3.1_spec.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.datadoghq</groupId>
+                <artifactId>dd-trace-api</artifactId>
+                <version>${datadog-hq.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -349,7 +356,9 @@
                                 </goals>
                                 <configuration>
                                     <excludes>
-                                        <exclude>com/edreamsodigeo/boardingpass/airobotcheckingateway/webapp/bootstrap/**</exclude>
+                                        <exclude>
+                                            com/edreamsodigeo/boardingpass/airobotcheckingateway/webapp/bootstrap/**
+                                        </exclude>
                                         <exclude>com/edreamsodigeo/SystemEnv.*</exclude>
                                         <!-- Make sure we exclude generated code (lombok, mapstruct) -->
                                         <exclude>**/*.class</exclude>

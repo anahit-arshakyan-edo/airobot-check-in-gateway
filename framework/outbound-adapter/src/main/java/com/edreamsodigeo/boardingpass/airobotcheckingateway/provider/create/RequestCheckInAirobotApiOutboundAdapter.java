@@ -9,6 +9,7 @@ import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.createcheckin.reques
 import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.createcheckin.response.CreateCheckInResponse;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import datadog.trace.api.Trace;
 
 @Singleton
 public class RequestCheckInAirobotApiOutboundAdapter implements RequestCheckInOutboundPort {
@@ -17,6 +18,7 @@ public class RequestCheckInAirobotApiOutboundAdapter implements RequestCheckInOu
     private final AirobotApiConfiguration airobotApiConfiguration;
     private final CreateCheckInRequestMapper createCheckInRequestMapper;
     private final ProviderRequestMapper providerRequestMapper;
+    private static final String TRACE_OPERATION_NAME = "airobot.request";
 
     @Inject
     public RequestCheckInAirobotApiOutboundAdapter(AirobotResource airobotResource, AirobotApiConfiguration airobotApiConfiguration) {
@@ -27,10 +29,15 @@ public class RequestCheckInAirobotApiOutboundAdapter implements RequestCheckInOu
     }
 
     @Override
-    public void send(ProviderReferenceId providerReferenceId, ProviderRequest providerRequest) {
+    public void requestCheckIn(ProviderReferenceId providerReferenceId, ProviderRequest providerRequest) {
         CreateCheckInRequest airobotCheckInRequest = createCheckInRequestMapper.map(providerReferenceId, providerRequest);
-        CreateCheckInResponse airobotCheckInResponse = airobotResource.createCheckIn(airobotApiConfiguration.getApiToken(), airobotCheckInRequest);
+        CreateCheckInResponse airobotCheckInResponse = sendCreateCheckInRequest(airobotCheckInRequest);
         providerRequestMapper.updateProviderRequest(providerRequest, airobotCheckInResponse);
+    }
+
+    @Trace(operationName = TRACE_OPERATION_NAME, resourceName = "sendCreateCheckInRequest")
+    private CreateCheckInResponse sendCreateCheckInRequest(CreateCheckInRequest airobotCheckInRequest) {
+        return airobotResource.createCheckIn(airobotApiConfiguration.getApiToken(), airobotCheckInRequest);
     }
 
 }

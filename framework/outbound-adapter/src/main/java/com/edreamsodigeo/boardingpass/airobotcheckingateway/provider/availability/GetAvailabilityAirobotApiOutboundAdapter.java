@@ -8,6 +8,7 @@ import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.AirobotResource;
 import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.response.AvailabilityResponse;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import datadog.trace.api.Trace;
 
 @Singleton
 public class GetAvailabilityAirobotApiOutboundAdapter implements GetAvailabilityOutboundPort {
@@ -16,6 +17,7 @@ public class GetAvailabilityAirobotApiOutboundAdapter implements GetAvailability
     private final AvailabilityRequestMapper requestMapper;
     private final AvailabilityResponseMapper responseMapper;
     private final AirobotApiConfiguration airobotApiConfiguration;
+    private static final String TRACE_OPERATION_NAME = "airobot.request";
 
     @Inject
     public GetAvailabilityAirobotApiOutboundAdapter(AirobotResource airobotResource, AirobotApiConfiguration airobotApiConfiguration) {
@@ -30,9 +32,14 @@ public class GetAvailabilityAirobotApiOutboundAdapter implements GetAvailability
         com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.request.AvailabilityRequest requestDto =
                 requestMapper.map(availabilityRequest);
 
-        AvailabilityResponse response = airobotResource.getFlightAvailability(airobotApiConfiguration.getApiToken(), requestDto);
+        AvailabilityResponse response = sendAvailabilityRequest(requestDto);
 
         return responseMapper.map(response);
+    }
+
+    @Trace(operationName = TRACE_OPERATION_NAME, resourceName = "sendAvailabilityRequest")
+    private AvailabilityResponse sendAvailabilityRequest(com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getavailability.request.AvailabilityRequest requestDto) {
+        return airobotResource.getFlightAvailability(airobotApiConfiguration.getApiToken(), requestDto);
     }
 
 }
