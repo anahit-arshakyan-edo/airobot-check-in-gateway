@@ -1,5 +1,7 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.configuration;
 
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.GenerateReferenceIdOracleOutboundAdapter;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.GenerateReferenceIdOutboundPort;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.GetAvailabilityOutboundPort;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.GetCheckInOutboundPort;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.GetCheckInStatusOutboundPort;
@@ -27,6 +29,7 @@ public class OutboundAdapterBindings extends AbstractModule {
         bind(SaveCheckInOutboundPort.class).to(SaveCheckInOracleOutboundAdapter.class);
         bind(GetCheckInOutboundPort.class).to(GetCheckInOracleOutboundAdapter.class);
         bind(GetCheckInStatusOutboundPort.class).to(GetCheckInStatusAirobotApiOutboundAdapter.class);
+        bind(GenerateReferenceIdOutboundPort.class).to(GenerateReferenceIdOracleOutboundAdapter.class);
         bind(DataSource.class).toInstance(dataSourceInstance());
     }
 

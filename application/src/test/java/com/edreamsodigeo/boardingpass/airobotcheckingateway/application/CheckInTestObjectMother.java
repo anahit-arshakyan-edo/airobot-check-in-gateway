@@ -7,6 +7,7 @@ import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.BoardingPassId;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.DeliveryOptions;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ProviderPassengerSectionId;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ProviderReferenceId;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.Status;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ItineraryCheckIn;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ItineraryCheckInId;
@@ -32,14 +33,14 @@ public class CheckInTestObjectMother {
         List<SegmentCheckIn> segmentCheckIns = new ArrayList<>();
         SegmentCheckIn outboundSegment = SegmentCheckIn.from(outboundBoardingPassesWithoutStops(), boardingPassDeliveryCustomization());
         segmentCheckIns.add(outboundSegment);
-        return ItineraryCheckIn.from(ItineraryCheckInId.create(), segmentCheckIns);
+        return ItineraryCheckIn.from(ItineraryCheckInId.create(), ProviderReferenceId.notAssigned(), segmentCheckIns);
     }
 
     public static ItineraryCheckIn oneWayWithStopsItineraryCheckIn() {
         List<SegmentCheckIn> segmentCheckIns = new ArrayList<>();
         SegmentCheckIn outboundSegment = SegmentCheckIn.from(outboundBoardingPassesWithStops(), boardingPassDeliveryCustomization());
         segmentCheckIns.add(outboundSegment);
-        return ItineraryCheckIn.from(ItineraryCheckInId.create(), segmentCheckIns);
+        return ItineraryCheckIn.from(ItineraryCheckInId.create(), ProviderReferenceId.notAssigned(), segmentCheckIns);
     }
 
     public static ItineraryCheckIn roundTripWithoutStopsItineraryCheckIn() {
@@ -48,7 +49,7 @@ public class CheckInTestObjectMother {
         SegmentCheckIn inboundSegment = SegmentCheckIn.from(inboundBoardingPassesWithoutStops(), boardingPassDeliveryCustomization());
         segmentCheckIns.add(outboundSegment);
         segmentCheckIns.add(inboundSegment);
-        return ItineraryCheckIn.from(ItineraryCheckInId.create(), segmentCheckIns);
+        return ItineraryCheckIn.from(ItineraryCheckInId.create(), ProviderReferenceId.notAssigned(), segmentCheckIns);
     }
 
     public static ItineraryCheckIn roundTripWithStopsItineraryCheckIn() {
@@ -57,7 +58,7 @@ public class CheckInTestObjectMother {
         SegmentCheckIn inboundSegment = SegmentCheckIn.from(inboundBoardingPassesWithStops(), boardingPassDeliveryCustomization());
         segmentCheckIns.add(outboundSegment);
         segmentCheckIns.add(inboundSegment);
-        return ItineraryCheckIn.from(ItineraryCheckInId.create(), segmentCheckIns);
+        return ItineraryCheckIn.from(ItineraryCheckInId.create(), ProviderReferenceId.notAssigned(), segmentCheckIns);
     }
 
     private static DeliveryOptions boardingPassDeliveryCustomization() {

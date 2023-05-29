@@ -8,7 +8,9 @@ import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.ProviderRequestId;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.BoardingPassMetadata;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ItineraryCheckInId;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ItineraryCheckInMetadata;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ProviderPassengerSectionId;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ProviderReferenceId;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.odigeo.commons.uuid.UUIDSerializer;
@@ -26,6 +28,7 @@ public class GetCheckInOracleOutboundAdapter implements GetCheckInOutboundPort {
 
     private static final String SELECT_PROVIDER_REQUESTS_BY_CHECK_IN_ID = "SELECT * FROM AIROBOT_CHECKIN_GATEWAY_OWN.CHECK_IN_REQUEST WHERE CHECK_IN_ID = ?";
     private static final String SELECT_BOARDING_PASSES_BY_PROVIDER_REQUEST_ID = "SELECT * FROM AIROBOT_CHECKIN_GATEWAY_OWN.BOARDING_PASS WHERE CHECK_IN_REQUEST_ID = ?";
+    private static final String SELECT_CHECK_IN_BY_ID = "SELECT * FROM AIROBOT_CHECKIN_GATEWAY_OWN.CHECK_IN WHERE ID = ?";
     private final DataSource dataSource;
 
     @Inject
@@ -73,6 +76,20 @@ public class GetCheckInOracleOutboundAdapter implements GetCheckInOutboundPort {
             }
         } catch (SQLException e) {
             throw new StoreException("Exception while selecting Boarding Passes Metadata: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public ItineraryCheckInMetadata getItineraryCheckInMetadata(ItineraryCheckInId itineraryCheckInId) {
+        try (Connection conn = dataSource.getConnection(); PreparedStatement ps = conn.prepareStatement(SELECT_CHECK_IN_BY_ID)) {
+            ps.setBytes(1, UUIDSerializer.toBytes(itineraryCheckInId.value()));
+            try (ResultSet rs = ps.executeQuery()) {
+                rs.next();
+                ProviderReferenceId providerReferenceId = ProviderReferenceId.from(rs.getLong("REFERENCE_ID"));
+                return ItineraryCheckInMetadata.from(itineraryCheckInId, providerReferenceId);
+            }
+        } catch (SQLException e) {
+            throw new StoreException("Exception while selecting CheckIn Metadata: " + e.getMessage(), e);
         }
     }
 

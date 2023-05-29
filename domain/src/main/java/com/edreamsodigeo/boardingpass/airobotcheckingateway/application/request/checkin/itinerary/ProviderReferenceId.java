@@ -18,6 +18,10 @@ public final class ProviderReferenceId {
         return new ProviderReferenceId(null);
     }
 
+    public boolean isAssigned() {
+        return id != null;
+    }
+
     public long valueLong() {
         return id;
     }

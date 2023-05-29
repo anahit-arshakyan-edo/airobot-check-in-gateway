@@ -1,10 +1,12 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request;
 
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.GenerateReferenceIdOutboundPort;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.RequestCheckInOutboundPort;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.SaveCheckInOutboundPort;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.ProviderRequest;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ItineraryCheckIn;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ItineraryCheckInId;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ProviderReferenceId;
 import com.google.inject.Inject;
 
 import javax.annotation.PostConstruct;
@@ -21,6 +23,8 @@ public class CreateCheckInUseCaseImpl implements CreateCheckInUseCase {
     private RequestCheckInOutboundPort requestCheckInOutboundPort;
     @Inject
     private SaveCheckInOutboundPort saveItineraryCheckInOutboundPort;
+    @Inject
+    private GenerateReferenceIdOutboundPort generateReferenceIdOutboundPort;
 
     @PostConstruct
     public void init() {
@@ -30,10 +34,16 @@ public class CreateCheckInUseCaseImpl implements CreateCheckInUseCase {
     @Override
     public ItineraryCheckInId createCheckIn(ItineraryCheckIn itineraryCheckIn) {
 
+        assignProviderReferenceId(itineraryCheckIn);
         sendAndUpdateCheckInRequests(itineraryCheckIn);
         storeItineraryCheckIn(itineraryCheckIn);
 
         return itineraryCheckIn.id();
+    }
+
+    private void assignProviderReferenceId(ItineraryCheckIn itineraryCheckIn) {
+        ProviderReferenceId providerReferenceId = generateReferenceIdOutboundPort.generateReferenceId();
+        itineraryCheckIn.assignReferenceId(providerReferenceId);
     }
 
     private void sendAndUpdateCheckInRequests(ItineraryCheckIn itineraryCheckIn) {

@@ -24,8 +24,7 @@ public class ItineraryCheckInTestObjectMother {
         SegmentCheckIn inboundSegment = SegmentCheckIn.from(inboundBoardingPasses(), boardingPassDeliveryCustomization());
         segmentCheckIns.add(outboundSegment);
         segmentCheckIns.add(inboundSegment);
-        ItineraryCheckIn itineraryCheckIn = ItineraryCheckIn.from(ItineraryCheckInId.create(), segmentCheckIns);
-        return itineraryCheckIn;
+        return ItineraryCheckIn.from(ItineraryCheckInId.create(), ProviderReferenceId.from(1L), segmentCheckIns);
     }
 
     public static Passenger passenger() {

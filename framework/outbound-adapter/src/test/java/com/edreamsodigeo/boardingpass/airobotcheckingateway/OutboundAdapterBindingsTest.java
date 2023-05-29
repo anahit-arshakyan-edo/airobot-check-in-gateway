@@ -38,6 +38,8 @@ public class OutboundAdapterBindingsTest {
     @Mock
     private GetCheckInOracleOutboundAdapter getCheckInOracleOutboundAdapter;
     @Mock
+    private GenerateReferenceIdOracleOutboundAdapter generateReferenceIdOracleOutboundAdapter;
+    @Mock
     private static Context context;
     @Mock
     private DataSource dataSource;
@@ -58,13 +60,15 @@ public class OutboundAdapterBindingsTest {
             binder -> binder.bind(SaveCheckInOracleOutboundAdapter.class).toInstance(saveItineraryCheckInOracleOutboundAdapter),
             binder -> binder.bind(GetCheckInStatusAirobotApiOutboundAdapter.class).toInstance(getCheckInStatusAirobotApiOutboundAdapter),
             binder -> binder.bind(GetCheckInOracleOutboundAdapter.class).toInstance(getCheckInOracleOutboundAdapter),
-                new OutboundAdapterBindings());
+            binder -> binder.bind(GenerateReferenceIdOracleOutboundAdapter.class).toInstance(generateReferenceIdOracleOutboundAdapter),
+            new OutboundAdapterBindings());
 
         assertSame(injector.getInstance(GetAvailabilityAirobotApiOutboundAdapter.class), airobotOutboundAdapter);
         assertSame(injector.getInstance(SaveCheckInOracleOutboundAdapter.class), saveItineraryCheckInOracleOutboundAdapter);
         assertSame(injector.getInstance(RequestCheckInAirobotApiOutboundAdapter.class), requestCheckInAirobotApiOutboundAdapter);
         assertSame(injector.getInstance(GetCheckInStatusAirobotApiOutboundAdapter.class), getCheckInStatusAirobotApiOutboundAdapter);
         assertSame(injector.getInstance(GetCheckInOracleOutboundAdapter.class), getCheckInOracleOutboundAdapter);
+        assertSame(injector.getInstance(GenerateReferenceIdOracleOutboundAdapter.class), generateReferenceIdOracleOutboundAdapter);
         assertSame(injector.getInstance(DataSource.class), dataSource);
 
     }

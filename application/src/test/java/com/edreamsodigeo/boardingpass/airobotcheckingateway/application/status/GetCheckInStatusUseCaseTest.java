@@ -9,6 +9,7 @@ import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.RequestId;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ItineraryCheckIn;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ItineraryCheckInId;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ItineraryCheckInMetadata;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment.SegmentCheckIn;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.section.Section;
 import com.google.inject.AbstractModule;
@@ -58,6 +59,9 @@ public class GetCheckInStatusUseCaseTest {
         ItineraryCheckIn expectedItineraryCheckIn = CheckInTestObjectMother.oneWayWithoutStopsItineraryCheckIn();
         SegmentCheckIn expectedOutboundSegmentCheckIn = expectedItineraryCheckIn.segmentCheckIns().get(0);
 
+        ItineraryCheckInMetadata itineraryCheckInMetadata = ItineraryCheckInMetadata.from(expectedItineraryCheckIn.id(), expectedItineraryCheckIn.referenceId());
+
+        when(getCheckInOutboundPort.getItineraryCheckInMetadata(any())).thenReturn(itineraryCheckInMetadata);
         when(getCheckInOutboundPort.getProviderRequestsMetadata(any())).thenReturn(providerRequestsMetadata);
         when(getCheckInStatusOutboundPort.getStatus(RequestId.from(CheckInTestObjectMother.OUTBOUND_PROVIDER_REQUEST_ID)))
                 .thenReturn(expectedOutboundSegmentCheckIn);
@@ -80,6 +84,9 @@ public class GetCheckInStatusUseCaseTest {
         ItineraryCheckIn expectedItineraryCheckIn = CheckInTestObjectMother.oneWayWithStopsItineraryCheckIn();
         SegmentCheckIn expectedOutboundSegmentCheckIn = expectedItineraryCheckIn.segmentCheckIns().get(0);
 
+        ItineraryCheckInMetadata itineraryCheckInMetadata = ItineraryCheckInMetadata.from(expectedItineraryCheckIn.id(), expectedItineraryCheckIn.referenceId());
+
+        when(getCheckInOutboundPort.getItineraryCheckInMetadata(any())).thenReturn(itineraryCheckInMetadata);
         when(getCheckInOutboundPort.getProviderRequestsMetadata(any())).thenReturn(providerRequestsMetadata);
         when(getCheckInStatusOutboundPort.getStatus(RequestId.from(CheckInTestObjectMother.OUTBOUND_PROVIDER_REQUEST_ID)))
                 .thenReturn(expectedOutboundSegmentCheckIn);
@@ -107,6 +114,9 @@ public class GetCheckInStatusUseCaseTest {
         SegmentCheckIn expectedOutboundSegmentCheckIn = expectedItineraryCheckIn.segmentCheckIns().get(0);
         SegmentCheckIn expectedInboundSegmentCheckIn = expectedItineraryCheckIn.segmentCheckIns().get(1);
 
+        ItineraryCheckInMetadata itineraryCheckInMetadata = ItineraryCheckInMetadata.from(expectedItineraryCheckIn.id(), expectedItineraryCheckIn.referenceId());
+
+        when(getCheckInOutboundPort.getItineraryCheckInMetadata(any())).thenReturn(itineraryCheckInMetadata);
         when(getCheckInOutboundPort.getProviderRequestsMetadata(any())).thenReturn(providerRequestsMetadata);
         when(getCheckInStatusOutboundPort.getStatus(RequestId.from(CheckInTestObjectMother.OUTBOUND_PROVIDER_REQUEST_ID)))
                 .thenReturn(expectedOutboundSegmentCheckIn);
@@ -136,6 +146,9 @@ public class GetCheckInStatusUseCaseTest {
         SegmentCheckIn expectedOutboundSegmentCheckIn = expectedItineraryCheckIn.segmentCheckIns().get(0);
         SegmentCheckIn expectedInboundSegmentCheckIn = expectedItineraryCheckIn.segmentCheckIns().get(1);
 
+        ItineraryCheckInMetadata itineraryCheckInMetadata = ItineraryCheckInMetadata.from(expectedItineraryCheckIn.id(), expectedItineraryCheckIn.referenceId());
+
+        when(getCheckInOutboundPort.getItineraryCheckInMetadata(any())).thenReturn(itineraryCheckInMetadata);
         when(getCheckInOutboundPort.getProviderRequestsMetadata(any())).thenReturn(providerRequestsMetadata);
         when(getCheckInStatusOutboundPort.getStatus(RequestId.from(CheckInTestObjectMother.OUTBOUND_PROVIDER_REQUEST_ID)))
                 .thenReturn(expectedOutboundSegmentCheckIn);

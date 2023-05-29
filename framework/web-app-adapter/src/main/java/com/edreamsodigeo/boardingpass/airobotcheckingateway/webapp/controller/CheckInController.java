@@ -20,6 +20,7 @@ import org.jboss.resteasy.spi.BadRequestException;
 
 @Singleton
 public class CheckInController implements ItineraryCheckInProviderResource {
+
     private final GetAvailabilityUseCase availabilityUseCase;
     private final AvailabilityRequestMapper requestMapper = new AvailabilityRequestMapper();
     private final CreateCheckInUseCase createCheckInUseCase;
@@ -29,7 +30,8 @@ public class CheckInController implements ItineraryCheckInProviderResource {
     private final CheckInStatusResponseMapper checkInStatusResponseMapper = new CheckInStatusResponseMapper();
 
     @Inject
-    public CheckInController(GetAvailabilityUseCase availabilityUseCase, CreateCheckInUseCase createCheckInUseCase, GetCheckInStatusUseCase getCheckInStatusUseCase) {
+    public CheckInController(GetAvailabilityUseCase availabilityUseCase, CreateCheckInUseCase createCheckInUseCase,
+                             GetCheckInStatusUseCase getCheckInStatusUseCase) {
         this.availabilityUseCase = availabilityUseCase;
         this.createCheckInUseCase = createCheckInUseCase;
         this.getCheckInStatusUseCase = getCheckInStatusUseCase;

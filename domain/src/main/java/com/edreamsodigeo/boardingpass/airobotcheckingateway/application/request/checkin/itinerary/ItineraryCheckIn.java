@@ -9,24 +9,28 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class ItineraryCheckIn {
+public final class ItineraryCheckIn {
 
     private final ItineraryCheckInId id;
-    private final ProviderReferenceId referenceId;
+    private ProviderReferenceId referenceId;
     private final List<SegmentCheckIn> segmentCheckIns;
 
-    public ItineraryCheckIn(ItineraryCheckInId id, List<SegmentCheckIn> segmentCheckIns) {
+    private ItineraryCheckIn(ItineraryCheckInId id, ProviderReferenceId referenceId, List<SegmentCheckIn> segmentCheckIns) {
         this.id = id;
-        this.referenceId = ProviderReferenceId.from(Math.abs(id.value().getMostSignificantBits()));
+        this.referenceId = referenceId;
         this.segmentCheckIns = segmentCheckIns;
     }
 
-    public static ItineraryCheckIn from(ItineraryCheckInId id, List<SegmentCheckIn> segmentCheckIns) {
-        return new ItineraryCheckIn(id, segmentCheckIns);
+    public static ItineraryCheckIn from(ItineraryCheckInId id, ProviderReferenceId referenceId, List<SegmentCheckIn> segmentCheckIns) {
+        return new ItineraryCheckIn(id, referenceId, segmentCheckIns);
     }
 
-    public static ItineraryCheckIn from(List<SegmentCheckIn> segmentCheckIns) {
-        return new ItineraryCheckIn(ItineraryCheckInId.create(), segmentCheckIns);
+    public void assignReferenceId(ProviderReferenceId providerReferenceId) {
+        this.referenceId = providerReferenceId.isAssigned() ? providerReferenceId : generateReferenceIdFallback(id);
+    }
+
+    private ProviderReferenceId generateReferenceIdFallback(ItineraryCheckInId itineraryCheckInId) {
+        return ProviderReferenceId.from(Math.abs(itineraryCheckInId.value().getMostSignificantBits()));
     }
 
     public ItineraryCheckInId id() {
