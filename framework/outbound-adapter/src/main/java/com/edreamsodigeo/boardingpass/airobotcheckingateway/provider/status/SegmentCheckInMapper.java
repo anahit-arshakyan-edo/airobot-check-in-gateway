@@ -61,13 +61,22 @@ public class SegmentCheckInMapper {
     private BoardingPass mapBoardingPass(com.edreamsodigeo.boardingpass.airobotproviderapi.v1.getcheckinstatus.model.Passenger passenger, ScheduledJourney scheduledJourney, PassengerJourney passengerJourney) {
         return BoardingPass.builder()
                 .withProviderPassengerSectionId(ProviderPassengerSectionId.from(passengerJourney.getPassengerJourneyId()))
-                .withStatus(new Status(
-                        Status.Code.valueOf(passengerJourney.getStatus().toUpperCase(Locale.ENGLISH)),
-                        null
-                ))
+                .withStatus(mapStatusFromProvider(passengerJourney))
                 .withPassenger(mapPassenger(passenger))
                 .withSection(mapSection(scheduledJourney))
                 .build();
+    }
+
+    private Status mapStatusFromProvider(PassengerJourney passengerJourney) {
+        switch (passengerJourney.getStatus().toUpperCase(Locale.ENGLISH)) {
+        case "SUCCESS" :
+            return new Status(Status.Code.SUCCEED);
+        case "PENDING" :
+            return new Status(Status.Code.PENDING);
+        case "FAILED" :
+        default:
+            return new Status(Status.Code.FAILED);
+        }
     }
 
     private Section mapSection(ScheduledJourney journey) {
