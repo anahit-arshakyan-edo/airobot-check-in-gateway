@@ -48,7 +48,7 @@ public class CheckInStatusResponseMapper {
             statusCode = Status.Code.PENDING;
             break;
         case SUCCEED:
-            statusCode = Status.Code.SUCCESSFUL;
+            statusCode = Status.Code.SUCCEED;
             break;
         }
 
