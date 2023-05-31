@@ -67,7 +67,11 @@ public class ContextListener extends EdoContextListener {
                 new BootstrapModule(),
                 new ApplicationModuleBindings(),
                 new OutboundAdapterBindings(),
-                new AirobotResourceModule.Builder().build());
+                new AirobotResourceModule.Builder()
+                        .withConnectionTimeoutInMillis(60_000)
+                        .withSocketTimeoutInMillis(60_000)
+                        .build()
+        );
     }
 
     private void initHealthCheckRegistry(ServletContext servletContext) {
