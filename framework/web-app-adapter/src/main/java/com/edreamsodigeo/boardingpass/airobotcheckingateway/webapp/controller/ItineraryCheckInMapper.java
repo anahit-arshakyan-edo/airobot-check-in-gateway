@@ -26,6 +26,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ItineraryCheckInMapper {
 
@@ -100,10 +101,23 @@ public class ItineraryCheckInMapper {
                 .withName(StringUtils.isNotBlank(passenger.getMiddleName()) ? passenger.getName() + " " + passenger.getMiddleName() : passenger.getName())
                 .withLastName(passenger.getLastName())
                 .withDateOfBirth(passenger.getDateOfBirth())
-                .withGender(Gender.valueOf(passenger.getGender()))
+                .withGender(mapGender(passenger))
                 .withNationality(passenger.getNationality())
                 .withDocument(mapDocument(passenger.getDocument()))
                 .build();
+    }
+
+    private Gender mapGender(com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.model.create.Passenger passenger) {
+        if (passenger.getGender() == null) {
+            return null;
+        }
+        switch (passenger.getGender().toUpperCase(Locale.ENGLISH)) {
+        case "MALE" :
+            return Gender.M;
+        case "FEMALE" :
+            return Gender.F;
+        default: throw new IllegalStateException("Unexpected gender: " + passenger.getGender());
+        }
     }
 
     private Document mapDocument(com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.model.create.Document document) {

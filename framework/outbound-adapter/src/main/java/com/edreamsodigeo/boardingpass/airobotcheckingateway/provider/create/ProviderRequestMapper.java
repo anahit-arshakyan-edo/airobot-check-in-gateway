@@ -105,13 +105,16 @@ public class ProviderRequestMapper {
     }
 
     private Gender mapGender(com.edreamsodigeo.boardingpass.airobotproviderapi.v1.createcheckin.model.Gender gender) {
+        if (gender == null) {
+            return null;
+        }
         switch (gender) {
         case MALE:
             return Gender.M;
         case FEMALE:
             return Gender.F;
         default:
-            return null;
+            throw new IllegalStateException("Unexpected gender: " + gender);
         }
     }
 

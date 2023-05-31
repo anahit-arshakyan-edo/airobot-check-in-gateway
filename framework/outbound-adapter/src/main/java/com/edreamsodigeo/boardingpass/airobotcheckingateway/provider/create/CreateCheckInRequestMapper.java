@@ -46,11 +46,25 @@ public class CreateCheckInRequestMapper {
         passenger.setName(passengerToMap.name());
         passenger.setLastName(passengerToMap.lastName());
         passenger.setNationality(passengerToMap.nationality());
-        passenger.setGender(Gender.valueOf(passengerToMap.gender().description()));
+        passenger.setGender(mapGender(passengerToMap.gender()));
         passenger.setDateOfBirth(passengerToMap.dateOfBirth());
         passenger.setDocument(mapDocument(passengerToMap.document()));
 
         return passenger;
+    }
+
+    private Gender mapGender(com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.passenger.Gender gender) {
+        if (gender == null) {
+            return null;
+        }
+
+        switch (gender) {
+        case M :
+            return Gender.MALE;
+        case F :
+            return Gender.FEMALE;
+        default: throw new IllegalStateException("Unexpected gender: " + gender);
+        }
     }
 
     private Document mapDocument(com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.passenger.Document documentToMap) {
