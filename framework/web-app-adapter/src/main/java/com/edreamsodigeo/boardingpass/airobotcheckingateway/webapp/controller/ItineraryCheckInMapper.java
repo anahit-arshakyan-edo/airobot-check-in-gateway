@@ -113,8 +113,10 @@ public class ItineraryCheckInMapper {
         }
         switch (passenger.getGender().toUpperCase(Locale.ENGLISH)) {
         case "MALE" :
+        case "M" :
             return Gender.M;
         case "FEMALE" :
+        case "F" :
             return Gender.F;
         default: throw new IllegalStateException("Unexpected gender: " + passenger.getGender());
         }
