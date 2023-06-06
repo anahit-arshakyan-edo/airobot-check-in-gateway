@@ -28,7 +28,7 @@
         <slf4j.version>[1.7.35]</slf4j.version>
         <docker.registry.url>eu.gcr.io/edo-test-resources</docker.registry.url>
         <docker.image.base.name>${docker.registry.url}/jboss-technology:3.20.1</docker.image.base.name>
-        <airobot-check-in-api.version>[1.5.0]</airobot-check-in-api.version>
+        <airobot-check-in-api.version>[1.6.0]</airobot-check-in-api.version>
         <mapstruct.version>1.5.3.Final</mapstruct.version>
         <tracking-api-client.version>[4.9.1]</tracking-api-client.version>
         <lombok.version>1.18.12</lombok.version>

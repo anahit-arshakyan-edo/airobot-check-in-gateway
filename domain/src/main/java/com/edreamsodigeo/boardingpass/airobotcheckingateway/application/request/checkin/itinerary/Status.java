@@ -57,6 +57,5 @@ public class Status {
         public String description() {
             return description;
         }
-
     }
 }
