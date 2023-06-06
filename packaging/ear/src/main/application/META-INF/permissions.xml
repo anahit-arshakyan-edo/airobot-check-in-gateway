@@ -1,0 +1,5 @@
+<permissions version="7">
+    <permission>
+        <class-name>java.security.AllPermission</class-name>
+    </permission>
+</permissions>
