@@ -64,7 +64,7 @@ public class ItineraryCheckInMapper {
                 .withBrand(createCheckInRequestDto.getWebsite().getBrand().name())
                 .withLanguage(createCheckInRequestDto.getLocale())
                 .withCountry(createCheckInRequestDto.getWebsite().getCode())
-                .withBookingEmail(createCheckInRequestDto.getBuyer().getEmail())
+                .withBookingEmail(createCheckInRequestDto.getItinerary().getBookingEmail())
                 .withDeliveryEmail(createCheckInRequestDto.getBuyer().getEmail())
                 .build();
     }
