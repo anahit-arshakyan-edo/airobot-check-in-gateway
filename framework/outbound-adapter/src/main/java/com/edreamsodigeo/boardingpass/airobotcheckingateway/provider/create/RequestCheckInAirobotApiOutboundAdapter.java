@@ -3,6 +3,7 @@ package com.edreamsodigeo.boardingpass.airobotcheckingateway.provider.create;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.RequestCheckInOutboundPort;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ProviderReferenceId;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.ProviderRequest;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.exception.CreateCheckInAirobotException;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.configuration.AirobotApiConfiguration;
 import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.AirobotResource;
 import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.createcheckin.request.CreateCheckInRequest;
@@ -36,8 +37,13 @@ public class RequestCheckInAirobotApiOutboundAdapter implements RequestCheckInOu
     }
 
     @Trace(operationName = TRACE_OPERATION_NAME, resourceName = "sendCreateCheckInRequest")
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
     private CreateCheckInResponse sendCreateCheckInRequest(CreateCheckInRequest airobotCheckInRequest) {
-        return airobotResource.createCheckIn(airobotApiConfiguration.getApiToken(), airobotCheckInRequest);
+        try {
+            return airobotResource.createCheckIn(airobotApiConfiguration.getApiToken(), airobotCheckInRequest);
+        } catch (Exception ex) {
+            throw new CreateCheckInAirobotException(ex.getMessage(), ex);
+        }
     }
 
 }

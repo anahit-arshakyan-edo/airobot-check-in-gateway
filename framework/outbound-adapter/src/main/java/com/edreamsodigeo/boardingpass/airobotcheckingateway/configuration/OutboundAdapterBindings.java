@@ -1,6 +1,7 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.configuration;
 
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.GenerateReferenceIdOracleOutboundAdapter;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.DeleteCheckInOutboundPort;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.GenerateReferenceIdOutboundPort;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.GetAvailabilityOutboundPort;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outboundport.GetCheckInOutboundPort;
@@ -10,6 +11,7 @@ import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.outbound
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.persistence.GetCheckInOracleOutboundAdapter;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.persistence.SaveCheckInOracleOutboundAdapter;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.provider.availability.GetAvailabilityAirobotApiOutboundAdapter;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.provider.delete.DeleteCheckInAirobotOutboundAdapter;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.provider.status.GetCheckInStatusAirobotApiOutboundAdapter;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.provider.create.RequestCheckInAirobotApiOutboundAdapter;
 import com.google.inject.AbstractModule;
@@ -30,6 +32,7 @@ public class OutboundAdapterBindings extends AbstractModule {
         bind(GetCheckInOutboundPort.class).to(GetCheckInOracleOutboundAdapter.class);
         bind(GetCheckInStatusOutboundPort.class).to(GetCheckInStatusAirobotApiOutboundAdapter.class);
         bind(GenerateReferenceIdOutboundPort.class).to(GenerateReferenceIdOracleOutboundAdapter.class);
+        bind(DeleteCheckInOutboundPort.class).to(DeleteCheckInAirobotOutboundAdapter.class);
         bind(DataSource.class).toInstance(dataSourceInstance());
     }
 
