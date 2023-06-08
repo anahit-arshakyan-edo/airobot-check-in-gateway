@@ -36,21 +36,21 @@ public class ItineraryCheckInMapper {
         List<Segment> flightSegments = createCheckInRequestDto.getItinerary().getSegments();
         List<com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.model.create.Passenger> passengers = createCheckInRequestDto.getPassengers();
 
-        for (com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.model.create.Passenger passenger : passengers) {
-            for (Segment segment : flightSegments) {
-                segmentCheckIns.add(mapSegmentCheckIn(passenger, segment, mapBoardingPassDeliveryCustomization(createCheckInRequestDto)));
-            }
+        for (Segment segment : flightSegments) {
+            segmentCheckIns.add(mapSegmentCheckIn(passengers, segment, mapBoardingPassDeliveryCustomization(createCheckInRequestDto)));
         }
 
         return ItineraryCheckIn.from(ItineraryCheckInId.create(), ProviderReferenceId.notAssigned(), segmentCheckIns);
     }
 
-    private SegmentCheckIn mapSegmentCheckIn(com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.model.create.Passenger passenger, Segment flightSegment, DeliveryOptions deliveryOptions) {
+    private SegmentCheckIn mapSegmentCheckIn(List<com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.model.create.Passenger> passengers, Segment flightSegment, DeliveryOptions deliveryOptions) {
 
         List<BoardingPass> boardingPasses = new ArrayList<>();
 
         for (com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.model.create.Section section : flightSegment.getSections()) {
-            boardingPasses.add(mapBoardingPass(mapSection(section), mapPassenger(passenger), new Status(Status.Code.INITIALIZED, null)));
+            for (com.edreamsodigeo.boardingpass.itinerarycheckinproviderapi.v1.model.create.Passenger passenger : passengers) {
+                boardingPasses.add(mapBoardingPass(mapSection(section), mapPassenger(passenger), new Status(Status.Code.INITIALIZED, null)));
+            }
         }
 
         return SegmentCheckIn.from(
