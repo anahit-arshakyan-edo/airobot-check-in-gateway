@@ -1,12 +1,15 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary;
 
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.section.Section;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.passenger.Passenger;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.section.Section;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.validation.Checker;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.Set;
 
 public class BoardingPass {
 
@@ -26,17 +29,12 @@ public class BoardingPass {
         this.providerPassengerSectionId = providerPassengerSectionId;
     }
 
-    public static boolean haveMoreThanOnePnr(List<BoardingPass> boardingPasses) {
-        return pnrs(boardingPasses).size() > 1;
-    }
-
-    private static List<String> pnrs(List<BoardingPass> boardingPasses) {
-        return boardingPasses.stream()
-                .map(BoardingPass::section)
-                .distinct()
-                .map(Section::pnr)
-                .distinct()
-                .collect(Collectors.toList());
+    public static Map<String, Set<Section>> sectionsWithSamePnrMap(List<BoardingPass> boardingPasses) {
+        Map<String, Set<Section>> sectionPnrMap = new HashMap<>();
+        for (BoardingPass boardingPass : boardingPasses) {
+            sectionPnrMap.computeIfAbsent(boardingPass.section.pnr(), k -> new HashSet<>()).add(boardingPass.section);
+        }
+        return sectionPnrMap;
     }
 
     public BoardingPassId id() {

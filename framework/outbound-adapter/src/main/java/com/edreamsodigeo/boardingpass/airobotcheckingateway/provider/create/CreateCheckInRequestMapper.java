@@ -1,9 +1,9 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.provider.create;
 
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.ProviderRequest;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.BoardingPass;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.DeliveryOptions;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.ProviderReferenceId;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.ProviderRequest;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.section.Section;
 import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.createcheckin.model.Document;
 import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.createcheckin.model.DocumentType;
@@ -11,6 +11,7 @@ import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.createcheckin.model.
 import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.createcheckin.model.Passenger;
 import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.createcheckin.model.ScheduledJourney;
 import com.edreamsodigeo.boardingpass.airobotproviderapi.v1.createcheckin.request.CreateCheckInRequest;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,8 +26,8 @@ public class CreateCheckInRequestMapper {
         DeliveryOptions deliveryOptions = providerRequest.deliveryOptions();
 
         for (BoardingPass boardingPass: boardingPasses) {
-            passengers.add(mapPassenger(boardingPass.passenger()));
-            journeys.add(mapJourney(boardingPass.section(), providerReferenceId.valueLong()));
+            addPassengerOnlyOneTime(passengers, boardingPass);
+            addScheduleJourneyOnlyOneTime(journeys, boardingPass.section(), providerReferenceId);
         }
 
         return CreateCheckInRequest.builder()
@@ -38,6 +39,20 @@ public class CreateCheckInRequestMapper {
                 .passengers(passengers)
                 .journeys(journeys)
                 .build();
+    }
+
+    private void addScheduleJourneyOnlyOneTime(List<ScheduledJourney> journeys, Section section, ProviderReferenceId providerReferenceId) {
+        ScheduledJourney journey = mapJourney(section, providerReferenceId.valueLong());
+        if (journeys.isEmpty() || !journeys.contains(journey)) {
+            journeys.add(journey);
+        }
+    }
+
+    private void addPassengerOnlyOneTime(List<Passenger> passengers, BoardingPass boardingPass) {
+        Passenger passenger = mapPassenger(boardingPass.passenger());
+        if (passengers.isEmpty() || !passengers.contains(passenger)) {
+            passengers.add(passenger);
+        }
     }
 
     private Passenger mapPassenger(com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.passenger.Passenger passengerToMap) {
