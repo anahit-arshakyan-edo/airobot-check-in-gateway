@@ -1,16 +1,18 @@
 package com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.segment;
 
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.ProviderRequest;
+import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.ProviderRequestId;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.BoardingPass;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.itinerary.DeliveryOptions;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.ProviderRequestId;
-import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.checkin.ProviderRequest;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.passenger.Passenger;
 import com.edreamsodigeo.boardingpass.airobotcheckingateway.application.request.section.Section;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public final class SegmentCheckIn {
@@ -36,20 +38,31 @@ public final class SegmentCheckIn {
     }
 
     private static List<ProviderRequest> createProviderRequestsFor(List<BoardingPass> boardingPasses, DeliveryOptions deliveryOptions) {
-        if (BoardingPass.haveMoreThanOnePnr(boardingPasses)) {
-            return splitIntoSeparateProviderRequests(boardingPasses, deliveryOptions);
+        Map<String, Set<Section>> sectionsWithSamePnrMap = BoardingPass.sectionsWithSamePnrMap(boardingPasses);
+        if (sectionsWithSamePnrMap.size() > 1) {
+            return splitIntoSeparateProviderRequests(sectionsWithSamePnrMap, boardingPasses, deliveryOptions);
         } else {
             return bundleIntoSingleProviderRequest(boardingPasses, deliveryOptions);
         }
     }
 
-    private static List<ProviderRequest> splitIntoSeparateProviderRequests(List<BoardingPass> boardingPasses, DeliveryOptions deliveryOptions) {
+    private static List<ProviderRequest> splitIntoSeparateProviderRequests(Map<String, Set<Section>> sectionsWithSamePnr, List<BoardingPass> boardingPasses, DeliveryOptions deliveryOptions) {
         List<ProviderRequest> providerRequests = new ArrayList<>();
-        for (BoardingPass boardingPass : boardingPasses) {
-            ProviderRequest providerRequest = ProviderRequest.from(Collections.singletonList(boardingPass), deliveryOptions);
+        for (String pnr : sectionsWithSamePnr.keySet()) {
+            ProviderRequest providerRequest = ProviderRequest.from(createBoardingPassWithSamePnr(sectionsWithSamePnr.get(pnr), boardingPasses), deliveryOptions);
             providerRequests.add(providerRequest);
         }
         return providerRequests;
+    }
+
+    private static List<BoardingPass> createBoardingPassWithSamePnr(Set<Section> sections, List<BoardingPass> boardingPasses) {
+        List<BoardingPass> boardingPassesResult = new ArrayList<>();
+        for (BoardingPass boardingPass : boardingPasses) {
+            if (sections.contains(boardingPass.section())) {
+                boardingPassesResult.add(boardingPass);
+            }
+        }
+        return boardingPassesResult;
     }
 
     private static List<ProviderRequest> bundleIntoSingleProviderRequest(List<BoardingPass> boardingPasses, DeliveryOptions deliveryOptions) {
